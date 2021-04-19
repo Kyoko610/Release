@@ -1,0 +1,222 @@
+;:[1]:::::::::::::::::::::::
++func init1(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ele1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 720.0 - u.h - 70.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+end func
++func act1(u: \main@UNIT)
+	if(u.kinit = 0)
+		;	do u.p :: 0
+		;	do u.sp :: 0
+	end if
+	
+	switch(u.g)
+	case "ele1.png"
+		do u.g :: "ele2.png"
+	case "ele2.png"
+		do u.g :: "ele3.png"
+	default
+		do u.g :: "ele1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 6.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 1
+		do u.loop1(100)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do \main@sndd(22)
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1280.0, 1.0, 60.0)
+	end switch
+end func
+
+
+;:[2]:::::::::::::::::::::::
++func init2(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 10000.0
+	do u.g :: "ele1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 720.0 - u.h - 50.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.8)
+	do \main@sndd(45)
+end func
++func act2(u: \main@UNIT)
+	if(u.kinit = 0)
+		;	do u.p :: 0
+		;	do u.sp :: 0
+	end if
+	
+	switch(u.g)
+	case "bossb2_c1.png"
+		do u.g :: "bossb2_c2.png"
+	default
+		do u.g :: "bossb2_c1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 6.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 1
+		do u.loop1(100)
+	case 2
+		if(u.kinit = 0)
+			do \main@sndd(45)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do \main@sndd(22)
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1280.0, 1.0, 60.0)
+	end switch
+end func
+
+
+
++func initJUMP(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 10000.0
+	do u.g :: "jirai1.png"
+	do u.a :: 0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 720.0 - u.h - 50.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.8)
+	do u.vx :: 2.0
+	do u.vy :: 0.0
+end func
++func actJUMP(u: \main@UNIT)
+	{
+	if(\main@move = 1 & \main@oBOSS =& null)
+		do u.x :+ 2.0
+	end if
+	}
+	switch(u.mode)
+	case 0
+		do u.g :: "jirai1.png"
+	case 1
+		do u.cnt3 :+ 3
+		if(u.cnt3 > 10)
+			switch(u.g)
+			case "jirai1.png"
+				do u.g :: "jirai2.png"
+			case "jirai2.png"
+				do u.g :: "jirai3.png"
+			case "jirai3.png"
+				do u.g :: "jirai4.png"
+			default
+				do u.mode :: 0
+			end switch
+			do u.cnt3 :: 0
+		end if
+	end switch
+end func
+
+
+
+
+
++func initRAKU(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: -1000.0
+	do u.g :: "rakurai1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.vx :: 2.0
+	do u.vy :: 0.0
+end func
++func actRAKU(u: \main@UNIT)
+	{
+	if(\main@move = 1 & \main@oBOSS =& null)
+		do u.x :+ 2.0
+	end if
+	}
+	switch(u.mode)
+	case 0
+		do u.g :: "rakurai1.png"
+	case 1
+		do u.g :: "rakurai2.png"
+	default
+		do u.g :: "rakurai3.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.loop1(80)
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(67)
+			do u.kinit :: 0
+		end if
+		do u.loop1(10)
+	case 2
+		if(u.kinit = 0)
+			do u.cnt3 :: 0
+			do u.kinit :: 0
+		end if
+		do u.loop1(40)
+		do u.setAtari(130.0, u.cnt3 $ float, 70.0)
+		do u.cnt3 :+ 20
+	default
+		do u.mode :: 0
+		do u.atari :: null
+	end switch
+	
+end func
+
+
++func initJUMPT(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: -200.0
+	do u.g :: "tumuji1.png"
+	do u.a :: 0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.setAtari(410.0, 500.0, 130.0)
+	do u.vx :: 2.0
+	do u.vy :: 0.0
+end func
++func actJUMPT(u: \main@UNIT)
+	{
+	if(\main@move = 1 & \main@oBOSS =& null)
+		do u.x :+ 2.0
+	end if
+	}
+	do u.cnt3 :+ 3
+	if(u.cnt3 > 10)
+		switch(u.g)
+		case "tumuji1.png"
+			do u.g :: "tumuji2.png"
+		case "tumuji2.png"
+			do u.g :: "tumuji3.png"
+		case "tumuji3.png"
+			do u.g :: "tumuji1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+end func

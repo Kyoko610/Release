@@ -1,0 +1,1000 @@
++func init(u: \main@UNIT)
+	do u.kind :: %my
+	do u.gai :: true
+	do u.u :: -100.0
+	do u.p :: 0
+	do u.hp :: 209.0
+	do u.mp :: 209.0
+	do u.x :: 700.0 - 130.0
+	do u.y :: \main@ty - 110.0
+	do u.spMax :: 9
+	do u.sp :: u.spMax
+	do u.w :: 840.0
+	do u.h :: 798.0
+	do u.jFlg :: 0
+	do u.jS :: 0.0
+	do u.jKasoku :: 6.0
+	do u.setAtari(310.0 + 130.0, 310.0 + 110.0, 70.0)
+	do \main@oGURU :: false
+end func
+
++func act(u: \main@UNIT)
+	if(u.mode = 40000)
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "bkurekeri1.png"
+				do u.g :: "bkurekeri2.png"
+			case "bkurekeri2.png"
+				do u.g :: "bkurekeri3.png"
+			case "bkurekeri3.png"
+				do u.g :: "bkurekeri1.png"
+			default
+				do u.g :: "bkurekeri2.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		ret
+	end if
+	if(u.mode = 40001)
+		do u.g :: "doraiba-1.png"
+		do u.setWH()
+		ret
+	end if
+	if(u.mode = 40002)
+		do u.g :: "bkuredora.png"
+		do u.setWH()
+		ret
+	end if
+	
+	if(u.mode = 9999)
+		ret
+	end if
+	if(u.mode = 8888)
+		do u.atari2 :: null
+		if(\main@drawMain.focused() = true & (input@pad(0, %a) = 1 | input@pad(0, %b) = 1 | input@pad(0, %c) = 1 | input@pad(0, %d) = 1))
+			if(u.g = "mogaki1.png")
+				do u.g :: "mogaki2.png"
+			else
+				do u.g :: "mogaki1.png"
+			end if
+			do u.cnt :- 40
+		end if
+		;do u.cnt :- 10
+		if(u.cnt < 0)
+			do u.mode :: 0
+			do \main@sndd(62)
+			do u.cObj("HAZU")
+			ret
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 10)
+			if(u.g = "mogaki1.png")
+				do u.g :: "mogaki2.png"
+			else
+				do u.g :: "mogaki1.png"
+			end if
+			do u.cnt3 :: 0
+		end if
+		if(u.y >= \main@ty - 110.0)
+			do u.y :: \main@ty - 110.0
+			do u.jFlg :: 0
+		else
+			do u.y :+ 20.0
+		end if
+		ret
+	end if
+	
+	if(u.mode = 89999)
+		if(\main@oBOSS =& null | \main@oBOSS.d = true)
+			do u.mode :: 0
+			do \main@sndd(62)
+			; do u.cObj("HAZU")
+			do u.w :: 840.0
+			do u.h :: 798.0
+			do u.x :: 614.0
+			do u.y :: \main@ty - 110.0
+			do \main@snd[87].stop()
+			do u.cObj("HAZU2")
+			do u.setAtari(310.0 + 130.0, 310.0 + 110.0, 70.0)
+			ret
+		end if
+		if(\main@snd[87].playing() = false)
+			do \main@snd[87].play()
+		end if
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do \main@oMy.setAtari(1280.0, 720.0, 10.0)
+			do u.g :: "kinbakureha1.png"
+			do u.cObj("SHITO3DEN")
+			do u.setWH()
+			do u.x :: 0.0
+			do u.y :: 0.0
+			do u.atari2 :: null
+		end if
+		if(\main@drawMain.focused() = true & (input@pad(0, %a) = 1 | input@pad(0, %b) = 1 | input@pad(0, %c) = 1 | input@pad(0, %d) = 1))
+			if(u.g = "kinbakureha1.png")
+				do u.g :: "kinbakureha2.png"
+			else
+				do u.g :: "kinbakureha1.png"
+			end if
+			do u.cnt :- 30
+		end if
+		;do u.cnt :- 10
+		if(u.cnt < 0)
+			do u.mode :: 0
+			do \main@sndd(62)
+			; do u.cObj("HAZU")
+			do u.w :: 840.0
+			do u.h :: 798.0
+			do u.x :: 614.0
+			do u.y :: \main@ty - 110.0
+			do \main@snd[87].stop()
+			do u.cObj("HAZU2")
+			do u.setAtari(310.0 + 130.0, 310.0 + 110.0, 70.0)
+			ret
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 10)
+			if(u.g = "kinbakureha1.png")
+				do u.g :: "kinbakureha2.png"
+			else
+				do u.g :: "kinbakureha1.png"
+			end if
+			do u.cnt3 :: 0
+		end if
+		ret
+	end if
+	
+	do u.sp :- 1
+	if(u.sp = 0)
+		do u.p :+ 1
+		if(u.p >= ^\main@ata)
+			do u.p :: 0
+		end if
+		do u.sp :: u.spMax
+	end if
+	if(\main@gamemode = %normal)
+		if(\main@buki = 1)
+			do u.mp :+ 0.4
+			if(u.mp > 209.0)
+				do u.mp :: 209.0
+			end if
+		end if
+		if(u.mode = 2 | u.mode = 55)
+			do u.cntf :: 10.0
+		elif(u.mode = 97 | u.mode = 1 | u.mode = 100 | u.mode = 101)
+			do u.cntf :: 6.0
+		elif(u.mode = 98)
+			do u.cntf :: 10.0
+		elif(u.mode = 3)
+			do u.cntf :: 4.0
+		elif(u.mode = 9)
+			do u.cntf :: 4.0
+		elif(u.mode = 999)
+			do u.cntf :: 10.0
+		else
+			do u.cntf :: 8.0
+		end if
+		if(\main@drawMain.focused() = true & input@pad(0, %left) > 0)
+			do u.x :- u.cntf
+		end if
+		if(\main@drawMain.focused() = true & input@pad(0, %right) > 0)
+			do u.x :+ u.cntf
+		end if
+		do u.x :: lib@clampFloat(u.x, -300.0 - 100.0, 900.0 - 100.0)
+		;do u.x :: u.x.clamp(-300.0 - 100.0, 900.0 - 100.0)
+		if(u.mode $ int = 0 & \main@drawMain.focused() = true & input@pad(0, %b) = 1)
+			do u.mode :: 55
+			do u.cnt :: 0
+			do \main@sndd(71) {VOICE}
+		end if
+		{
+		;カービン
+		if(u.mode $ int = 0 & \main@drawMain.focused() = true & input@pad(0, %d) = 1)
+		end if
+		}
+		;回転ぐるぐる
+		if(u.mode $ int = 0 & \main@drawMain.focused() = true & input@pad(0, %d) = 1)
+			switch(\main@buki)
+			case 0
+				if(\main@oMy.mp >= 52.0)
+					;カービン
+					
+					do u.mode :: 3
+					do u.cnt :: 0
+				end if
+			case 1
+				if(\main@oMy.mp >= 104.0)
+					;センス
+					do u.mode :: 333
+					do u.cnt :: 0
+				end if
+			case 2
+				if(\main@oMy.mp >= 69.0)
+					;ボム
+					do u.mode :: 333
+					do u.cnt :: 0
+				end if
+			case 3
+				;シールド
+				var o: \main@UNIT :: u.cObj("BOOM")
+				do o.x :: u.x + u.w / 2.0 - 150.0
+				do o.y :: u.y + u.h / 2.0 - 100.0
+			case 4
+				if(u.jFlg = 0)
+					;	フラッシュ
+					do u.mode :: 9
+					do u.cnt :: 0
+				end if
+			case 5
+				if(\main@oGURU = false)
+					;バルカン
+					var o: \main@UNIT :: u.cObj("BARU")
+					do o.x :: \main@oMy.x
+					do o.y :: \main@oMy.y
+				end if
+				
+			end switch
+		end if
+		if(u.jFlg = 0)
+			;if(\main@drawMain.focused() = true & input@pad(0, %d) = 1)
+			;			do u.mode :: 9
+			;			do u.cnt :: 0
+			;el
+			if(u.mode = 1 & \main@drawMain.focused() = true & input@pad(0, %c) = 1)
+				do u.mode :: 100
+				do u.cnt :: 0
+				do \main@sndd(73)
+				do u.atari2 :: null
+			elif(u.mode = 0 & \main@drawMain.focused() = true & input@pad(0, %c) = 1)
+				do u.atari2 :: null
+				do u.mode :: 97
+				do u.cnt :: 0
+				do \main@sndd(68) {VOICE}
+				do \main@sndd(35)
+			elif(u.mode = 100 & \main@drawMain.focused() = true & input@pad(0, %c) = 1)
+				do u.atari2 :: null
+				do u.mode :: 101
+				do \main@sndd(74) {VOICE}
+				do u.cnt :: 0
+				do \main@sndd(37)
+			elif(u.mode = 97 & \main@drawMain.focused() = true & input@pad(0, %c) = 1)
+				do u.atari2 :: null
+				do u.mode :: 1
+				do u.cnt :: 0
+				do \main@sndd(69) {VOICE}
+			elif((u.mode $ int = 0 | u.mode $ int = 101) & \main@drawMain.focused() = true & input@pad(0, %a) = 1)
+				do u.jS :: -17.0
+				do u.jKasoku :: 0.2
+				do u.jFlg :: 1
+			end if
+		else
+			if(u.mode = 2 & \main@drawMain.focused() = true & input@pad(0, %c) = 1 & u.y < \main@ty - 240.0 - 140.0)
+				do u.mode :: 98
+				do u.cnt :: 0
+				do \main@sndd(75) {VOICE}
+				do \main@sndd(37)
+				do u.atari2 :: null
+			elif(u.mode <> 999 & u.jS < 0.0 & \main@drawMain.focused() = true & input@pad(0, %a) = 1)
+				do u.mode :: 999
+				do u.cnt :: 0
+				do u.atari2 :: null
+				do \main@sndd(61)
+			elif(u.mode = 0 & \main@drawMain.focused() = true & u.jS < -6.0 & input@pad(0, %c) = 1)
+				do \main@sndd(19)
+				do u.atari2 :: null
+				do u.mode :: 2
+				do u.cnt :: 0
+				do u.setAtari2(408.0, 440.0, 280.0)
+				do \main@sndd(70) {VOICE}
+				;do u.h :: 614.0
+			elif(u.mode = 0 & \main@drawMain.focused() = true & input@pad(0, %c) = 1 & u.y < \main@ty - 240.0 - 140.0)
+				do u.mode :: 98
+				do u.cnt :: 0
+				do \main@sndd(75) {VOICE}
+				do \main@sndd(37)
+				do u.atari2 :: null
+			elif(u.mode = 999 & \main@drawMain.focused() = true & input@pad(0, %c) = 1)
+				do u.mode :: 98
+				do u.cnt :: 0
+				do u.jKasoku :: 0.5
+				do u.jS :: 10.0
+				do \main@sndd(37)
+				do \main@sndd(75) {VOICE}
+				do u.atari2 :: null
+			end if
+		end if
+	end if
+	
+	if(u.mode <> 999)
+		if(u.jFlg = 1)
+			do u.y :+ u.jS
+			do u.jS :+ u.jKasoku
+			do u.jKasoku :+ 0.03
+		end if
+	end if
+	if(u.jFlg = 0 & u.y < \main@ty - 110.0)
+		do u.y :+ 20.0
+		if(u.y >= \main@ty - 110.0)
+			do u.y :: \main@ty - 110.0
+		end if
+	end if
+	if(u.jFlg = 1 & u.y >= \main@ty - 110.0)
+		do u.y :: \main@ty - 110.0
+		do u.jFlg :: 0
+		do u.p :: 0
+		do u.atari2 :: null
+		;if(u.mode = 2)
+		;do u.h :: 730.0
+		;end if
+		;if(u.mode = 3)
+		;elif(u.mode $ int <> 98)
+		;	do u.mode :: 99
+		;	do u.cnt :: 0
+		;else
+		if(u.mode = 2 | u.mode = 98)
+			do u.mode :: 0
+			do u.cnt :: 0
+		end if
+		;end if
+		do \main@snd[2].setPos(0.0)
+		do \main@snd[2].play()
+	end if
+	
+	if(u.mode = 1 | u.mode = 101)
+		if(u.cnt < 6)
+			do u.g :: "bk01.png"
+		elif(u.cnt < 9)
+			do u.g :: "bk02.png"
+		elif(u.cnt < 12)
+			do u.g :: "bk03.png"
+			do u.setAtari2(100.0 + 130.0, 365.0 + 110.0, 110.0)
+		elif(u.cnt < 15)
+			do u.g :: "bk04.png"
+		elif(u.cnt < 18)
+			do u.g :: "bk05.png"
+		else
+			do u.atari2 :: null
+			do u.g :: "bk06.png"
+		end if
+	elif(u.mode = 98)
+		if(u.cnt < 10)
+			do u.g :: "btt01.png"
+		elif(u.cnt < 13)
+			do u.g :: "btt02.png"
+			do u.setAtari2(130.0 + 130.0, 450.0 + 110.0, 90.0)
+		elif(u.cnt < 16)
+			;if(u.cnt > 14)
+			;do u.atari2 :: null
+			;end if
+			do u.g :: "btt03.png"
+		end if
+	elif(u.mode = 333)
+		if(u.cnt < 10)
+			if(u.jFlg = 0)
+				do u.g :: "bnage1.png"
+			else
+				do u.g :: "bnage_j1.png"
+			end if
+		else
+			if(u.cnt = 10)
+				switch(\main@buki)
+				case 1
+					;アックス
+					var o: \main@UNIT :: u.cObj("GURU")
+					do o.x :: u.x + u.w / 2.0 - 150.0 - 20.0
+					do o.y :: u.y + u.h / 2.0 - 150.0 + 110.0
+					do \main@oGURU :: true
+					do u.mp :- 104.0
+					do \main@sndd(72) {VOICE}
+				case 2
+					var o: \main@UNIT :: u.cObj("BOMB")
+					do o.x :: u.x + u.w / 2.0 - 80.0 + 80.0
+					do o.y :: u.y + u.h / 2.0 - 80.0
+					do u.mp :- 69.0
+					do \main@sndd(14)
+					do \main@sndd(80) {VOICE}
+				end switch
+			end if
+			if(u.jFlg = 0)
+				do u.g :: "bnage2.png"
+			else
+				do u.g :: "bnage_j2.png"
+			end if
+		end if
+	elif(u.mode = 100)
+		if(u.cnt < 10)
+			if(u.cnt $ int = 0)
+				do \main@sndd(36)
+			end if
+			do u.g :: "bku01.png"
+		elif(u.cnt < 13)
+			do u.g :: "bku02.png"
+			do u.setAtari2(150.0 + 130.0, 350.0 + 110.0, 120.0)
+		elif(u.cnt < 15)
+			do u.g :: "bku03.png"
+		elif(u.cnt < 17)
+			do u.g :: "bku04.png"
+		elif(u.cnt < 19)
+			do u.g :: "bku05.png"
+		else
+			do u.atari2 :: null
+			do u.g :: "bku05.png"
+		end if
+	elif(u.mode = 97)
+		if(u.cnt < 10)
+			if(u.cnt $ int = 0)
+				do \main@sndd(35)
+			end if
+			do u.g :: "bku01.png"
+		elif(u.cnt < 13)
+			do u.g :: "bku02.png"
+			do u.setAtari2(150.0 + 130.0, 350.0 + 110.0, 120.0)
+		elif(u.cnt < 15)
+			do u.g :: "bku03.png"
+		elif(u.cnt < 17)
+			do u.g :: "bku04.png"
+		elif(u.cnt < 19)
+			do u.g :: "bku05.png"
+		else
+			do u.atari2 :: null
+			do u.g :: "bku05.png"
+		end if
+	elif(u.mode = 55)
+		if(u.cnt < 8)
+			do u.g :: "bkkk01.png"
+		else
+			if(u.cnt = 8)
+				do \main@sndd(38)
+			end if
+			do u.g :: "bkkk02.png"
+			do u.setAtari2(440.0 + 130.0, 277.0 + 110.0, 60.0)
+		end if
+	elif(u.mode = 2)
+		if(u.cnt $ int < 0)
+			do u.g :: "MYAS1"
+		end if
+		if(u.cnt $ int = 0)
+			do u.g :: "bkt1.png"
+		elif(u.cnt $ int = 1)
+			do u.g :: "bkt1.png"
+		elif(u.cnt $ int = 2)
+			do u.g :: "bkt2.png"
+		elif(u.cnt $ int = 3)
+			do u.g :: "bkt2.png"
+		elif(u.cnt $ int = 4)
+			do u.g :: "bkt3.png"
+		elif(u.cnt $ int = 5)
+			do u.g :: "bkt3.png"
+		elif(u.cnt $ int = 6)
+			do u.g :: "bkt4.png"
+		elif(u.cnt $ int = 7)
+			do u.g :: "bkt4.png"
+		elif(u.cnt $ int > 7)
+			do u.g :: "bkt1.png"
+		end if
+	elif(u.mode = 9)
+		if(u.cnt < 20)
+			do u.g :: "bbb01.png"
+		elif(u.cnt < 30)
+			do u.atari2 :: null
+			if(u.cnt $ int = 28)
+				if(\main@oMy.mp >= 104.0)
+					do \main@oMy.mp :- 104.0
+					if(\main@oMy.mp < 0.0)
+						do \main@oMy.mp :: 0.0
+					end if
+					do u.setAtari2(1280.0 / 2.0, 720.0 / 2.0, 1280.0)
+					do \main@sndd(11)
+					do u.cObj("WH")
+				end if
+			end if
+			do u.g :: "bbb02.png"
+		else
+			do u.g :: "bbb03.png"
+		end if
+	elif(u.mode = 3)
+		if(u.cnt < 6)
+			if(u.jFlg = 0)
+				do u.g :: "bgun1.png"
+			else
+				do u.g :: "bgun_j1.png"
+			end if
+		elif(u.cnt < 9)
+			if(u.jFlg = 0)
+				do u.g :: "bgun2.png"
+			else
+				do u.g :: "bgun_j2.png"
+			end if
+		elif(u.cnt < 20)
+			if(u.cnt = 9)
+				do \main@sndd(73) {VOICE}
+			end if
+			if(u.jFlg = 0)
+				do u.g :: "bgun3.png"
+			else
+				do u.g :: "bgun_j3.png"
+			end if
+		elif(u.cnt < 24)
+			if(u.cnt $ int = 20)
+				do \main@oMy.mp :- 52.0
+				if(\main@oMy.mp < 0.0)
+					do \main@oMy.mp :: 0.0
+				end if
+				do u.cObj("MTAMA")
+				do \main@sndd(39)
+				if(u.jFlg = 0)
+					do u.g :: "bgun4.png"
+				else
+					do u.g :: "bgun_j4.png"
+				end if
+			end if
+		elif(u.cnt < 29)
+			if(u.jFlg = 0)
+				do u.g :: "bgun5.png"
+			else
+				do u.g :: "bgun_j5.png"
+			end if
+		else
+			if(u.jFlg = 0)
+				do u.g :: "bgun3.png"
+			else
+				do u.g :: "bgun_j3.png"
+			end if
+		end if
+	elif(u.mode $ int = 99)
+		if(u.cnt $ int < 1)
+			do u.g :: "mc01.png"
+		else
+			do u.g :: "mc02.png"
+		end if
+	elif(u.mode $ int = 999)
+		do u.y :- 2.0
+		if(u.g = "batj2_1.png")
+			do u.g :: "batj2_2.png"
+		else
+			do u.g :: "batj2_1.png"
+		end if
+	else
+		if(u.jFlg = 0)
+			do u.g :: \main@ata[u.p]
+		else
+			do u.g :: "batj.png"
+		end if
+	end if
+	do u.x :: lib@clampFloat(u.x, -300.0 - 100.0, 900.0 - 100.0)
+	if(u.mode = 9)
+		do u.cnt :+ 1
+		if(u.cnt >= 40)
+			do u.cnt :: 0
+			do u.mode :: 0
+			do u.p :: 0
+		end if
+	elif(u.mode = 3)
+		do u.cnt :+ 1
+		if(u.cnt >= 36)
+			do u.cnt :: 0
+			do u.mode :: 0
+			do u.p :: 0
+		end if
+	elif(u.mode = 333)
+		do u.cnt :+ 1
+		if(u.cnt >= 20)
+			do u.cnt :: 0
+			do u.mode :: 0
+			do u.p :: 0
+		end if
+	elif(u.mode = 98)
+		do u.cnt :+ 1
+	elif(u.mode = 100)
+		do u.cnt :+ 1
+		if(u.cnt >= 16)
+			do u.mode :: 0
+			do u.p :: 0
+			do u.atari2 :: null
+		end if
+	elif(u.mode = 97)
+		do u.cnt :+ 1
+		if(u.cnt >= 20)
+			do u.mode :: 0
+			do u.p :: 0
+			do u.atari2 :: null
+		end if
+	elif(u.mode = 2)
+		do u.cnt :+ 1
+		if(u.cnt >= 8)
+			do u.cnt :: 0
+		end if
+	elif(u.mode = 1 | u.mode = 101)
+		do u.cnt :+ 1
+		if(u.cnt >= 23)
+			do u.mode :: 0
+			do u.p :: 0
+			do u.atari2 :: null
+		end if
+	elif(u.mode $ int = 99)
+		do u.cnt :+ 1
+		if(u.cnt > 2)
+			do u.cnt :: 0
+			do u.mode :: 0
+			do u.atari2 :: null
+		end if
+	elif(u.mode $ int = 999)
+		do u.cnt :+ 1
+		if(u.cnt > 60)
+			do u.cnt :: 0
+			do u.mode :: 0
+			do u.jS :: 10.0
+			do u.jKasoku :: 0.5
+		end if
+	elif(u.mode $ int = 55)
+		do u.cnt :+ 1
+		if(u.cnt > 18)
+			do u.cnt :: 0
+			do u.mode :: 0
+			do u.atari2 :: null
+		end if
+	end if
+end func
+
++func initTAMA(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -89998.0
+	do u.g :: "TDUM.png"
+	do u.a :: 16
+	do u.setWH()
+	do u.x :: \main@oMy.x + 200.0
+	do u.y :: \main@oMy.y + 360.0
+	
+	do u.vx :: -60.0
+	do u.hp :: 0.0
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, 55.0)
+end func
+
++func actTAMA(u: \main@UNIT)
+end func
+
+
++func initsho(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -89998.0
+	do u.g :: "tama2.png"
+	do u.a :: 0
+	do u.setWH()
+	;do u.x :: u.zg("X").value
+	;do u.y :: u.zg("Y").value
+	do u.hp :: 0.0
+	do u.al :: 0xFFFFFFFF
+end func
+
++func actTsho(u: \main@UNIT)
+	do u.al :- 0x08000000
+	if(u.al < 0)
+		do u.al :- 0x00000000
+		do u.d :: true
+	end if
+end func
+
++func initsl(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -89998.0
+	do u.g :: "tama3.png"
+	do u.a :: 0
+	do u.setWH()
+	;do u.x :: u.zg("X").value
+	;do u.y :: u.zg("Y").value
+	do u.hp :: 0.0
+	do u.al :: 0xFFFFFFFF
+end func
+
++func actTsl(u: \main@UNIT)
+	do u.al :- 0x08000000
+	if(u.al < 0)
+		do u.al :- 0x00000000
+		do u.d :: true
+	end if
+end func
+
++func initBB(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -89995.0
+	do u.g :: "wh.png"
+	do u.setWH()
+	do u.al :: 0xFFFFFFFF
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.gai :: true
+end func
+
++func actBB(u: \main@UNIT)
+	do u.al :- 0x06000000
+	if(u.al < 0)
+		do u.al :- 0x00000000
+		do u.d :: true
+	end if
+end func
+
+
+
+
+
+
++func initGURU(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -89998.0
+	do u.g :: "FAN1.png"
+	do u.setWH()
+	do u.vx :: -3.0
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, 100.0)
+end func
+
++func actGURU(u: \main@UNIT)
+	do u.cnt2 :+ 1
+	if(u.mode = 0 & u.cnt2 > 60)
+		do u.mode :: 1
+		;do u.vx :: 0.0
+		do u.cnt2 :: 0
+		do u.vx :: -1.0
+	elif(u.mode = 1)
+		if(u.cnt2 > 120)
+			do u.f :: \main@KIE
+			do u.kie :: true
+			do \main@oGURU :: false
+			do u.mode :: 3
+		end if
+		var x1: float :: u.x + 150.0
+		var y1: float :: u.y + 150.0
+		var x2: float :: \main@oMy.x + 310.0 + 130.0
+		var y2: float :: \main@oMy.y + 310.0 + 110.0
+		var dist: float :: lib@sqrt((x1 - x2) ^ 2.0 + (y1 - y2) ^ 2.0)
+		if(dist < (100.0 + 70.0))
+			do u.vx :: -20.0
+			do u.mode :: 2
+		end if
+	end if
+	do u.cnt :+ 1
+	if(u.cnt > 2)
+		switch(u.g)
+		case "FAN1.png"
+			do u.g :: "FAN2.png"
+		case "FAN2.png"
+			do u.g :: "FAN3.png"
+		case "FAN3.png"
+			do u.g :: "FAN4.png"
+		case "FAN4.png"
+			do u.g :: "FAN1.png"
+		end switch
+		do u.cnt :: 0
+	end if
+end func
+
+
++func initBOMB(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -89998.0
+	do u.g :: "BOB1.png"
+	do u.setWH()
+	do u.jS :: -14.0
+	do u.jKasoku :: 0.2
+	do u.vx :: -10.0
+	do u.gai :: true
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, 100.0)
+	do u.bomb :: true
+end func
+
++func actBOMB(u: \main@UNIT)
+	do u.cnt2 :+ 1
+	if(u.cnt2 > 2)
+		if(u.g = "BOB1.png")
+			do u.g :: "BOB2.png"
+		else
+			do u.g :: "BOB1.png"
+		end if
+		do u.cnt2 :: 0
+	end if
+	switch(u.mode)
+	case 0
+		do u.y :+ u.jS
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.03
+		if(u.y > 522.0)
+			do u.y :: 522.0
+			do u.mode :: 1
+		end if
+	case 1
+		block
+			var oooo: \main@UNIT :: u.cObj("BAKU1")
+			do oooo.x :: u.x - 170.0
+			do oooo.y :: u.y - 500.0
+			do u.d :: true
+		end block
+	end switch
+end func
+
+
+
++func initBAKU(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -89998.0
+	do u.g :: "bosssONB_1.png"
+	do u.setWH()
+	do u.gai :: true
+	do u.setAtari2(285.0, 520.0, 150.0)
+	;do u.setAtari2(u.w / 2.0, u.h / 2.0, 100.0)
+	do \main@sndd(11)
+	do u.bomb :: true
+end func
+
++func actBAKU(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 8)
+		switch(u.g)
+		case "bosssONB_1.png"
+			do u.g :: "bosssONB_2.png"
+		case "bosssONB_2.png"
+			do u.g :: "bosssONB_3.png"
+		case "bosssONB_3.png"
+			do u.d :: true
+		end switch
+		do u.cnt :: 0
+	end if
+end func
+
+
+
++func initBOOM(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -89998.0
+	do u.g :: "tes002.png"
+	do u.setWH()
+	do u.vx :: -10.0
+	do u.gai :: true
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, 90.0)
+	do \main@sndd(1)
+end func
+
++func actBOOM(u: \main@UNIT)
+	if(u.mode = 1)
+		var x1: float :: u.x + 150.0
+		var y1: float :: u.y + 150.0
+		var x2: float :: \main@oMy.x + 310.0
+		var y2: float :: \main@oMy.y + 310.0
+		var dist: float :: lib@sqrt((x1 - x2) ^ 2.0 + (y1 - y2) ^ 2.0)
+		if(dist < (150.0 + 70.0))
+			do u.d :: true
+		end if
+	end if
+	do u.cnt2 :+ 1
+	if(u.cnt2 > 3)
+		switch(u.g)
+		case "tes002.png"
+			do u.g :: "tes003.png"
+		case "tes003.png"
+			do u.g :: "tes002.png"
+		end switch
+		do u.cnt2 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		do u.cnt :+ 1
+		if(u.cnt > 40)
+			do u.mode :: 1
+		end if
+	case 1
+		do u.vx :+ 1.0
+		if(u.vx > 20.0)
+			do u.vx :: 20.0
+		end if
+		if(u.x > 1280.0)
+			do u.d :: true
+		end if
+	end switch
+end func
+
++func initBARU(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -89998.0
+	do u.g :: "barukan1.png"
+	do u.setWH()
+	;do u.vx :: -10.0
+	do u.setAtari2(210.0, 218.0, 50.0)
+	do \main@sndd(33)
+	do \main@oGURU :: true
+end func
+
++func actBARU(u: \main@UNIT)
+	do u.x :: \main@oMy.x
+	do u.y :: \main@oMy.y
+	switch(u.mode)
+	case 0
+		do u.cnt :+ 1
+		if(u.cnt > 80)
+			do u.d :: true
+			do \main@oGURU :: false
+			do \main@snd[33].stop()
+		end if
+	end switch
+	
+	do u.cnt2 :+ 1
+	if(u.cnt2 > 5)
+		switch(u.g)
+		case "barukan1.png"
+			do u.g :: "barukan2.png"
+		case "barukan2.png"
+			do u.g :: "barukan1.png"
+		end switch
+		do u.cnt2 :: 0
+	end if
+end func
+
++func initHAZU(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -89998.0
+	do u.g :: "hazure1.png"
+	do u.setWH()
+	;do u.vx :: -10.0
+	do u.setAtari2(210.0, 218.0, 50.0)
+	do u.x :: \main@oMy.x
+	do u.y :: \main@oMy.y
+	;do \main@sndd(33)
+	do \main@oGURU :: true
+end func
++func actHAZU(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.g :: "hazure1.png"
+	case 1
+		do u.g :: "hazure2.png"
+	case 2
+		do u.g :: "hazure3.png"
+	default
+		do u.g :: "hazure4.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.loop1(5)
+	case 1
+		do u.loop1(5)
+	case 2
+		do u.loop1(5)
+	case 3
+		do u.loop1(5)
+	default
+		do u.d :: true
+	end switch
+end func
+
+
++func initHAZU2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -89998.0
+	do u.g :: "hodoke1.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+end func
++func actHAZU2(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.g :: "hodoke1.png"
+	case 1
+		do u.g :: "hodoke2.png"
+	default
+		do u.g :: "hodoke3.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.loop1(10)
+	case 1
+		do u.loop1(10)
+	case 2
+		do u.loop1(10)
+	default
+		do u.d :: true
+	end switch
+end func

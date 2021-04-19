@@ -1,0 +1,397 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "asaruki4.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.mhp :: 500.0
+	do u.hp :: u.mhp
+	do u.setAtari(438.0, 437.0, 200.0)
+	do u.df1 :: 5.0
+	do u.df2 :: 1.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	;do \main@snd[55].freq(1.0)
+	;do \main@sndd(55)
+end func
+
++func act(u: \main@UNIT)
+	if(u.kinit = 0)
+		do u.p :: 0
+		do u.sp :: 0
+		do u.cnt3 :: 0
+	else
+		do u.cnt3 :+ 1
+		do u.sp :+ 1
+	end if
+	
+	if(u.mode = 9)
+		if(u.jS < 0.0)
+			if(u.sp > 4)
+				switch(u.p)
+				case 0
+					do u.g :: "kumojump1.png"
+				case 1
+					do u.g :: "kumojump2.png"
+				default
+					do u.g :: "kumojump3.png"
+					do u.p :: -1
+				end switch
+				do u.p :+ 1
+				do u.sp :: 0
+			end if
+		else
+			do u.g :: "kumonobi.png"
+		end if
+	else
+		switch(u.mode)
+		case 0
+			do u.g :: "kumonobi.png"
+		case 1, 2, 10
+			do u.g :: "kumotyakuti.png"
+		case 4, 5, 6, 7, 13, 14, 15, 16, 17, 18
+			if(u.sp > 4)
+				switch(u.p)
+				case 0
+					do u.g :: "asaruki1.png"
+				case 1
+					do u.g :: "asaruki2.png"
+				case 2
+					do u.g :: "asaruki3.png"
+				default
+					do u.g :: "asaruki4.png"
+					do u.p :: -1
+				end switch
+				do u.p :+ 1
+				do u.sp :: 0
+				if(u.mode < 11)
+					if(u.cnt3 % 15 = 0)
+						do \main@sndd(30)
+					end if
+				else
+					if(u.cnt3 % 10 = 0)
+						do \main@sndd(30)
+					end if
+				end if
+			end if
+		default
+			do u.g :: "asaruki4.png"
+		end switch
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 20.0
+			do u.kinit :: 1
+		end if
+		do u.moveDown(0.0)
+	case 1
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do \main@sndd(8)
+			do u.setAtari2(438.0, 437.0, 250.0)
+		end if
+		do u.loop1(20)
+	case 2
+		do u.incMode()
+	case 3
+		do u.loop1(20)
+	case 4
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(140.0, 1.0, 10.0)
+	case 5
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			var o: \main@UNIT :: u.cObj("BOSS7_A_2_m")
+			do o.x :: 380.0
+			do o.y :: 300.0
+		end if
+		do u.moveLeftK(-200.0, -1.0, -10.0)
+	case 6
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(140.0, 1.0, 10.0)
+	case 7
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			var o: \main@UNIT :: u.cObj("BOSS7_A_2_m")
+			do o.x :: 380.0
+			do o.y :: 300.0
+		end if
+		do u.moveLeftK(-200.0, -1.0, -10.0)
+	case 8
+		do u.loop1(100)
+	case 9
+		if(u.kinit = 0)
+			do u.jS :: -30.0
+			do u.jKasoku :: 0.2
+			do u.vx :: 3.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do \main@sndd(44)
+			do \main@sndd(46)
+		end if
+		do u.y :+ u.jS
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.03
+		if(u.y > 0.0)
+			do u.y :: 0.0
+			do u.incMode()
+			do \main@sndd(8)
+		end if
+	case 10
+		do u.loop1(30)
+	case 11
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			var o: \main@UNIT :: u.cObj("BOSS7_A_2_w2")
+			if(lib@rnd(0, 1) = 0)
+				do o.g :: "asasin1.png"
+				do o.color :: 1
+			else
+				do o.g :: "asasin2.png"
+				do o.color :: 3
+			end if
+		end if
+		do u.incMode()
+	case 12
+		do u.loop1(50)
+	case 13
+		do u.moveLeftK(-200.0, -1.0, -20.0)
+	case 14
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1300.0, 1.0, 20.0)
+	case 15
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeftK(-u.w - 100.0, -1.0, -20.0)
+	case 16
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1300.0, 1.0, 20.0)
+	case 17
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeftK(-u.w - 100.0, -1.0, -20.0)
+	case 18
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(-200.0, 1.0, 20.0)
+	case 19
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.child :: u.cObj("BOSS7_A_2_wt")
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 20
+		do u.loop1(50)
+	default
+		do u.incMode()
+		do u.mode :: 4
+	end switch
+end func
+
+
++func initWEB(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "kumo02.png"
+	do u.x :: 640.0 - u.w / 2.0 - 200.0
+	do u.y :: 122.0
+	
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	;do \main@sndd(56)
+end func
++func actWEB(u: \main@UNIT)
+	do u.sp :+ 1
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		do u.loop1(50)
+	case 1
+		;do \main@sndd(59)
+		do \main@sndd(1)
+		var tt: float
+		if(\main@oMy <>& null)
+			do tt :: lib@invRot(\main@oMy.x + 440.0, \main@oMy.y + 420.0, u.x + u.w / 2.0, u.y + u.h / 2.0)
+		else
+			do tt :: lib@invRot(440.0, 420.0, u.x + u.w / 2.0, u.y + u.h / 2.0)
+		end if
+		do u.vx :: 20.0 * lib@cos(tt)
+		do u.vy :: 20.0 * lib@sin(tt)
+		do u.incMode()
+	case 2
+	end switch
+end func
+
+
++func initMANE(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 30
+	do u.g :: "KUMOTAMA.png"
+	do u.setWH()
+	do u.kai :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do \main@sndd(59)
+end func
++func actMANE(u: \main@UNIT)
+	do u.vx :: 14.0
+	do u.vy :: 0.0
+end func
+
+
+
++func initWEB2(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.x :: 900.0 + lib@rndFloat(-300.0, 0.0)
+	do u.setWH()
+	do u.y :: -u.h
+	do u.boss :: true
+	do u.vy :: 14.0
+	do \main@sndd(14)
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.h / 2.0 * 0.8)
+end func
++func actWEB2(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.kie :: true
+		do u.f :: \main@KIE
+		ret
+	end if
+	if(u.y > 720.0 - u.h + 50.0)
+		if(u.mode = 0)
+			do \main@sndd(21)
+			do u.mode :: 1
+		end if
+		
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+	end if
+end func
+
+
++func initWEBT(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.x :: 230.0
+	do u.y :: 237.0
+	do u.g :: "KUMOTAMA021.png"
+	do u.setWH()
+	do u.boss :: true
+	do u.vx :: 16.0
+	do \main@sndd(39)
+	do \main@sndd(1)
+end func
++func actWEBT(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.g)
+	case "KUMOTAMA021.png"
+		do u.g :: "KUMOTAMA022.png"
+	default
+		do u.g :: "KUMOTAMA021.png"
+	end switch
+	if(u.x > 800.0)
+		do \main@oBOSS.child :: u.cObj("BOSS7_A_2_wtw")
+		do \main@oBOSS.child.x :: 0.0
+		do \main@oBOSS.child.y :: 0.0
+		do u.d :: true
+	end if
+end func
+
+
++func initWEBTW(u: \main@UNIT)
+	do u.u :: 9900.0
+	do u.a :: 1
+	do u.kai :: 0.0
+	do u.g :: "kumonosudai1.png"
+	do u.setWH()
+	;do u.setAtari(u.w / 2.0, u.h / 2.0, u.h / 2.0 * 2.0)
+	do u.boss :: true
+	do \main@sndd(6)
+	if(\main@oMy <>& null & \main@oMy.d = false)
+		do \main@oMy.mode :: 8888
+		do \main@oMy.cnt3 :: 0
+		do \main@oMy.cnt :: 260
+		for ni(68, 80)
+			do \main@snd[ni].stop()
+		end for
+		do \main@sndd(78) {VOICE}
+	end if
+end func
++func actWEBTW(u: \main@UNIT)
+	if(u.cnt > 9)
+		do u.g :: "kumonosudai4.png"
+	elif(u.cnt > 6)
+		do u.g :: "kumonosudai3.png"
+		do u.cnt :+ 1
+	elif(u.cnt > 3)
+		do u.g :: "kumonosudai2.png"
+		do u.cnt :+ 1
+	else
+		do u.g :: "kumonosudai1.png"
+		do u.cnt :+ 1
+	end if
+	do u.al :- 0x05000000
+	if(u.al < 0x08000000)
+		do u.d :: true
+	end if
+end func

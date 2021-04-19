@@ -1,0 +1,280 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.g :: "bossb2_1.png"
+	do u.setWH()
+	do u.x :: -u.w + 300.0
+	do u.y :: 0.0
+	do u.vx :: 0.2
+	do u.mhp :: 400.0
+	do u.hp :: u.mhp
+	do u.setAtari(800.0, 525.0, 130.0)
+	do u.df1 :: 8.0
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.df4 :: -10.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss1", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	;do u.cObj("BOSS2_D")
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0, 1, 3, 4, 5, 6
+		switch(u.g)
+		case "bossb2_at1.png"
+			do u.g :: "bossb2_at2.png"
+		case "bossb2_at2.png"
+			do u.g :: "bossb2_at1.png"
+		default
+			do u.g :: "bossb2_at1.png"
+		end switch
+	case 2, 7
+		switch(u.g)
+		case "bossb2_1.png"
+			do u.g :: "bossb2_2.png"
+		case "bossb2_2.png"
+			do u.g :: "bossb2_1.png"
+		default
+			do u.g :: "bossb2_1.png"
+		end switch
+	case 8
+		if(u.jS < 0.0)
+			switch(u.g)
+			case "bossb2_jp1.png"
+				do u.g :: "bossb2_jp2.png"
+			case "bossb2_jp2.png"
+				do u.g :: "bossb2_jp1.png"
+			default
+				do u.g :: "bossb2_jp1.png"
+			end switch
+		else
+			switch(u.g)
+			case "bossb2_at1.png"
+				do u.g :: "bossb2_at2.png"
+			case "bossb2_at2.png"
+				do u.g :: "bossb2_at1.png"
+			default
+				do u.g :: "bossb2_at1.png"
+			end switch
+		end if
+		
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.mode :+ 1
+		do u.vx :: 8.0
+		do \main@sndd(47)
+		do \main@sndd(45)
+	case 1
+		;登場
+		if(u.x > -300.0)
+			do u.x :: -300.0
+			do u.mode :+ 1
+			do u.cnt :: 0
+			do u.vx :: 0.0
+			do u.setAtari2(360.0, 490.0, 260.0)
+		end if
+	case 2
+		;停止
+		do u.cnt :+ 1
+		if(u.cnt > 30)
+			do u.cnt :: 0
+			do u.mode :+ 1
+			do u.vx :: 1.0
+			;do u.cObj("BOSS1_3")
+			do \main@sndd(45)
+			do \main@sndd(48)
+		end if
+	case 3
+		do u.vx :+ 0.8
+		if(u.vx > 30.0)
+			do u.vx :: 30.0
+		end if
+		if(u.x > 1400.0)
+			do u.x :: 1400.0
+			do u.mode :+ 1
+			do u.cnt :: 0
+			do u.vx :: -20.0
+			do \main@sndd(45)
+			do \main@sndd(48)
+		end if
+	case 4
+		if(u.x < -600.0)
+			do u.x :: -600.0
+			do u.mode :+ 1
+			do u.cnt :: 0
+			do u.cnt2 :: 0
+			do u.vx :: 8.0
+			do \main@sndd(47)
+		end if
+	case 5
+		if(u.x > -400.0)
+			do u.x :: -400.0
+			do u.child :: u.cObj("BOSS2_C")
+			do \main@sndd(47)
+			do u.vx :: 4.0
+			do u.incMode()
+		end if
+	case 6
+		if(u.child.d = true)
+			do \main@sndd(47)
+			do u.vx :: 0.0
+			do u.incMode()
+			ret
+		end if
+		if(u.vx < 0.0 & u.x < -600.0)
+			do u.x :: -600.0
+			do u.vx :: 4.0
+		elif(u.vx > 0.0 & u.x > -300.0)
+			do u.x :: -300.0
+			do u.vx :: -4.0
+		end if
+	case 7
+		;停止
+		do u.cnt :+ 1
+		if(u.cnt > 30)
+			do u.cnt :: 0
+			do u.mode :: 8
+			do u.jS :: -15.0
+			do u.jKasoku :: 0.2
+			do u.vx :: 8.0
+			do u.setAtari(730.0, 255.0, 130.0)
+			do u.setAtari2(330.0, 450.0, 210.0)
+			do \main@sndd(45)
+			do \main@sndd(46)
+		end if
+	case 8
+		;停止
+		if(u.x > 1600.0)
+			do u.x :: 1600.0
+			do u.setAtari(800.0, 525.0, 130.0)
+			do u.setAtari2(360.0, 490.0, 210.0)
+			;do u.x :: -400.0
+			do u.y :: 0.0
+			do u.mode :: 10
+			;do u.cObj("BOSS1_3")
+			;do \main@sndd(45)
+			do \main@sndd(48)
+			do u.vx :: 0.0
+		end if
+		do u.y :+ u.jS
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.02
+		if(u.y > 0.0)
+			do u.y :: 0.0
+			do u.jS :: -15.0
+			do u.jKasoku :: 0.2
+			;do \main@sndd(8)
+			if(u.x < 1280.0)
+				do \main@sndd(45)
+				do \main@sndd(46)
+			end if
+		end if
+	case 10
+		do u.x :: -u.w + 300.0
+		do u.mode :: 2
+	end switch
+end func
++func initMB(u: \main@UNIT)
+	do u.u :: -1000.0
+	do u.a :: 60
+	do u.kai :: 0.0
+	do u.g :: "bossb2_c1.png"
+	do u.setWH()
+	do u.x :: -150.0
+	do u.y :: 245.0
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.8)
+	do u.boss :: true
+	do u.mode :: 0
+	do u.cnt :: 0
+	do u.cnt2 :: 0
+	do u.gai :: true
+	do \main@sndd(19)
+	do u.boss :: true
+end func
++func actMB(u: \main@UNIT)
+	switch(u.g)
+	case "bossb2_c1.png"
+		do u.g :: "bossb2_c2.png"
+	case "bossb2_c2.png"
+		do u.g :: "bossb2_c1.png"
+	default
+		do u.g :: "bossb2_c1.png"
+	end switch
+	
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+		do u.kie :: true
+		do u.f :: \main@KIE
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		do \main@sndd(45)
+		do u.vy :: 0.0
+		do u.jS :: -20.0
+		do u.jKasoku :: 0.2
+		do u.vx :: 24.0
+		do u.incMode()
+	case 1
+		do u.cntf :: u.x
+		do u.y :+ u.jS
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.02
+		if(u.jS > 0.0 & u.y > 720.0 - u.h - 50.0)
+			do u.y :: 720.0 - u.h - 50.0
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.incMode()
+			do \main@sndd(45)
+		end if
+	case 2
+		do u.loop1(20)
+	case 3
+		do u.x :: 1280.0
+		do u.y :: 720.0 - u.h - 50.0
+		do u.vx :: -1.0
+		do u.incMode()
+		do \main@sndd(45)
+	case 4
+		do u.moveLeftK(-u.w, -0.5, -80.0)
+	case 5
+		do u.loop1(20)
+	case 6
+		do u.x :: -u.w
+		do u.y :: 720.0 - u.h - 50.0
+		do \main@sndd(45)
+		do u.incMode()
+	case 7
+		do u.moveRightK(1280.0, 0.5, 80.0)
+	case 8
+		do u.loop1(20)
+	case 9
+		do u.x :: u.cntf
+		do u.y :: 720.0 - u.h - 50.0
+		do u.jS :: -21.0
+		do u.jKasoku :: 0.2
+		do u.vx :: -28.0
+		do u.vy :: 0.0
+		do u.incMode()
+		do \main@sndd(45)
+	case 10
+		do u.y :+ u.jS
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.02
+		if(u.jS > 0.0 & u.y > 245.0)
+			do u.d :: true
+		end if
+	end switch
+end func

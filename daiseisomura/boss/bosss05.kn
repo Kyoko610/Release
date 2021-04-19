@@ -1,0 +1,488 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "dancer.kihon1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.vy :: 0.0
+	do u.mhp :: 450.0
+	do u.hp :: u.mhp
+	;	do u.setAtari(334.0, 334.0, 200.0)
+	;	do u.setAtari2(334.0, 334.0, 300.0)
+	do u.setAtari(410.0, 440.0, u.w / 2.0 * 0.3)
+	do u.df1 :: 6.0
+	do u.df2 :: 3.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	
+	;do \main@snd[41].setPos(0.0)
+	;do \main@snd[41].playLoop()
+	
+	block
+		var ss: [][]char :: ["89999.5@1.0@3.0@TDNUMH.png@kyobhbkai11.png@kyobhbkai12.png@kyobhbkai13.png@kyobhbkai00.png@kyobhbkai14.png@kyobhbkai00.png@kyobhbkai15.png@kyobhbkai00.png@kyobhbkai16.png@kyobhbkai00.png@kyobhbkai17.png"
+		|, "89999.5@1.0@3.0@TDNUMH.png@kyobhbkai21.png@kyobhbkai22.png@kyobhbkai23.png@kyobhbkai00.png@kyobhbkai24.png@kyobhbkai00.png@kyobhbkai25.png@kyobhbkai00.png@kyobhbkai26.png@kyobhbkai00.png@kyobhbkai27.png"
+		|, "89999.5@1.0@3.0@TDNUMH.png@kyobhbkai31.png@kyobhbkai32.png@kyobhbkai33.png@kyobhbkai00.png@kyobhbkai34.png@kyobhbkai00.png@kyobhbkai35.png@kyobhbkai00.png@kyobhbkai36.png@kyobhbkai00.png@kyobhbkai37.png"
+		|, "89999.5@1.0@3.0@TDNUMH.png@kyobhbkai41.png@kyobhbkai42.png@kyobhbkai43.png@kyobhbkai00.png@kyobhbkai44.png@kyobhbkai00.png@kyobhbkai45.png@kyobhbkai00.png@kyobhbkai46.png@kyobhbkai00.png@kyobhbkai47.png"
+		|, "89999.5@1.0@3.0@TDNUMH.png@kyobhbkai51.png@kyobhbkai52.png@kyobhbkai53.png@kyobhbkai00.png@kyobhbkai54.png@kyobhbkai00.png@kyobhbkai55.png@kyobhbkai00.png@kyobhbkai56.png@kyobhbkai00.png@kyobhbkai57.png"
+		|]
+		for i(0, 4)
+			var tt: [][]char :: ss[i].split("@")
+			var fn: list<[]char> :: #list<[]char>
+			var pot: []char :: "HKH"
+			for n(3, ^tt - 1)
+				do fn.add(tt[n])
+			end for
+			var unit1: \main@UNIT :: u.cObj(pot)
+			do unit1.sp :: tt[2].toFloat(&) $ int
+			do unit1.cntf :: tt[1].toFloat(&)
+			do unit1.u :: tt[0].toFloat(&)
+			do unit1.gg :: fn
+			do unit1.gg.head()
+			do unit1.x :: 0.0
+			var unit2: \main@UNIT :: u.cObj(pot)
+			do unit2.sp :: tt[2].toFloat(&) $ int
+			do unit2.cntf :: tt[1].toFloat(&)
+			do unit2.u :: tt[0].toFloat(&)
+			do unit2.gg :: ##fn
+			do unit2.gg.head()
+			do unit2.x :: -\main@porg.get(unit2.gg.get(), &).tex.imgWidth() $ float
+		end for
+	end block
+	
+	do u.mode :: -1
+	do \main@sndd(1)
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 1, 2, 3, 4, 5
+		switch(u.g)
+		case "dancer.kaiten1.png"
+			do u.g :: "dancer.kaiten2.png"
+		default
+			do u.g :: "dancer.kaiten1.png"
+		end switch
+		if(\main@snd[19].playing() = false)
+			do \main@sndd(19)
+		end if
+	case 7, 8
+		do u.p :+ 1
+		if(u.p < 3)
+			do u.g :: "dancer.kihon.nage1.png"
+		elif(u.p > 6)
+			switch(u.g)
+			case "dancer.kihon1.png"
+				do u.g :: "dancer.kihon2.png"
+			default
+				do u.g :: "dancer.kihon1.png"
+			end switch
+		else
+			do u.g :: "dancer.kihon.nage3.png"
+		end if
+	case 10, 11
+		do u.p :+ 1
+		if(u.p < 3)
+			do u.g :: "dancer.kihon.nage4.png"
+		elif(u.p > 6)
+			switch(u.g)
+			case "dancer.kihon1.png"
+				do u.g :: "dancer.kihon2.png"
+			default
+				do u.g :: "dancer.kihon1.png"
+			end switch
+		else
+			do u.g :: "dancer.kihon.nage5.png"
+		end if
+	case 13, 14, 15, 16, 17, 18
+		if(\main@snd[19].playing() = false)
+			do \main@sndd(19)
+		end if
+		switch(u.g)
+		case "dancer.tatekaiten1.png"
+			do u.g :: "dancer.tatekaiten2.png"
+		case "dancer.tatekaiten2.png"
+			do u.g :: "dancer.tatekaiten3.png"
+		case "dancer.tatekaiten3.png"
+			do u.g :: "dancer.tatekaiten4.png"
+		default
+			do u.g :: "dancer.tatekaiten1.png"
+		end switch
+	default
+		switch(u.g)
+		case "dancer.kihon1.png"
+			do u.g :: "dancer.kihon2.png"
+		default
+			do u.g :: "dancer.kihon1.png"
+		end switch
+	end switch
+	
+	switch(u.mode)
+	case -1
+		do u.vx :: 20.0
+		do u.moveRight(0.0)
+	case 0
+		do u.loop1(50)
+		do u.setAtari2(410.0, 440.0, u.w / 2.0 * 0.5)
+		
+		{
+		var ooo: \main@UNIT :: u.cObj("BOSS5_Z")
+		do u.child :: ooo
+		do ooo.child :: u
+		do ooo.x :: u.x
+		do ooo.y :: u.y
+		do ooo.u :: u.u + 0.1
+		do ooo.cntf :: u.vx
+		do ooo.cntf2 :: u.vy
+		do ooo.al :: u.al - 0x02000000
+		}
+	case 1
+		if(u.child =& null | u.child.d = true)
+			do u.child :: u.cObj("B5TATU")
+		end if
+		do u.vx :: 14.0
+		do u.moveRight(900.0)
+	case 2
+		do u.vx :: -14.0
+		do u.moveLeft(-500.0)
+	case 3
+		do u.vx :: 14.0
+		do u.moveRight(900.0)
+	case 4
+		do u.vx :: -14.0
+		do u.moveLeft(-200.0)
+	case 5
+		do u.incMode()
+		do u.child.d :: true
+		;do u.child2.d :: true
+	case 6
+		do u.loop1(100)
+		do u.p :: 0
+	case 7
+		do \main@sndd(56)
+		do u.cnt3 :: 0
+		var ooo: \main@UNIT :: u.cObj("B5FAN")
+		do ooo.x :: u.x + 300.0
+		do ooo.y :: u.y + 380.0
+		do u.child :: ooo
+		do ooo.vx :: 2.0
+		do u.incMode()
+	case 8
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 9
+		do u.loop1(50)
+		do u.p :: 0
+	case 10
+		do \main@sndd(56)
+		var ooo: \main@UNIT :: u.cObj("B5FAN")
+		do ooo.x :: u.x + 300.0
+		do ooo.y :: u.y + 380.0
+		do u.child :: ooo
+		do ooo.vx :: 2.0
+		do \main@sndd(12)
+		do u.incMode()
+	case 11
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 12
+		do u.vx :: 20.0
+		do u.moveRight(240.0)
+	case 13
+		do u.vy :: -10.0
+		if(u.y < -300.0)
+			do u.vy :: 0.0
+			do u.y :: -300.0
+			do u.cnt3 :: 0
+			do u.incMode()
+		end if
+	case 14
+		do u.loop1(50)
+	case 15
+		var ooo: \main@UNIT :: u.cObj("B5FAN2")
+		do ooo.x :: u.x + 200.0
+		do ooo.y :: u.y + 300.0
+		do u.child :: ooo
+		do \main@sndd(12)
+		do u.incMode()
+	case 16
+		if(u.child =& null | u.child.d = true)
+			do u.cnt3 :+ 1
+			if(u.cnt3 > 0)
+				do u.vx :: 12.0
+				do u.vy :: 12.0
+				do u.incMode()
+				do u.cnt2 :: 0
+				var ooo: \main@UNIT :: u.cObj("B5FAN3")
+				do \main@sndd(12)
+				do ooo.x :: u.x + 200.0
+				do ooo.y :: u.y + 300.0
+				do \main@sndd(31)
+			else
+				do u.incMode()
+				do u.mode :: 14
+			end if
+		end if
+	case 17
+		if(u.cnt < 5)
+			if(u.x > 1280.0 - u.w / 2.0 | u.x < -200.0 - u.w / 2.0)
+				do u.x :- u.vx
+				do u.vx :: -u.vx
+				;var ooo: \main@UNIT :: u.cObj("B5FAN3")
+				;do ooo.x :: u.x
+				;do ooo.y :: u.y
+				;do u.cnt :+ 1
+				do \main@sndd(16)
+			end if
+			if(u.y > 720.0 - u.h / 2.0 | u.y < -200.0 - u.h / 2.0)
+				do u.y :- u.vy
+				do u.vy :: -u.vy
+				do u.cnt :+ 1
+				do \main@sndd(16)
+			end if
+		else
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.incMode()
+		end if
+	case 18
+		do u.al :- 0x07111111
+		if(u.al < 0)
+			do u.al :: 0
+			do u.incMode()
+		end if
+	case 19
+		do u.x :: -u.w
+		do u.y :: 0.0
+		do u.loop1(5)
+		do u.al :: draw@white
+	default
+		do u.incMode()
+		do u.child :: u.cObj("B5TATU")
+		do u.mode :: 0
+	end switch
+end func
+
++func initZAN(u: \main@UNIT)
+	;do u.u :: -1000.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "danc03.png"
+	do u.setWH()
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+end func
++func actZAN(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	if(u.child =& null | u.child.d = true)
+		do u.atari :: null
+		do u.kie :: true
+		do u.f :: \main@KIE
+	end if
+	switch(u.mode)
+	case 0
+		do u.incMode()
+	case 1
+		if(\main@oBOSS.cnt3 < 10)
+			do \main@oBOSS.cnt3 :+ 1
+			var ooo: \main@UNIT :: u.cObj("BOSS5_Z")
+			do ooo.child :: u
+			do ooo.x :: u.x
+			do ooo.y :: u.y
+			do ooo.cntf :: u.cntf
+			do ooo.cntf2 :: u.cntf2
+			do ooo.u :: u.u + 0.1
+			do ooo.al :: u.al - 0x15000000
+			do u.incMode()
+		end if
+	case 2
+		do u.x :+ (u.child.x - u.x).sign() * u.cntf
+		do u.y :+ (u.child.y - u.y).sign() * u.cntf2
+	end switch
+end func
+
++func initFAN(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "FAN1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+end func
++func actFAN(u: \main@UNIT)
+	do u.sp :+ 1
+	if((u.mode = 0 & u.sp > 3) | (u.mode <> 0 & u.sp > 1))
+		switch(u.g)
+		case "GFAN1.png"
+			do u.g :: "GFAN2.png"
+		case "GFAN2.png"
+			do u.g :: "GFAN3.png"
+		case "GFAN3.png"
+			do u.g :: "GFAN4.png"
+		default
+			do u.g :: "GFAN1.png"
+		end switch
+		do u.sp :: 0
+	end if
+	
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+	end if
+	switch(u.mode)
+	case 0
+		do u.loop1(40)
+	case 1
+		do \main@sndd(59)
+		do u.vx :: 30.0
+		do u.incMode()
+	case 2
+	end switch
+end func
+
++func initFAN2(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "FAN1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	
+	do u.vy :: lib@rnd(3, 4) $ float * 4.5
+	do u.vx :: u.vy * 0.6
+	do \main@sndd(56)
+end func
++func actFAN2(u: \main@UNIT)
+	do u.sp :+ 1
+	if(u.sp > 1)
+		switch(u.g)
+		case "GFAN1.png"
+			do u.g :: "GFAN2.png"
+		case "GFAN2.png"
+			do u.g :: "GFAN3.png"
+		case "GFAN3.png"
+			do u.g :: "GFAN4.png"
+		default
+			do u.g :: "GFAN1.png"
+		end switch
+		do u.sp :: 0
+	end if
+	
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	if(u.cnt < 8)
+		if(u.x > 1280.0 - u.w / 2.0 | u.x < 0.0 - u.w / 2.0)
+			do u.x :- u.vx
+			do u.vx :: -u.vx
+			do u.cnt :+ 1
+			do \main@sndd(60)
+		end if
+		if(u.y > 720.0 - u.h / 2.0 | u.y < 0.0 - u.h / 2.0)
+			do u.y :- u.vy
+			do u.vy :: -u.vy
+			do u.cnt :+ 1
+			do \main@sndd(60)
+		end if
+	end if
+	
+end func
+
+
++func initFAN3(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "FAN1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do \main@sndd(56)
+end func
++func actFAN3(u: \main@UNIT)
+	do u.sp :+ 1
+	if((u.mode = 0 & u.sp > 3) | (u.mode <> 0 & u.sp > 1))
+		switch(u.g)
+		case "GFAN1.png"
+			do u.g :: "GFAN2.png"
+		case "GFAN2.png"
+			do u.g :: "GFAN3.png"
+		case "GFAN3.png"
+			do u.g :: "GFAN4.png"
+		default
+			do u.g :: "GFAN1.png"
+		end switch
+		do u.sp :: 0
+	end if
+	
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+	end if
+	switch(u.mode)
+	case 0
+		do u.loop1(200)
+	case 1
+		do \main@sndd(59)
+		var tt: float
+		if(\main@oMy <>& null)
+			do tt :: lib@invRot(\main@oMy.x + 440.0, \main@oMy.y + 420.0, u.x + u.w / 2.0, u.y + u.h / 2.0)
+		else
+			do tt :: lib@invRot(440.0, 420.0, u.x + u.w / 2.0, u.y + u.h / 2.0)
+		end if
+		do u.vx :: 10.0 * lib@cos(tt)
+		do u.vy :: 10.0 * lib@sin(tt)
+		do u.incMode()
+	case 2
+	end switch
+end func
+
+
+
+
+
++func initTATU(u: \main@UNIT)
+	do u.u :: 8998.0
+	do u.g :: "dancer.tatsumaki1.png"
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x
+	do u.y :: \main@oBOSS.y
+	do u.setWH()
+	do u.boss :: true
+end func
++func actTATU(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.g)
+	case "dancer.tatsumaki1.png"
+		do u.g :: "dancer.tatsumaki2.png"
+	case "dancer.tatsumaki2.png"
+		do u.g :: "dancer.tatsumaki3.png"
+	default
+		do u.g :: "dancer.tatsumaki1.png"
+	end switch
+	do u.x :: \main@oBOSS.x
+	do u.y :: \main@oBOSS.y
+end func

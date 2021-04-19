@@ -1,0 +1,110 @@
++func init(u: \main@UNIT)
+	do u.u :: 9996.0
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.g :: "er1.png"
+	do u.setWH()
+	do u.x :: 1000.0
+	do u.y :: \main@ty
+	do u.hp :: 4.0
+	do u.setAtari(304.0, 350.0, 50.0)
+	do u.setAtari2(304.0, 350.0, 80.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.str :: ["er1.png", "er2.png", "er3.png", "er4.png"]
+	do u.sp :: 8
+	do u.color :: 1
+end func
+
++func act(u: \main@UNIT)
+	if(u.vx > 0.0)
+		do u.vx :: -u.vx
+	end if
+	do u.sp :- 1
+	if(u.sp = 0)
+		do u.p :+ 1
+		if(u.p >= ^u.str)
+			do u.p :: 0
+		end if
+		do u.sp :: 8
+	end if
+	do u.g :: u.str[u.p]
+end func
+
+
+
++func initKUMA(u: \main@UNIT)
+	do u.u :: 9996.0
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.g :: "kumaa2.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 60.0
+	do u.hp :: 50.0
+	do u.setAtari(200.0, 360.0, 180.0)
+	do u.setAtari2(200.0, 360.0, 200.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.color :: 3
+end func
+
++func actKUMA(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.g :: "kumaa2.png"
+			do u.vx :: 10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(60.0)
+	case 1
+		if(u.kinit = 0)
+			do u.g :: "kumaa1.png"
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.loop1(30)
+	case 2
+		if(u.kinit = 0)
+			do u.g :: "kumaa1.png"
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			var o: \main@UNIT :: \main@cObj("MAGG")
+			do \main@sndd(44)
+			do o.child :: u
+		end if
+		do u.moveRightK(1500.0, 1.0, 20.0)
+	end switch
+end func
+
++func initMSG(u: \main@UNIT)
+	do u.u :: 9997.0
+	do u.a :: 30
+	do u.g :: "msg1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 60.0
+	do u.hp :: 14.0
+	do u.setAtari(600.0, 500.0, 160.0)
+	do \main@sndd(33)
+end func
+
++func actMSG(u: \main@UNIT)
+	if(u.child =& null | u.child.d = true)
+		do u.d :: true
+		do \main@snd[33].stop()
+	end if
+	
+	switch(u.g)
+	case "msg1.png"
+		do u.g :: "msg2.png"
+	default
+		do u.g :: "msg1.png"
+	end switch
+	do u.x :: u.child.x
+	do u.y :: u.child.y
+end func

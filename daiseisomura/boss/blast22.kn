@@ -1,0 +1,209 @@
++func initL(u: \main@UNIT)
+	do u.u :: -97.0
+	do u.g :: "jank11.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w + 700.0
+	do u.y :: 0.0
+	do u.mhp :: 280.0
+	do u.hp :: u.mhp
+	do u.setAtari(670.0, 480.0, 110.0)
+	do u.setAtari2(280.0, 300.0, 250.0)
+	do u.gai :: true
+	do \main@oBOSS :: u
+	do u.child :: \main@cObj("BOSSJANK2")
+	do u.child.child :: u
+	do u.oto :: true
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+end func
+
+
++func initR(u: \main@UNIT)
+	do u.u :: -98.0
+	do u.g :: "jank21.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: 1531.0 - 900.0
+	do u.y :: 0.0
+	do u.mhp :: 999999.0
+	do u.df1 :: 9999.0
+	do u.df2 :: 9999.0
+	do u.df3 :: 9999.0
+	do u.df4 :: 9999.0
+	do u.hp :: u.mhp
+	do u.setAtari(860.0, 480.0, 110.0)
+	do u.setAtari2(1260.0, 380.0, 250.0)
+	do u.gai :: true
+end func
+
++func actL(u: \main@UNIT)
+	if(\main@snd[47].playing() = false)
+		do \main@sndd(47)
+	end if
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 5)
+		if(u.g = "jank11.png")
+			do u.g :: "jank12.png"
+		else
+			do u.g :: "jank11.png"
+		end if
+		do u.cnt3 :: 0
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: 16.0
+		end if
+		do u.moveRight(-500.0 - 100.0)
+	case 1
+		do u.loop1(100)
+	case 2
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: 1.0
+			do \main@sndd(44)
+		end if
+		do u.moveRightK(0.0 - 100.0, 1.0, 20.0)
+	case 3
+		if(u.kinit = 0)
+			do \main@cObj("BOSSJANK22")
+			do \main@sndd(51)
+			do u.kinit :: 1
+		end if
+		do u.loop1(40)
+	case 4
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: -8.0
+		end if
+		do u.moveLeft(-u.w + 700.0)
+	case 5
+		do u.loop1(200)
+	case 6
+		if(u.kinit = 0)
+			do u.vx :: 5.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(100.0)
+	case 7
+		if(u.kinit = 0)
+			do u.vx :: -5.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-800.0)
+	case 8
+		do u.incMode()
+		do u.mode :: 10
+		{
+	case 8
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(100.0)
+	case 9
+		if(u.kinit = 0)
+			do u.vx :: -4.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-800.0)
+}
+	case 10
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: -4.0
+		end if
+		if(u.x <= -u.w + 700.0)
+			do u.x :: -u.w + 700.0
+			do u.incMode()
+		end if
+	end switch
+end func
+
++func actR(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.kie :: true
+		do u.f :: \main@KIE
+		ret
+	end if
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 5)
+		if(u.g = "jank21.png")
+			do u.g :: "jank22.png"
+		else
+			do u.g :: "jank21.png"
+		end if
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: -16.0
+		end if
+		do u.moveLeft(500.0 - 100.0 - 80.0)
+	case 1
+		do u.loop1(100)
+	case 2
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: -1.0
+		end if
+		do u.moveLeftK(0.0 - 100.0, -1.0, -40.0)
+	case 3
+		do u.loop1(40)
+	case 4
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: 8.0
+		end if
+		do u.moveRight(1531.0 - 900.0)
+	case 5
+		if(u.kinit = 0)
+			do u.vx :: -8.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(u.child.x + 400.0)
+	case 6
+		do u.x :: u.child.x + 400.0
+		if(u.child.mode = 10)
+			do u.incMode()
+		end if
+	case 7
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: 8.0
+		end if
+		if(u.x >= 1531.0 - 900.0)
+			do u.x :: 1531.0 - 900.0
+			do u.incMode()
+		end if
+	default
+		do u.x :: 1531.0 - 900.0
+		do u.incMode()
+		do u.mode :: 0
+		do u.child.x :: -u.w + 700.0
+		do u.child.incMode()
+		do u.child.mode :: 0
+	end switch
+end func
++func initE(u: \main@UNIT)
+	do u.x :: -100.0
+	do u.y :: 0.0
+	do u.u :: -3000.0
+	do u.g :: "hibana.png"
+	do u.setWH()
+end func
+
++func actE(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.loop1(5)
+	case 1
+		do u.d :: true
+	end switch
+end func

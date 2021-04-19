@@ -1,0 +1,199 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "blast1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.vx :: 0.2
+	do u.mhp :: 450.0
+	do u.hp :: u.mhp
+	do u.setAtari(334.0, 334.0, 200.0)
+	do u.df1 :: 1.5
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss1", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	
+	do \main@snd[41].setPos(0.0)
+	do \main@snd[41].playLoop()
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		;do \main@sndd(41)
+		do u.mode :+ 1
+		do u.vx :: 10.0
+		do u.g :: "blast2.png"
+	case 1
+		;ホバー移動右
+		if(u.x > -100.0)
+			do u.x :: -100.0
+			do u.mode :+ 1
+			do u.cnt :: 0
+			do u.vx :: 0.0
+			do u.g :: "blast1.png"
+			do u.setAtari2(334.0, 334.0, 300.0)
+			do \main@snd[41].stop()
+		end if
+	case 2
+		;停止
+		do u.cnt :+ 1
+		if(u.cnt > 150)
+			do u.cnt :: 0
+			do u.mode :+ 1
+			;do \main@sndd(41)
+			if(lib@rnd(0, 99) > 50)
+				do u.g :: "blast.gatring.png"
+				do u.mode :: 6
+			else
+				do u.g :: "blast.eleki.png"
+				do u.cObj("BOSS1_3")
+			end if
+		end if
+	case 3
+		;マシンガン
+		do u.cnt :+ 1
+		if(u.cnt > 100)
+			do u.mode :+ 1
+			do u.cnt :: 0
+			do u.vx :: 0.2
+			do u.g :: "blast2.png"
+			do \main@snd[41].setPos(0.0)
+			do \main@snd[41].playLoop()
+			;do \main@sndd(41)
+		end if
+	case 4
+		;ホバー移動右
+		do u.vx :: u.vx + 0.5
+		if(u.vx > 40.0)
+			do u.vx :: 40.0
+		end if
+		if(u.x > 1400.0)
+			do u.x :: 1400.0
+			do u.cnt :: 0
+			if(lib@rnd(0, 99) > 50)
+				do u.mode :: 0
+				do u.x :: -u.w
+				do u.vx :: 0.2
+			else
+				do u.mode :: 5
+				do u.vx :: -0.2
+				do u.g :: "blast2.png"
+			end if
+		end if
+	case 5
+		do u.vx :: u.vx - 0.5
+		if(u.vx < -40.0)
+			do u.vx :: -40.0
+		end if
+		if(u.x < -u.w - 200.0)
+			do u.x :: -u.w
+			do u.mode :: 0
+			do u.cnt :: 0
+			do u.vx :: 0.0
+		end if
+	case 6
+		;停止
+		do u.cnt :+ 1
+		if(u.cnt > 50)
+			do u.cnt :: 0
+			do u.mode :: 3
+			do u.cObj("BOSS1_2")
+		end if
+	end switch
+end func
+
+
+
++func initT(u: \main@UNIT)
+	do u.u :: 8889.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "blastmg1.png"
+	do u.setWH()
+	do u.x :: -100.0
+	do u.y :: 0.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.setAtari(1000.0, 720.0 - 160.0, 180.0)
+	do u.boss :: true
+	do u.mode :: 0
+end func
++func actT(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt % 2 = 0)
+		switch(u.g)
+		case "blastmg1.png"
+			do u.g :: "blastmg2.png"
+		case "blastmg2.png"
+			do u.g :: "blastmg1.png"
+		end switch
+	end if
+	
+	switch(u.mode)
+	case 0
+		do \main@snd[33].setPos(0.0)
+		do \main@snd[33].playLoop()
+		do u.mode :+ 1
+	case 1
+		if(\main@oBOSS =& null | \main@oBOSS.mode <> 3 | \main@oBOSS.d = true)
+			do u.d :: true
+			do \main@snd[33].stop()
+		end if
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: 8889.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "ele1.png"
+	do u.setWH()
+	do u.x :: 850.0 - 220.0 - 100.0
+	do u.y :: 560.0 - 280.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+	do u.boss :: true
+	do u.mode :: 0
+	do u.cnt :: 0
+end func
++func actTE(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt % 2 = 0)
+		switch(u.g)
+		case "ele1.png"
+			do u.g :: "ele2.png"
+		case "ele2.png"
+			do u.g :: "ele3.png"
+		case "ele3.png"
+			do u.g :: "ele1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.cnt > 50)
+			do u.mode :: 1
+		end if
+	case 1
+		do \main@sndd(22)
+		do u.vx :: 20.0
+		do u.vy :: 2.0
+		do u.mode :+ 1
+	default
+	end switch
+end func

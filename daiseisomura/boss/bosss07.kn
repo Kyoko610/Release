@@ -1,0 +1,627 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.g :: "rannba-aruki1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -110.0
+	do u.vx :: 0.2
+	do u.mhp :: 500.0
+	do u.hp :: u.mhp
+	do u.setAtari(740.0, 540.0, 300.0)
+	do u.setAtari2(740.0, 540.0, 160.0)
+	do u.df1 :: 990.0
+	do u.df2 :: 990.0
+	do u.df3 :: 20.0
+	do u.df4 :: 990.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	;do u.cObj("BOSS2_D")
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0, 1, 3, 4, 5, 6, 11, 17
+		if(u.p > 0)
+			do u.cnt3 :+ 1
+			if(u.cnt3 > 4)
+				do u.cnt3 :: 0
+				switch(u.p)
+				case 1
+					do u.g :: "rannba-nage1-asi1.png"
+				case 2
+					do u.g :: "rannba-nage2-asi2.png"
+				case 3
+					do u.g :: "rannba-nage3-asi3.png"
+				case 4
+					do u.g :: "rannba-nage1-asi2.png"
+				case 5
+					do u.g :: "rannba-nage2-asi1.png"
+					do \main@snd[55].freq(1.3)
+					do \main@sndd(55)
+				case 6
+					do u.g :: "rannba-nage3-asi4.png"
+				case 7
+					do u.g :: "rannba-nage1-asi5.png"
+				case 8
+					do u.g :: "rannba-nage2-asi4.png"
+					do \main@snd[55].freq(1.3)
+					do \main@sndd(55)
+				case 9
+					do u.g :: "rannba-nage3-asi1.png"
+				case 10
+					do u.g :: "rannba-nage1-asi2.png"
+				case 11
+					do u.g :: "rannba-nage2-asi3.png"
+				case 12
+					do u.g :: "rannba-nage3-asi2.png"
+				case 13
+					do u.g :: "rannba-nage1-asi1.png"
+					do \main@snd[55].freq(1.3)
+					do \main@sndd(55)
+				case 14
+					do u.g :: "rannba-nage2-asi4.png"
+				case 15
+					do u.g :: "rannba-nage3-asi5.png"
+				case 16
+					do u.g :: "rannba-nage1-asi4.png"
+					do \main@snd[55].freq(1.3)
+					do \main@sndd(55)
+				case 17
+					do u.g :: "rannba-nage2-asi1.png"
+				case 18
+					do u.g :: "rannba-nage3-asi2.png"
+				case 19
+					do u.g :: "rannba-nage1-asi3.png"
+				case 20
+					do u.g :: "rannba-nage2-asi2.png"
+				case 21
+					do u.g :: "rannba-nage3-asi1.png"
+					do \main@snd[55].freq(1.3)
+					do \main@sndd(55)
+				case 22
+					do u.g :: "rannba-nage1-asi4.png"
+				case 23
+					do u.g :: "rannba-nage2-asi5.png"
+				case 24
+					do u.g :: "rannba-nage3-asi4.png"
+					do \main@snd[55].freq(1.3)
+					do \main@sndd(55)
+					do u.p :: -1
+				end switch
+				do u.p :+ 1
+			end if
+		else
+			do u.cnt3 :+ 1
+			if(u.cnt3 > 7)
+				do u.cnt3 :: 0
+				switch(u.g)
+				case "rannba-aruki1.png"
+					do u.g :: "rannba-aruki2.png"
+				case "rannba-aruki2.png"
+					do u.g :: "rannba-aruki3.png"
+				case "rannba-aruki3.png"
+					do u.g :: "rannba-aruki4.png"
+				case "rannba-aruki4.png"
+					do \main@snd[55].freq(1.2)
+					do \main@sndd(55)
+					do u.g :: "rannba-aruki5.png"
+				case "rannba-aruki5.png"
+					do u.g :: "rannba-aruki6.png"
+				case "rannba-aruki6.png"
+					do u.g :: "rannba-aruki7.png"
+				case "rannba-aruki7.png"
+					do u.g :: "rannba-aruki8.png"
+				default
+					do \main@snd[55].freq(1.2)
+					do \main@sndd(55)
+					do u.g :: "rannba-aruki1.png"
+				end switch
+			end if
+		end if
+	case 2
+		do u.g :: "rannba-aruki1.png"
+	case 9
+		switch(u.p)
+		case 0
+			do \main@sndd(20)
+			do u.g :: "rannba-huri1-asi1.png"
+		case 1 to 4
+			do u.g :: "rannba-huri1-asi1.png"
+		case 5
+			do u.g :: "rannba-huri2-asi1.png"
+			do \main@sndd(44)
+		case 6 to 10
+			do u.g :: "rannba-huri2-asi1.png"
+		case 11 to 35
+			do u.g :: "rannba-huri3-asi1.png"
+		default
+			do u.g :: "rannba-huri4-asi1.png"
+		end switch
+		do u.p :+ 1
+	case 13, 14
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 1)
+			switch(u.p)
+			case 0
+				do \main@sndd(52)
+				do u.g :: "rannba-tame1.png"
+			case 1 to 9
+				do u.g :: "rannba-tame1_1.png"
+			case 10 to 19
+				do u.g :: "rannba-tame1_2.png"
+			case 20 to 29
+				do u.g :: "rannba-tame2.png"
+			case 30 to 39
+				do u.g :: "rannba-tame2_1.png"
+			case 40 to 49
+				do u.g :: "rannba-tame2_2.png"
+			case 50 to 59
+				do u.g :: "rannba-tame2_3.png"
+			case 60 to 69
+				do u.g :: "rannba-tame3.png"
+			case 70 to 79
+				do u.g :: "rannba-tame3_1.png"
+			case 80 to 89
+				do u.g :: "rannba-tame3_2.png"
+			case 90 to 99
+				do u.g :: "rannba-tame3_3.png"
+			default
+				do u.g :: "rannba-tame3_1.png"
+			end switch
+			do u.p :+ 1
+			do u.cnt3 :: 0
+		end if
+	case 15
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 2)
+			switch(u.p)
+			case 0
+				do \main@sndd(21)
+				do u.g :: "rannba-tame4.png"
+			case 1
+				do u.g :: "rannba-tame5.png"
+			case 2
+				do u.g :: "rannba-tame6.png"
+			case 3 to 10
+				do u.g :: "rannba-tame7.png"
+			end switch
+			do u.p :+ 1
+			do u.cnt3 :: 0
+		end if
+	case 19, 20
+		do u.cnt3 :+ 1
+		if(u.cnt3 >= 1)
+			switch(u.g)
+			case "rannba-yarare1.png"
+				do u.g :: "rannba-yarare2.png"
+			default
+				do u.g :: "rannba-yarare1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+	default
+		do u.g :: "rannba-aruki1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.setV(4.0, 0.0)
+		;do u.setAtari2(277.0, 468.0, 250.0)
+		do u.incMode()
+	case 1
+		do u.moveRight(-600.0)
+		;do u.moveRight(1500.0)
+	case 2
+		do u.loop1(100)
+		do u.sp :: 0
+	case 3
+		do u.p :: 1
+		do u.setV(2.0, 0.0)
+		do u.incMode()
+		;do u.moveLeft(-400.0)
+		;if(u.x > -800.0)
+		;do u.x :: -800.0
+		;	end if
+	case 4
+		if(u.p = 0)
+			do u.incMode()
+		end if
+		if((u.p - 2) % 3 = 0 & u.cnt3 = 0)
+			;do u.mode :: 5
+			do u.cObj("BOSS7_2")
+		end if
+	case 5
+		do u.setV(-2.0, 0.0)
+		;if(u.x < -100.0)
+		;do u.x :: -100.0
+		do u.incMode()
+		do u.p :: 1
+		;end if
+	case 6
+		if(u.p = 0)
+			do u.incMode()
+			do u.mode :: 3
+			do u.sp :+ 1
+			if(u.sp >= 2)
+				do u.mode :: 7
+			end if
+		end if
+		if((u.p - 2) % 3 = 0 & u.cnt3 = 0)
+			;do u.mode :: 7
+			do u.cObj("BOSS7_2")
+		end if
+	case 7
+		do u.vx :: 0.0
+		;do u.mode :: 3
+		;ret
+		;;;;
+		do u.loop1(100)
+		;	case 6
+		;		do u.vx :: 1.0
+		;		do u.incMode()
+		;	case 7
+		;		do u.moveRightK(550.0, 0.6, 80.0)
+	case 8
+		do u.cnt3 :: 0
+		do u.vx :: 1.0
+		do u.p :: 0
+		do u.incMode()
+	case 9
+		do u.setAtari(740.0, 540.0, 300.0)
+		do u.vx :+ 1.0
+		if(u.vx > 30.0)
+			do u.vx :: 30.0
+		end if
+		if(u.p = 50)
+			do u.setAtari(740.0, 540.0, 200.0)
+			do u.incMode()
+		end if
+	case 10
+		do u.p :: 0
+		do u.vx :: -6.0
+		do u.incMode()
+	case 11
+		do u.moveLeft(-400.0)
+	case 12
+		do u.vx :: 0.0
+		do u.p :: 0
+		do u.cnt3 :: 0
+		block
+			var o: \main@UNIT :: u.cObj("BOSS7_4")
+			do u.child :: o
+			do o.x :: u.x
+			do o.y :: u.y
+		end block
+		block
+			var o: \main@UNIT :: u.cObj("BOSS7_5")
+			do u.child2 :: o
+		end block
+		do u.incMode()
+	case 13
+		if(u.child2.mode = 2002)
+			do u.incMode()
+			do u.mode :: 20
+			do u.cnt3 :: 0
+			do u.child.d :: true
+			ret
+		end if
+		if(u.p = 110)
+			do u.incMode()
+			do u.child.d :: true
+		end if
+	case 14
+		do u.p :: 0
+		do u.cnt3 :: 0
+		do u.incMode()
+	case 15
+		;if(u.p = 11)
+		;		do u.incMode()
+		;	end if
+		if(u.child2.mode = 2002)
+			do u.incMode()
+			do u.mode :: 20
+			do u.cnt3 :: 0
+			do u.child.d :: true
+			ret
+		elif(u.p = 3 & u.child2.mode = 1)
+			do u.child2.mode :: 999
+			block
+				var o: \main@UNIT :: u.cObj("BOSS7_8")
+				do o.x :: u.x
+				do o.y :: u.y
+			end block
+		end if
+		if(u.p > 10)
+			do u.incMode()
+		end if
+	case 16
+		if(u.child2.d = true)
+			do u.incMode()
+			do u.p :: 0
+		end if
+	case 17
+		do u.vx :: -4.0
+		do u.moveLeft(-600.0)
+	case 18
+		do u.incMode()
+		do u.mode :: 2
+	case 19
+		do u.loop1(30)
+	case 20
+		do u.vx :: -4.0
+		do u.moveLeft(-600.0)
+	case 21
+		do u.incMode()
+		do u.mode :: 2
+	default
+		;	do u.mode :: 0
+	end switch
+end func
+
++func initMB(u: \main@UNIT)
+	do u.u :: -1000.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "maruta01.png"
+	do u.setWH()
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x + 830.0
+	do u.y :: 150.0
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.5)
+	do u.boss :: true
+	do u.mode :: 0
+	do u.cnt :: 0
+	do u.cnt2 :: 0
+	if(\main@oBOSS.p <> 23)
+		do u.jS :: -34.0 + lib@rndFloat(-8.0, 8.0)
+		do u.jKasoku :: 0.2
+		do u.vx :: 20.0 + lib@rndFloat(-2.0, 2.0)
+	elif(\main@oBOSS.p <> 5)
+		do u.jS :: -16.0 + lib@rndFloat(-2.0, 0.0)
+		do u.jKasoku :: 0.2
+		do u.vx :: 5.0 + lib@rndFloat(0.0, 2.0)
+	else
+		do u.jS :: -16.0 + lib@rndFloat(0.0, 1.0)
+		do u.jKasoku :: 0.2
+		do u.vx :: 7.0 + lib@rndFloat(0.0, 2.0)
+	end if
+	do \main@sndd(56)
+	
+end func
++func actMB(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.jS < 0.0)
+			do u.g :: "maruta01.png"
+		else
+			do u.g :: "maruta02.png"
+		end if
+		if(u.y > 480.0)
+			do \main@sndd(57)
+			do u.mode :: 1
+			do u.g :: "maruta03.png"
+			do u.vx :: 15.0
+			do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 1.3)
+			do u.y :: 480.0
+		else
+			do u.y :+ u.jS
+			do u.jS :+ u.jKasoku
+			do u.jKasoku :+ 0.03
+		end if
+	end switch
+end func
+
++func initKI(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.hp :: 240.0
+	do u.a :: 153
+	do u.kai :: 0.0
+	do u.g :: "ki001.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -360.0
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.setAtari2(1350.0, 750.0, 200.0)
+	;do u.setAtari(600.0, 880.0 - 200.0, 80.0)
+	do u.mode :: 0
+	do u.cnt :: 0
+	do u.cnt2 :: 0
+	do u.vx :: 60.0
+	do u.boss :: true
+end func
++func actKI(u: \main@UNIT)
+	;do dbg@print("\{u.hp}\n")
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	if(u.mode < 2 & u.hp <= 150.0)
+		do u.mode :: 1000
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.x > -700.0)
+			do u.x :: -700.0
+			do u.vx :: 0.0
+			do u.incMode()
+		end if
+	case 999
+		do \main@sndd(54)
+		do u.g :: "ki002.png"
+		block
+			var o: \main@UNIT :: u.cObj("BOSS7_6")
+			do o.x :: u.x
+			do o.y :: u.y
+			do u.child :: o
+		end block
+		do u.mode :: 2000
+		do u.cnt :: 0
+		do u.atari2 :: null
+	case 1000
+		do \main@sndd(54)
+		do u.g :: "ki002.png"
+		block
+			var o: \main@UNIT :: u.cObj("BOSS7_7")
+			do o.x :: u.x
+			do o.y :: u.y
+			do u.child :: o
+		end block
+		do u.atari2 :: null
+		do \main@sndd(58)
+		do u.mode :: 2002
+		do u.cnt :: 0
+		{
+		do \main@sndd(54)
+		do u.g :: "ki002.png"
+		do u.mode :: 2000
+		do u.cnt :: 0
+}
+	case 2000
+		if(u.child =& null | u.child.d = true)
+			do u.kie :: true
+			do u.f :: \main@KIE
+		end if
+	case 2002
+		if(u.child =& null | u.child.d = true)
+			do u.kie :: true
+			do u.f :: \main@KIE
+		end if
+	default
+	end switch
+end func
+
+
+
++func initKEN5(u: \main@UNIT)
+	do u.u :: 8999.0
+	do u.g :: "rannba-aura1.png"
+	do u.setWH()
+	do u.boss :: true
+	do u.cnt3 :: 0
+end func
+
++func actKEN5(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 1)
+		switch(u.g)
+		case "rannba-aura1.png"
+			do u.g :: "rannba-aura2.png"
+		case "rannba-aura2.png"
+			do u.g :: "rannba-aura3.png"
+		case "rannba-aura3.png"
+			do u.g :: "rannba-aura4.png"
+		default
+			do u.g :: "rannba-aura1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+end func
+
+
+
++func initK(u: \main@UNIT)
+	do u.u :: -8999.0
+	do u.g :: "ki004.png"
+	do u.a :: 80
+	do u.setWH()
+	do u.boss :: true
+	do u.cnt3 :: 0
+	do u.vy :: 10.0
+	do u.setAtari(1630.0, 600.0, 720.0)
+	
+end func
+
++func initK2(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -8999.0
+	do u.g :: "ki003.png"
+	do u.setWH()
+	do u.boss :: true
+	do u.cnt3 :: 0
+	do u.vy :: 10.0
+	do u.setAtari2(640.0, 360.0, 720.0)
+end func
+
++func actK(u: \main@UNIT)
+	if(u.y > 0.0 & u.mode = 0)
+		block
+			var o: \main@UNIT :: u.cObj("BOSS7_9")
+			do o.x :: 630.0
+		end block
+		do u.mode :: 2
+	end if
+end func
+
++func actK2(u: \main@UNIT)
+	if(u.y > 0.0 & u.mode = 0)
+		block
+			var o: \main@UNIT :: u.cObj("BOSS7_9")
+			do o.x :: -145.0
+		end block
+		do u.mode :: 2
+	end if
+end func
+
+
++func initZ(u: \main@UNIT)
+	do u.u :: -8999.5
+	do u.g :: "rannba-tameZ_2.png"
+	do u.setWH()
+	do u.boss :: true
+	do u.cnt3 :: 0
+end func
+
+
++func actKz(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 15)
+		do u.kie :: true
+		do u.f :: \main@KIE
+	end if
+end func
+
+
+
++func inith(u: \main@UNIT)
+	do u.u :: -8999.6
+	do u.g :: "ha001.png"
+	do u.y :: 330.0
+	do u.setWH()
+	do u.boss :: true
+	do u.cnt3 :: 0
+	do u.vy :: 1.5
+end func
+
+
++func acth(u: \main@UNIT)
+	switch(u.g)
+	case "ha001.png"
+		do u.g :: "ha002.png"
+	default
+		do u.g :: "ha001.png"
+	end switch
+	
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 40)
+		do u.kie :: true
+		do u.f :: \main@KIE
+	end if
+end func

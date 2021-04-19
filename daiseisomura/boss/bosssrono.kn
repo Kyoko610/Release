@@ -1,0 +1,426 @@
++func init(u: \main@UNIT)
+	do u.u :: 80000.0
+	do u.g :: "robohontai1.png"
+	do u.a :: 30
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	;	do u.mhp :: 1200.0
+	do u.mhp :: 1200.0
+	do u.hp :: u.mhp
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.gai :: true
+	do u.boss :: true
+	do \main@oBOSS :: u
+	do \main@bgmchg("boss5", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	;do u.cObj("SHITO4NM")
+end func
+
+
++func act(u: \main@UNIT)
+	;if(u.kinit = 0)
+	; do u.p :: 0
+	;do u.sp :: 0
+	;else
+	;do u.sp :+ 1
+	;end if
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 10)
+		switch(u.g)
+		case "robohontai1.png"
+			do u.g :: "robohontai2.png"
+		case "robohontai2.png"
+			do u.g :: "robohontai3.png"
+		case "robohontai3.png"
+			do u.g :: "robohontai4.png"
+		case "robohontai4.png"
+			do u.g :: "robohontai5.png"
+		case "robohontai5.png"
+			do u.g :: "robohontai6.png"
+		default
+			do u.g :: "robohontai1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.x :: 0.0
+			do u.vx :: 0.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(0.0)
+	case 1
+		do u.loop1(80)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+			do u.p :: 0
+		end if
+		do u.moveUp(-300.0)
+	case 3
+		do u.setAtari2(620.0, 420.0, 300.0)
+		do u.incMode()
+	case 4
+		if(u.kinit = 0)
+			do u.child :: u.cObj("RONORR")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 5
+		if(u.kinit = 0)
+			do u.child :: u.cObj("RONOR")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 6
+		do u.p :+ 1
+		if(u.p < 1)
+			do u.incMode()
+			do u.mode :: 3
+		else
+			do u.incMode()
+		end if
+	case 7
+		do u.child :: u.cObj("RONOR2")
+		do u.incMode()
+	case 8
+		do u.loop1(60)
+	case 9
+		do u.child2 :: u.cObj("RONOR2")
+		do u.incMode()
+	case 10
+		do u.loop1(60)
+	case 11
+		do u.child2 :: u.cObj("RONOR2")
+		do u.incMode()
+	case 12
+		if((u.child =& null | u.child.d = true) & (u.child2 =& null | u.child2.d = true) & (u.child3 =& null | u.child3.d = true))
+			do u.incMode()
+		end if
+	case 13
+		do u.loop1(10)
+	case 14
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 10.0
+			do u.kinit :: 1
+			do u.p :: 0
+		end if
+		do u.moveDown(720.0)
+	case 15
+		do u.loop1(50)
+	case 16
+		if(u.kinit = 0)
+			do u.child :: u.cObj("RONORG")
+			do u.child.x :: -200.0
+			do u.child2 :: u.cObj("RONORG")
+			do u.child2.x :: 0.0
+			do u.child2.cnt3 :: 10
+			do u.kinit :: 1
+		end if
+		if((u.child =& null | u.child.d = true) & (u.child2 =& null | u.child2.d = true) & (u.child3 =& null | u.child3.d = true))
+			do u.incMode()
+		end if
+	case 17
+		if(u.kinit = 0)
+			do u.child :: u.cObj("RONORG2")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 18
+		do u.loop1(100)
+	default
+		do u.x :: 0.0
+		do u.y :: 720.0
+		do u.setWH()
+		do u.incMode()
+		do u.mode :: 0
+	end switch
+end func
+
++func initR2(u: \main@UNIT)
+	do u.u :: -80.0
+	do u.hp :: 9999.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "rono3.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.boss :: true
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.8)
+	;do u.setAtari(230.0, 175.0, 150.0)
+	do \main@sndd(24)
+end func
++func actR2(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1400.0, 2.0, 30.0)
+	default
+	end switch
+end func
++func initRL(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "robohandl1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.boss :: true
+	do u.setAtari(346.0, 490.0, 380.0)
+	do \main@sndd(61)
+end func
++func actRL(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 1
+		do u.g :: "robohandl2.png"
+		do u.loop1(10)
+	case 2
+		do u.g :: "robohandl3.png"
+		do u.loop1(50)
+	case 3
+		if(u.kinit = 0)
+			do u.vx :: -10.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-u.w)
+	default
+		do u.d :: true
+	end switch
+end func
+
++func initRR(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "robohandr1.png"
+	do u.setWH()
+	do u.x :: 800.0
+	do u.y :: 0.0
+	do u.boss :: true
+	do u.setAtari(1250.0, 490.0, 380.0)
+	;do u.setAtari(230.0, 175.0, 150.0)
+	do \main@sndd(61)
+end func
++func actRR(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(1280.0 - u.w)
+	case 1
+		do u.g :: "robohandr2.png"
+		do u.loop1(10)
+	case 2
+		do u.g :: "robohandr3.png"
+		do u.loop1(50)
+	case 3
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(800.0)
+	default
+		do u.d :: true
+	end switch
+end func
+
+
++func initRLL(u: \main@UNIT)
+	do u.u :: -40.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "roboashi.png"
+	do u.setWH()
+	do u.hp :: 9999.0
+	;do u.x :: 0.0
+	do u.y :: -u.h
+	do u.boss :: true
+	do u.gai :: true
+	do u.setAtari(1240.0, 680.0, 70.0)
+	do u.setAtari2(1240.0, 680.0, 200.0)
+	;do u.setAtari(230.0, 175.0, 150.0)
+end func
++func actRLL(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vy :: 100.0
+			do u.kinit :: 1
+		end if
+		do u.moveDown(-100.0)
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(30)
+			do u.kinit :: 1
+		end if
+		do u.loop1(50)
+	case 2
+		do u.cnt3 :- 1
+		if(u.cnt3 < 0)
+			do u.cnt3 :: 0
+			do u.incMode()
+		end if
+	case 3
+		if(u.kinit = 0)
+			do u.vy :: -80.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(-150.0)
+	case 4
+		if(u.kinit = 0)
+			do u.cntf :: u.x
+			do u.vy :: -80.0
+			do u.vx :: -120.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(u.cntf - 300.0)
+	case 5
+		if(u.x < -u.w - 500.0)
+			do u.d :: true
+		end if
+		do u.incMode()
+	case 6
+		if(u.kinit = 0)
+			do u.vy :: 100.0
+			do u.kinit :: 1
+		end if
+		do u.moveDown(-100.0)
+	case 7
+		if(u.kinit = 0)
+			do \main@sndd(30)
+			do u.kinit :: 1
+		end if
+		do u.loop1(5)
+	default
+		do u.incMode()
+		do u.mode :: 3
+	end switch
+end func
+
+
+
++func initRLLL(u: \main@UNIT)
+	do u.u :: -40.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "roboashi2.png"
+	do u.setWH()
+	do u.x :: -1000.0
+	do u.y :: -100.0
+	do u.boss :: true
+	do u.gai :: true
+	do u.setAtari(330.0, 540.0, 300.0)
+	;do u.setAtari(230.0, 175.0, 150.0)
+end func
++func actRLLL(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do \main@sndd(1)
+			do u.vx :: 20.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-200.0)
+	case 1
+		do u.child :: u.cObj("RONOEG")
+		do u.incMode()
+	case 2
+		do u.loop1(50)
+	case 3
+		do u.child :: u.cObj("RONOEG")
+		do u.incMode()
+	case 4
+		do u.loop1(50)
+	case 5
+		do u.child :: u.cObj("RONOEG")
+		do u.incMode()
+	case 6
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 7
+		if(u.kinit = 0)
+			do \main@sndd(1)
+			do u.vx :: -20.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-600.0)
+	default
+		do u.d :: true
+	end switch
+end func
++func initE(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "eler1.png"
+	do u.setWH()
+	do u.x :: 60.0
+	do u.y :: 350.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+	do u.boss :: true
+end func
++func actTE(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt % 2 = 0)
+		switch(u.g)
+		case "eler1.png"
+			do u.g :: "eler2.png"
+		case "eler2.png"
+			do u.g :: "eler3.png"
+		default
+			do u.g :: "eler1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.cnt > 40)
+			do u.mode :: 1
+		end if
+	case 1
+		do \main@sndd(22)
+		do u.vx :: 30.0
+		do u.vy :: 0.0
+		do u.mode :+ 1
+	default
+	end switch
+end func

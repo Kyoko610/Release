@@ -1,0 +1,95 @@
++func initDON(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "hyakur1.png"
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: 1280.0
+	do u.y :: \main@ty
+	do u.hp :: 20.0
+	do u.setAtari(300.0, 310.0, 100.0)
+	do u.setAtari2(300.0, 310.0, 140.0)
+	do u.color :: 5
+	do u.vx :: -16.0
+	do \main@sndd(1)
+end func
++func actDON(u: \main@UNIT)
+	do u.cnt2 :+ 1
+	if(u.cnt2 > 1)
+		switch(u.g)
+		case "hyakur2.png"
+			do u.g :: "hyakur1.png"
+		default
+			do u.g :: "hyakur2.png"
+		end switch
+		do u.cnt2 :: 0
+	end if
+	switch(u.mode)
+	case 0
+		if(u.x < 880.0)
+			do u.x :: 880.0
+			do u.vx :: 0.0
+			do u.incMode()
+		end if
+	case 1
+		do u.loop1(10)
+	case 2
+		var oo: \main@UNIT :: u.cObj("BAZZ")
+		do oo.x :: u.x - 212.0
+		do oo.y :: u.y - 80.0
+		do u.child :: oo
+		do u.incMode()
+	case 3
+		if(u.child.d = true)
+			do u.vx :: 0.0
+			do u.incMode()
+		end if
+	case 4
+		do u.loop1(240)
+	case 5
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func
+
+
++func initGE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 80
+	do u.g :: "rwgenkidama1.png"
+	do u.setWH()
+	;do u.x :: -u.w / 2.0
+	;do u.y :: 170.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do \main@sndd(52)
+end func
++func actGE(u: \main@UNIT)
+	switch(u.g)
+	case "rwgenkidama1.png"
+		do u.g :: "rwgenkidama2.png"
+	case "rwgenkidama2.png"
+		do u.g :: "rwgenkidama3.png"
+	case "rwgenkidama3.png"
+		do u.g :: "rwgenkidama4.png"
+	default
+		do u.g :: "rwgenkidama1.png"
+	end switch
+	
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+		if(u.cnt > 100)
+			do u.mode :: 1
+			do \main@sndd(53)
+		end if
+	case 1
+		do u.vx :: -16.0
+		do u.vy :: 4.0
+		do u.mode :+ 1
+	default
+	end switch
+end func

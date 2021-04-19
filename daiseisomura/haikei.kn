@@ -1,0 +1,696 @@
++func initA(u: \main@UNIT)
+	do u.kind :: %shaikei
+	do u.y :: 0.0
+	do u.vx :: 0.0
+	do u.gg.head()
+	do u.g :: u.gg.get()
+	do u.setWH()
+	do u.gai :: true
+	do u.mode :: 0
+	do u.cnt :: 0
+end func
+
++func act(u: \main@UNIT)
+	if(^u.gg > 1)
+		do u.cnt :+ 1
+		if(u.cnt > u.sp)
+			do u.gg.next()
+			if(u.gg.term() = true)
+				do u.gg.head()
+			end if
+			do u.cnt :: 0
+		end if
+		do u.g :: u.gg.get()
+	end if
+	;if((u.cnt3 = 1) | (\main@move = 1 & \main@oBOSS =& null) | \main@stageu[\main@stage] = 3 | \main@stageu[\main@stage] = 6)
+	do u.x :+ u.cntf
+	if(u.x >= u.w)
+		;			do u.x :: -u.w + u.cntf
+		do u.x :- 2.0 * u.w
+	end if
+	;end if
+end func
+
++func initC(u: \main@UNIT)
+	do u.kind :: %shaikei
+	;do u.y :: 0.0
+	do u.vx :: 0.0
+	do u.gg.head()
+	do u.g :: u.gg.get()
+	do u.setWH()
+	do u.gai :: true
+	do u.mode :: 0
+	do u.cnt :: 0
+end func
+
++func actC(u: \main@UNIT)
+	if(^u.gg > 1)
+		do u.cnt :+ 1
+		if(u.cnt > u.sp)
+			do u.gg.next()
+			if(u.gg.term() = true)
+				do u.gg.head()
+			end if
+			do u.cnt :: 0
+		end if
+		do u.g :: u.gg.get()
+	end if
+	do u.y :- u.cntf
+	if(u.y <= -u.h)
+		do u.y :+ 2.0 * u.h
+	end if
+end func
+
++func actTower(u: \main@UNIT)
+	if(^u.gg > 1)
+		do u.cnt :+ 1
+		if(u.cnt > u.sp)
+			do u.gg.next()
+			if(u.gg.term() = true)
+				do u.gg.head()
+			end if
+			do u.cnt :: 0
+		end if
+		do u.g :: u.gg.get()
+	end if
+	;if((u.cnt3 = 1) | (\main@move = 1 & \main@oBOSS =& null) | \main@stageu[\main@stage] = 3 | \main@stageu[\main@stage] = 6)
+	do u.x :+ u.cntf
+	if(u.x >= 1280.0)
+		do u.x :: 1280.0
+	end if
+	;end if
+end func
+
++func actTower2(u: \main@UNIT)
+	if(^u.gg > 1)
+		do u.cnt :+ 1
+		if(u.cnt > u.sp)
+			do u.gg.next()
+			if(u.gg.term() = true)
+				do u.gg.head()
+			end if
+			do u.cnt :: 0
+		end if
+		do u.g :: u.gg.get()
+	end if
+	;if((u.cnt3 = 1) | (\main@move = 1 & \main@oBOSS =& null) | \main@stageu[\main@stage] = 3 | \main@stageu[\main@stage] = 6)
+	do u.x :+ u.cntf
+	if(u.x >= -2560.0)
+		do u.x :: -2560.0
+	end if
+	;end if
+end func
+
++func acth(u: \main@UNIT)
+	if(u.mode = 0)
+		do u.cnt2 :: lib@rnd(150, 500)
+		do u.cnt :: 0
+		do u.mode :: 1
+		do u.gg.head()
+	elif(u.mode = 1)
+		do u.cnt2 :- 1
+		if(u.cnt2 < 0)
+			do u.mode :: 2
+			do \main@sndd(49)
+		end if
+	else
+		do u.cnt :+ 1
+		if(u.cnt > u.sp)
+			do u.gg.next()
+			if(u.gg.term() = true)
+				do u.mode :: 0
+				do u.g :: "TDUM.png"
+				ret
+			end if
+			do u.cnt :: 0
+		end if
+	end if
+	do u.g :: u.gg.get()
+	;if((u.cnt3 = 1) | (\main@move = 1 & \main@oBOSS =& null) | \main@stageu[\main@stage] = 3 | \main@stageu[\main@stage] = 6)
+	do u.x :+ u.cntf
+	if(u.x >= u.w)
+		;			do u.x :: -u.w + u.cntf
+		do u.x :- 2.0 * u.w
+	end if
+	;end if
+end func
+
++func actk(u: \main@UNIT)
+	if(u.mode = 0)
+		if(\main@oBOSS <>& null)
+			do u.mode :: 1
+			do u.vy :: -3.0
+		end if
+	end if
+	if(u.y < -u.h)
+		do u.d :: true
+	end if
+	do u.x :+ u.cntf
+	if(u.x >= u.w)
+		do u.x :: -u.w + u.cntf
+	end if
+end func
+
++func act2(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.g :: "wall2.8_2.png"
+		do u.cnt :: lib@rnd(2, 5)
+		do u.cnt2 :: 0
+		do u.mode :: 1
+		do u.al :: 0xFFFFFFFF
+	case 1
+		do u.cnt :- 1
+		if(u.cnt < 0)
+			do u.g :: "wall2.8_1.png"
+			do u.cnt :: lib@rnd(1, 3)
+			do u.mode :: 2
+		end if
+	case 2
+		do u.cnt :- 1
+		if(u.cnt < 0)
+			do u.g :: "wall2.8_2.png"
+			do u.cnt :: lib@rnd(1, 3)
+			do u.cnt2 :+ 1
+			if(u.cnt2 > lib@rnd(10, 20))
+				do u.g :: "wall2.8_1.png"
+				do u.cnt2 :: 0
+				do u.mode :: 3
+			else
+				do u.mode :: 1
+			end if
+		end if
+	case 3
+		do u.al :- 0x10000000
+		if(u.al <= 0)
+			do u.al :: 0x00FFFFFF
+			do u.g :: "wall2.8_1.png"
+			do u.mode :: 4
+			do u.cnt :: 0
+		end if
+	case 4
+		do u.cnt :+ 1
+		if(u.cnt > 30)
+			do u.mode :: 0
+		end if
+	end switch
+	;if((u.cnt3 = 1) | (\main@move = 1 & \main@oBOSS =& null) | \main@stageu[\main@stage] = 3 | \main@stageu[\main@stage] = 6)
+	do u.x :+ u.cntf
+	if(u.x >= u.w)
+		;			do u.x :: -u.w + u.cntf
+		do u.x :- 2.0 * u.w
+	end if
+	;end if
+end func
+
++func act3(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.g :: "wall2.7_2.png"
+		do u.cnt :: lib@rnd(2, 5)
+		do u.cnt2 :: 0
+		do u.mode :: 1
+		do u.al :: 0xFFFFFFFF
+	case 1
+		do u.cnt :- 1
+		if(u.cnt < 0)
+			do u.g :: "wall2.7_1.png"
+			do u.cnt :: lib@rnd(1, 3)
+			do u.mode :: 2
+		end if
+	case 2
+		do u.cnt :- 1
+		if(u.cnt < 0)
+			do u.g :: "wall2.7_2.png"
+			do u.cnt :: lib@rnd(1, 3)
+			do u.cnt2 :+ 1
+			if(u.cnt2 > lib@rnd(10, 20))
+				do u.g :: "wall2.7_1.png"
+				do u.cnt2 :: 0
+				do u.mode :: 3
+			else
+				do u.mode :: 1
+			end if
+		end if
+	case 3
+		do u.al :- 0x10000000
+		if(u.al <= 0)
+			do u.al :: 0x00FFFFFF
+			do u.g :: "wall2.7_1.png"
+			do u.mode :: 4
+			do u.cnt :: 0
+		end if
+	case 4
+		do u.cnt :+ 1
+		if(u.cnt > 30)
+			do u.mode :: 0
+		end if
+	end switch
+	;if((u.cnt3 = 1) | (\main@move = 1 & \main@oBOSS =& null) | \main@stageu[\main@stage] = 3 | \main@stageu[\main@stage] = 6)
+	do u.x :+ u.cntf
+	if(u.x >= u.w)
+		;			do u.x :: -u.w + u.cntf
+		do u.x :- 2.0 * u.w
+	end if
+	;end if
+end func
+
++func initBB(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99999999.0
+	do u.g :: "bl.png"
+	do u.setWH()
+	do u.al :: 0xFFFFFFFF
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.gai :: true
+	do u.move :: 1
+end func
++func actBB(u: \main@UNIT)
+	do u.al :- 0x03000000
+	if(u.al < 0)
+		do u.al :- 0x00000000
+		do u.d :: true
+	end if
+end func
++func initBB2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9999999.0
+	do u.g :: "STAGECLEARA2.png"
+	do u.setWH()
+	do u.al :: 0xFFFFFFFF
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.gai :: true
+	do u.move :: 1
+end func
++func actBB2(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.loop1(180)
+	case 1
+		if(u.kinit = 0)
+			do \main@bgmchg("last", 1)
+			do u.kinit :: 1
+		end if
+		do u.al :- 0x02000000
+		if(u.al < 0)
+			do u.al :- 0x00000000
+			do u.d :: true
+		end if
+	end switch
+end func
+
+
++func initHPBAR(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99999.0
+	do u.g :: "geges\{\main@buki + 1}.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	;do u.gai :: true
+	do u.move :: 1
+end func
+
++func initHPBAR2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99997.0
+	do u.g :: "gages2.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	;do u.gai :: true
+	do u.move :: 1
+end func
+
++func actHPBAR(u: \main@UNIT)
+	if(u.x < 0.0)
+		do u.x :+ 6.0
+	else
+		do u.x :: 0.0
+	end if
+end func
+
++func initHPBARG(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99998.0
+	do u.g :: "gage.life.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.gai :: true
+	do u.move :: 1
+end func
+
++func actHPBARG(u: \main@UNIT)
+	if(\main@oMy =& null | \main@oMy.d = true)
+		do u.w :: 69.0 + 0.0
+	else
+		do u.w :: 69.0 + 438.0 * (\main@oMy.hp $ float / 209.0)
+	end if
+	if(u.x < 0.0)
+		do u.x :+ 6.0
+	else
+		do u.x :: 0.0
+	end if
+end func
+
++func initHPBARG2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99998.0
+	do u.g :: "gage.weapon.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.gai :: true
+	do u.move :: 1
+end func
+
++func actHPBARG2(u: \main@UNIT)
+	do u.w :: 124.0 + 438.0 * (\main@oMy.mp $ float / 209.0)
+	if(u.x < 0.0)
+		do u.x :+ 6.0
+	else
+		do u.x :: 0.0
+	end if
+end func
+
++func initHPBARE(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99998.0
+	do u.g :: "bossber1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 160.0
+	do u.move :: 1
+	;	do u.gai :: true
+end func
++func initHPBARE2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99997.0
+	do u.g :: "bossber2.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 160.0
+	do u.move :: 1
+	;	do u.gai :: true
+end func
++func actHPBARE(u: \main@UNIT)
+	if(-u.w > u.x)
+		do u.d :: true
+	end if
+	if(\main@oBOSS =& null | \main@oBOSS.kie = true)
+		do u.vx :- 1.0
+	end if
+	if(u.x < 20.0)
+		do u.x :+ 1.0
+	else
+		do u.x :: 20.0
+	end if
+end func
++func initHPBARGE(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99997.5
+	do u.g :: "bossgage.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 160.0
+	do u.move :: 1
+	;	do u.gai :: true
+end func
++func actHPBARGE(u: \main@UNIT)
+	if(-u.w > u.x)
+		do u.d :: true
+	end if
+	if(\main@oBOSS =& null | \main@oBOSS.hp $ int = 0)
+		do u.h :: 0.0
+		do u.vx :- 1.0
+	else
+		do u.y :: 8.0 + 160.0 + 243.0 - (243.0 * \main@oBOSS.hp / \main@oBOSS.mhp)
+		do u.h :: 243.0 * \main@oBOSS.hp / \main@oBOSS.mhp
+	end if
+	if(u.x < 20.0)
+		do u.x :+ 1.0
+	else
+		do u.x :: 20.0
+	end if
+end func
+
+
++func initMOJI(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -999999.0
+	do u.g :: "\{\main@stageu[\main@stage]}stage.png"
+	do u.setWH()
+	do u.x :: 1280.0
+	do u.y :: 0.0
+	do u.vx :: -6.0
+	do u.move :: 1
+end func
+
++func actMOJI(u: \main@UNIT)
+	if(u.x < 1280.0 - u.w)
+		do u.x :: 1280.0 - u.w
+		do u.vx :: 0.0
+	end if
+end func
+
+
++func initGMOVER(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9999999.0
+	do u.g :: "GAMEOVER.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h
+	do u.gai :: true
+	do \main@snd[28].stop()
+	do u.move :: 1
+end func
+
++func actGMOVER(u: \main@UNIT)
+	if(u.y < 0.0)
+		do u.y :+ 6.0
+	else
+		if(u.cnt = 0)
+			do u.y :: 0.0
+			do u.g :: "GAMEOVER2-1.png"
+			do u.mode :: 0
+			do u.cnt :: 1
+		else
+			if(\main@drawMain.focused() = true)
+				if((input@pad(0, %a) = 1 | input@pad(0, %b) = 1 | input@pad(0, %c) = 1 | input@pad(0, %d) = 1))
+					if(u.mode = 0)
+						do \main@gamemode :: %replay
+						do u.d :: true
+					else
+						do \main@gamemode :: %title
+						do u.d :: true
+					end if
+				elif(input@pad(0, %up) = 1)
+					do u.g :: "GAMEOVER2-1.png"
+					do u.mode :: 0
+				elif(input@pad(0, %down) = 1)
+					do u.g :: "GAMEOVER2-2.png"
+					do u.mode :: 1
+				end if
+			end if
+		end if
+	end if
+end func
+
+
++func initCLEAR(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9999999.0
+	do u.g :: "STAGECLEAR.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h
+	do u.gai :: true
+	do \main@gamemode :: %clear
+	do u.move :: 1
+end func
+
++func actCLEAR(u: \main@UNIT)
+	if(u.y < 0.0)
+		do u.y :+ 6.0
+	else
+		do u.cnt2 :+ 1
+		if(u.cnt2 > 5)
+			if(u.g = "STAGECLEAR2.png")
+				do u.g :: "STAGECLEAR3.png"
+			else
+				do u.g :: "STAGECLEAR2.png"
+			end if
+			do u.cnt2 :: 0
+		end if
+		do u.y :: 0.0
+		if((input@pad(0, %a) = 1 | input@pad(0, %b) = 1 | input@pad(0, %c) = 1 | input@pad(0, %d) = 1) & \main@drawMain.focused() = true)
+			do \main@gamemode :: %next
+		end if
+	end if
+end func
+
++func initCLEAR2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9999999.0
+	do u.g :: "STAGECLEARA2.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.gai :: true
+	do \main@gamemode :: %clear
+	do u.al :: 0x00FFFFFF
+end func
+
++func actCLEAR2(u: \main@UNIT)
+	do u.al :+ 0x02000000
+	if(u.al > 0xFFFFFFFF)
+		do u.al :: 0xFFFFFFFF
+		do \main@gamemode :: %next
+		;do u.d :: true
+	end if
+end func
++func initCLEAR3(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9999999.0
+	do u.g :: "STAGECLEARA2.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.gai :: true
+	do \main@gamemode :: %clear
+	do u.al :: 0x00FFFFFF
+end func
+
++func actCLEAR3(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.al :+ 0x03000000
+		if(u.al > 0xFFFFFFFF)
+			do u.al :: 0xFFFFFFFF
+			do u.incMode()
+		end if
+	case 1
+		do u.loop1(30)
+	case 2
+		do u.d :: true
+	end switch
+end func
+
++func initBGM(u: \main@UNIT)
+	do u.kind :: %music
+	;do u.x :: 1280.0
+	do u.move :: 1
+	do u.u :: -999994.0
+end func
+
++func actBGM(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.setWH()
+		do u.x :: -u.w
+		do u.y :: 720.0 - 10.0 - u.h
+		do u.mode :: 1
+	case 1
+		do u.x :+ 6.0
+		if(0.0 < u.x)
+			do u.x :: 0.0
+			do u.mode :: 2
+		end if
+	case 2
+		do u.cnt :+ 1
+		if(u.cnt > 250)
+			do u.mode :: 3
+			do u.vx :- 6.0
+		end if
+	end switch
+end func
+
++func initPO1(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99997.0
+	do u.g :: "michi3.png"
+	do u.setWH()
+	do u.x :: 434.0
+	do u.y :: 720.0
+	do u.gai :: true
+	do u.move :: 1
+end func
++func initPO3(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99998.5
+	if(\main@bs[\main@stage] = 1)
+		do u.g :: "michi2.png"
+	else
+		do u.g :: "michi1.png"
+	end if
+	do u.setWH()
+	do u.x :: 434.0
+	do u.y :: 720.0
+	do u.gai :: true
+	do u.move :: 1
+end func
++func actPO1(u: \main@UNIT)
+	if(720.0 < u.y)
+		do u.d :: true
+	end if
+	if(\main@oBOSS <>& null)
+		do u.vy :: 1.0
+	else
+		do u.y :: u.y - 1.0
+		if(u.y < 660.0)
+			do u.y :: 660.0
+		end if
+	end if
+end func
++func initPO2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -99998.0
+	do u.g :: "michi0.png"
+	do u.setWH()
+	do u.y :: 720.0
+	do u.w :: 0.0
+	do u.gai :: true
+	do u.move :: 1
+end func
++func actPO2(u: \main@UNIT)
+	if(720.0 < u.y)
+		do u.d :: true
+	end if
+	if(\main@oBOSS <>& null)
+		do u.vy :: 1.0
+	else
+		do u.y :: (u.y - 1.0)
+		if(u.y < 660.0)
+			do u.y :: 660.0
+		end if
+	end if
+	do u.w :: 411.0 * (\main@timcnt $ float / (\main@timall) $ float) + 2.0
+	do u.x :: 434.0 + (411.0 - u.w)
+end func
+
+
+
++func initSC(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.g :: "sdoreber.png"
+	do u.setWH()
+	do u.x :: 1280.0
+	do u.y :: 720.0 - u.h
+	do u.u :: -999999.0
+	do u.move :: 1
+end func
+
++func actSC(u: \main@UNIT)
+	if(u.mode = 0)
+		do u.x :- 6.0
+		if(1280.0 - u.w > u.x)
+			do u.x :: 1280.0 - u.w
+			do u.mode :: 2
+			do \main@sflg :: 1
+		end if
+	end if
+end func

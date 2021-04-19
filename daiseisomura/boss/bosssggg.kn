@@ -1,0 +1,631 @@
++func initG(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "aruki1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -1000.0
+	do u.y :: -110.0
+	;do u.mhp :: 800.0
+	do u.mhp :: 600.0
+	do u.hp :: u.mhp
+	;do u.setAtari2(1060.0, 380.0, 200.0)
+	do u.setAtari(470.0, 520.0, 270.0)
+	do u.df1 :: 5.0
+	do u.df2 :: 1.0
+	do u.df3 :: 10.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@oBOSS :: u
+	do \main@bgmchg("boss3", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	do u.cObj("BOSSGG")
+end func
+
+
++func actG(u: \main@UNIT)
+	if(u.kinit = 0)
+		do u.p :: 0
+		do u.sp :: 0
+	else
+		do u.sp :+ 1
+	end if
+	
+	
+	switch(u.mode)
+	case 0
+		if(u.sp > 12)
+			switch(u.g)
+			case "aruki1.png"
+				do u.g :: "aruki2.png"
+			case "aruki2.png"
+				do u.g :: "aruki3.png"
+				do \main@snd[55].freq(1.0)
+				do \main@sndd(55)
+			case "aruki3.png"
+				do u.g :: "aruki4.png"
+			default
+				do u.g :: "aruki1.png"
+				do \main@snd[55].freq(1.0)
+				do \main@sndd(55)
+			end switch
+			do u.sp :: 0
+		end if
+	case 2, 3, 4
+		if(u.sp > 12)
+			switch(u.g)
+			case "hakiaruki1.png"
+				do u.g :: "hakiaruki2.png"
+			case "hakiaruki2.png"
+				do u.g :: "hakiaruki3.png"
+				do \main@snd[55].freq(1.0)
+				do \main@sndd(55)
+			case "hakiaruki3.png"
+				do u.g :: "hakiaruki4.png"
+			default
+				do u.g :: "hakiaruki1.png"
+				do \main@snd[55].freq(1.0)
+				do \main@sndd(55)
+			end switch
+			do u.sp :: 0
+		end if
+	case 6
+		do u.g :: "ibukikamae.png"
+	case 8
+		if(u.sp > 3)
+			switch(u.g)
+			case "foton1.png"
+				do u.g :: "foton2.png"
+			case "foton2.png"
+				do u.g :: "foton3.png"
+			case "foton3.png"
+				do u.g :: "foton4.png"
+			case "foton4.png"
+				do u.g :: "foton5.png"
+			case "foton5.png"
+				do u.g :: "foton6.png"
+			case "foton6.png"
+				do u.g :: "foton7.png"
+			case "foton7.png"
+				do u.g :: "foton8.png"
+			case "foton8.png"
+				do u.g :: "foton9.png"
+			case "foton9.png"
+				do u.g :: "foton10.png"
+			case "foton10.png"
+				do u.g :: "foton11.png"
+			case "foton11.png"
+				do u.g :: "foton12.png"
+			case "foton12.png"
+				do u.g :: "foton13.png"
+			case "foton13.png"
+				do u.g :: "foton14.png"
+			case "foton14.png"
+				do u.g :: "foton15.png"
+			case "foton15.png"
+				do u.g :: "foton16.png"
+			case "foton16.png"
+				do u.g :: "foton17.png"
+			case "foton17.png"
+				do u.g :: "foton18.png"
+			case "foton18.png"
+				do u.g :: "foton19.png"
+			case "foton19.png"
+				do u.g :: "foton20.png"
+			case "foton20.png"
+				do u.g :: "foton21.png"
+			case "foton21.png"
+				do u.g :: "foton22.png"
+			case "foton22.png"
+				do u.g :: "foton23.png"
+			case "foton23.png"
+				do u.g :: "foton24.png"
+			case "foton24.png"
+				do u.g :: "foton25.png"
+			case "foton25.png"
+				do u.g :: "foton26.png"
+			case "foton26.png"
+				do u.g :: "foton27.png"
+			case "foton27.png"
+				do u.g :: "foton28.png"
+			case "foton28.png"
+				do u.g :: "foton29.png"
+			case "foton29.png"
+				do u.g :: "foton30.png"
+			case "foton30.png"
+				do u.g :: "foton31.png"
+			case "foton31.png"
+				do u.g :: "foton32.png"
+			case "foton32.png"
+				do u.g :: "foton33.png"
+			default
+				do u.g :: "aruki1.png"
+				do u.p :: 99
+			end switch
+			do u.sp :: 0
+		end if
+	case 10, 11
+		do u.g :: "megakamae.png"
+		{
+		if(u.sp > 3)
+			switch(u.p)
+			case 0
+				do u.g :: "@@@"
+			default
+				do u.g :: "@@@"
+				do u.p :: -1
+			end switch
+			do u.p :+ 1
+			do u.sp :: 0
+		end if
+}
+	default
+		do u.g :: "aruki1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 2.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-200.0)
+	case 1
+		if(u.kinit = 0)
+			do u.setAtari2(470.0, 520.0, 350.0)
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+		end if
+		do u.loop1(20)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: -2.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-400.0)
+		
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 150)
+			do u.cnt4 :+ 1
+			var o: \main@UNIT :: u.cObj("BOSSGT")
+			do o.x :: u.x + 800.0
+			do o.y :: u.y + 347.0
+			do u.cnt3 :: 0
+		end if
+	case 3
+		if(u.kinit = 0)
+			do u.vx :: 2.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 150)
+			do u.cnt4 :+ 1
+			var o: \main@UNIT :: u.cObj("BOSSGT")
+			do o.x :: u.x + 800.0
+			do o.y :: u.y + 347.0
+			do u.cnt3 :: 0
+		end if
+		do u.moveRight(-200.0)
+	case 4
+		if(u.cnt4 > 3)
+			do u.incMode()
+		else
+			do u.incMode()
+			do u.mode :: 2
+		end if
+	case 5
+		do u.loop1(100)
+	case 6
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			if(u.cnt4 % 3 = 0)
+				do \main@sndd(11)
+			end if
+			
+			do u.cnt3 :: 0
+			do u.cnt4 :+ 1
+			if(u.cnt4 > 10)
+				do u.incMode()
+			else
+				var o: \main@UNIT :: u.cObj("BOSSGH")
+				do o.u :: -9000.0 + u.cnt4 $ float
+				do o.x :: u.x + 970.0
+				do o.cntf :: (10 * u.cnt4) $ float
+				do o.y :: 30.0 * lib@sin(lib@toDegree(u.cntf)) + u.y + 210.0
+			end if
+		end if
+	case 7
+		do u.loop1(150)
+		if(u.mode = 8)
+			do u.g :: "foton1.png"
+		end if
+	case 8
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			do u.cnt3 :: 0
+			do u.cnt4 :+ 1
+			if(u.cnt4 > 4)
+				
+			else
+				var o: \main@UNIT :: u.cObj("BOSSGK")
+				do o.x :: 100.0 * (u.cnt4 - 1) $ float
+				do o.cnt3 :: u.cnt4
+			end if
+		end if
+		if(u.p = 99)
+			do u.incMode()
+		end if
+	case 9
+		do u.loop1(300)
+	case 10
+		var o: \main@UNIT :: u.cObj("BOSSGM")
+		do u.child :: o
+		do u.incMode()
+	case 11
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 12
+		do u.loop1(20)
+	default
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+	
+end func
+
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.g :: "monoris1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 143.0
+	do u.vx :: 10.0
+	do u.mhp :: 260.0
+	do u.df1 :: 3.0
+	do u.df2 :: 1.0
+	do u.hp :: u.mhp
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, 110.0)
+	
+	do u.boss :: true
+	;	do \main@bgmchg("boss3", 1)
+	;	do \main@oBOSS :: u
+	;	do u.cObj("HPBARE")
+	;	do u.cObj("HPBARE2")
+	;	do u.cObj("HPBARGE")
+end func
+
+
++func act(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.kind :: %haikei
+		ret
+	end if
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 6)
+		do u.cnt3 :: 0
+	end if
+	if(\main@oBARI =& null)
+		if(u.hp < 150.0)
+			var o: \main@UNIT :: u.cObj("BOSSGB")
+			do o.child :: u
+			do u.hp :: u.mhp
+			do u.atari2 :: null
+		else
+			do u.setAtari2(u.w / 2.0, u.h / 2.0, 200.0)
+			if(u.hp - 150.0 < (u.mhp - 150.0) * 0.25)
+				if(u.cnt3 = 0)
+					if(u.g = "monoris3-1.png")
+						do u.g :: "monoris3-2.png"
+					else
+						do u.g :: "monoris3-1.png"
+					end if
+				else
+					do u.g :: "monoris3-1.png"
+				end if
+			elif(u.hp - 150.0 < (u.mhp - 150.0) * 0.50)
+				if(u.cnt3 = 0)
+					if(u.g = "monoris2-1.png")
+						do u.g :: "monoris2-2.png"
+					else
+						do u.g :: "monoris2-1.png"
+					end if
+				else
+					do u.g :: "monoris2-1.png"
+				end if
+			elif(u.hp - 150.0 < (u.mhp - 150.0) * 0.75)
+				if(u.cnt3 = 0)
+					if(u.g = "monoris1-1.png")
+						do u.g :: "monoris1-2.png"
+					else
+						do u.g :: "monoris1-1.png"
+					end if
+				else
+					do u.g :: "monoris1-1.png"
+				end if
+			else
+				do u.g :: "monoris1.png"
+			end if
+		end if
+	else
+		if(u.cnt3 = 0)
+			if(u.g = "monoris3-1.png")
+				do u.g :: "monoris3-2.png"
+			else
+				do u.g :: "monoris3-1.png"
+			end if
+		else
+			do u.g :: "monoris3-1.png"
+		end if
+	end if
+	
+	if(u.x > 800.0)
+		do u.x :: 800.0
+		do u.vx :: 0.0
+	end if
+end func
+
+
+
++func initB(u: \main@UNIT)
+	do u.u :: -1000.0
+	do u.g :: "shield3.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.boss :: true
+	do \main@sndd(63)
+	do \main@oBARI :: u
+end func
+
++func actB(u: \main@UNIT)
+	do u.al :- 0x01000000
+	if(u.al < 0x08000000)
+		do u.child.child :: null
+		do u.child.setAtari2(1060.0, 380.0, 200.0)
+		do u.d :: true
+		do \main@oBARI :: null
+	end if
+end func
+
+
+
++func initE(u: \main@UNIT)
+	do u.u :: 8001.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "kakyuu1.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+	do u.boss :: true
+end func
++func actTE(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt % 2 = 0)
+		switch(u.g)
+		case "kakyuu1.png"
+			do u.g :: "kakyuu2.png"
+		case "kakyuu2.png"
+			do u.g :: "kakyuu1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		do u.vx :: 4.0
+		if(u.cnt > 30)
+			do u.mode :: 1
+		end if
+	case 1
+		;do \main@sndd(22)
+		do \main@sndd(11)
+		do u.vx :: 30.0
+		do u.vy :: 1.0
+		do u.mode :+ 1
+	default
+	end switch
+end func
+
+
++func initHI(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "ryuunoibuki.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.setAtari(u.w / 2.0, 264.0, 85.0)
+	do u.boss :: true
+end func
++func actHI(u: \main@UNIT)
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.vx :: 1.0
+		if(u.cnt > 20)
+			do u.mode :: 1
+		end if
+	case 1
+		do u.vx :: 10.0
+		do u.vy :: 0.0
+		do u.mode :+ 1
+	default
+	end switch
+	
+end func
+
+
++func initKUDA(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "foton.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.setAtari(50.0, 390.0, 50.0)
+	do u.boss :: true
+	do u.y :: 0.0
+	do u.gai :: true
+	do u.al :: 0x0
+	do \main@sndd(63)
+end func
++func actKUDA(u: \main@UNIT)
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		if(u.cnt > 40 * (5 - u.cnt3))
+			do u.incMode()
+		end if
+	case 1
+		do u.vy :: -8.0
+		if(u.y < -u.h)
+			do u.incMode()
+			do u.al :: draw@white
+			do u.x :+ 650.0 + 50.0 * u.cnt3 $ float
+			do u.gai :: false
+			do u.vy :: 20.0
+			do \main@sndd(67)
+		end if
+	default
+	end switch
+end func
+
++func initMEGA(u: \main@UNIT)
+	do u.u :: -800.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "megatame1.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	;	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0)
+	do u.boss :: true
+	do u.x :: -200.0
+	do u.y :: -110.0
+	do \main@sndd(52)
+end func
++func actMEGA(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		switch(u.g)
+		case "megatame1.png"
+			do u.g :: "megatame2.png"
+		default
+			do u.g :: "megatame1.png"
+		end switch
+	case 1, 2
+		switch(u.g)
+		case "megabeam1.png"
+			do u.g :: "megabeam1_2.png"
+		case "megabeam1_2.png"
+			do u.g :: "megabeam2.png"
+		case "megabeam2.png"
+			do u.g :: "megabeam2_2.png"
+		case "megabeam2_2.png"
+			do u.g :: "megabeam3.png"
+		case "megabeam3.png"
+			do u.g :: "megabeam3_2.png"
+		default
+			do u.g :: "megabeam1.png"
+		end switch
+		do u.setAtari(640.0, 360.0, 800.0)
+	end switch
+	switch(u.mode)
+	case 0
+		do u.loop1(200)
+	case 1
+		do u.loop1(130)
+		if(\main@snd[11].playing() = false)
+			do \main@sndd(11)
+		end if
+		if(u.cnt % 2 = 0)
+			var o: \main@UNIT :: u.cObj("BOSSGMF")
+			do o.child :: u
+		end if
+	case 2
+		do u.d :: true
+	default
+	end switch
+end func
+
+
++func initMEGA2(u: \main@UNIT)
+	do u.u :: -801.0
+	do u.a :: 0
+	do u.kai :: 0.0
+	do u.g :: "b1-1.png"
+	do u.vx :: 3.0
+	do u.vy :: 0.0
+	do u.cnt :: lib@rnd(0, 1)
+	if(u.cnt = 0)
+		do u.g :: "b1-1.png"
+	else
+		do u.g :: "b2-1.png"
+	end if
+	do u.setWH()
+	do u.boss :: true
+	do u.x :: lib@rndFloat(580.0, 1150.0)
+	do u.y :: lib@rndFloat(-u.h / 2.0, 720.0 - u.h / 2.0)
+	do \main@sndd(25)
+end func
++func actMEGA2(u: \main@UNIT)
+	if(u.child =& null | u.child.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 30)
+		do u.d :: true
+		ret
+	end if
+	if(u.cnt = 0)
+		switch(u.g)
+		case "b1-1.png"
+			do u.g :: "b1-2.png"
+		case "b1-2.png"
+			do u.g :: "b1-3.png"
+		case "b1-3.png"
+			do u.g :: "b1-4.png"
+		default
+			do u.g :: "b1-1.png"
+		end switch
+	else
+		switch(u.g)
+		case "b2-1.png"
+			do u.g :: "b2-2.png"
+		case "b2-2.png"
+			do u.g :: "b2-3.png"
+		case "b2-3.png"
+			do u.g :: "b2-4.png"
+		default
+			do u.g :: "b2-1.png"
+		end switch
+	end if
+end func

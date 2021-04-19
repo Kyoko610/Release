@@ -1,0 +1,236 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 50
+	do u.g :: "boss3_01_01.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -150.0
+	do u.vx :: 0.2
+	do u.mhp :: 500.0
+	do u.hp :: u.mhp
+	do u.setAtari(550.0, 360.0, 150.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.cntf :: -4.0
+	do u.cnt3 :: 3
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss1", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	do \main@snd[50].setPos(0.0)
+	do \main@snd[50].playLoop()
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 4, 5, 6
+		switch(u.g)
+		case "boss3_02_01.png"
+			do u.g :: "boss3_02_02.png"
+		case "boss3_02_02.png"
+			do u.g :: "boss3_03_01.png"
+		case "boss3_03_01.png"
+			do u.g :: "boss3_03_02.png"
+		default
+			do u.g :: "boss3_02_01.png"
+		end switch
+	case 13, 14, 15, 16, 17, 18
+		switch(u.g)
+		case "boss3_at_01.png"
+			do u.g :: "boss3_at_02.png"
+		default
+			do u.g :: "boss3_at_01.png"
+		end switch
+	default
+		do u.cnt3 :- 1
+		if(u.cnt3 < 0)
+			do u.y :+ u.cntf
+			do u.cntf :: -u.cntf
+			do u.cnt3 :: 5
+		end if
+		switch(u.g)
+		case "boss3_01_01.png"
+			do u.g :: "boss3_01_02.png"
+		default
+			do u.g :: "boss3_01_01.png"
+		end switch
+	end switch
+	switch(u.mode)
+	case 0
+		do u.setV(16.0, 0.0)
+		do u.incMode()
+	case 1
+		do u.moveRight(-200.0)
+	case 2
+		do u.setAtari2(550.0, 290.0, 200.0)
+		do u.loop1(30)
+	case 3
+		do u.setV(-24.0, 0.0)
+		do u.mode :: 99
+		do u.cnt :: 0
+		do u.cnt2 :: 0
+	case 99
+		do u.moveLeft(-u.w)
+	case 100
+		do u.mode :: 3
+		do u.incMode()
+	case 4
+		do u.setV(1.0, 0.0)
+		do u.incMode()
+		do u.child :: u.cObj("BOSS3_2")
+		do \main@snd[33].setPos(0.0)
+		do \main@snd[33].playLoop()
+	case 5
+		do u.moveRightK(50.0, 1.0, 60.0)
+	case 6
+		do u.loop1(40)
+	case 7
+		do \main@snd[33].stop()
+		do u.child.d :: true
+		do u.setV(-24.0, 0.0)
+		do u.incMode()
+	case 8
+		do u.moveLeft(-400.0)
+	case 9
+		do u.loop1(10)
+	case 10
+		do u.child :: u.cObj("BOSS3_3")
+		do u.vx :: -4.0
+		do u.incMode()
+	case 11
+		if(u.child.d = true)
+			do u.setV(-20.0, 0.0)
+			do u.incMode()
+		end if
+	case 12
+		do u.moveLeft(-u.w + 1.0)
+	case 13
+		do u.x :: -u.w
+		do u.y :: 180.0
+		do u.vx :: 10.0
+		do u.incMode()
+	case 14
+		do u.moveRight(-500.0)
+	case 15
+		do u.loop1(30)
+	case 16
+		do u.vx :: 1.0
+		do u.incMode()
+		do \main@sndd(44)
+	case 17
+		do u.moveRightK(1400.0, 1.0, 80.0)
+	case 18
+		do u.loop1(100)
+	default
+		do u.mode :: 0
+		do u.x :: -u.w
+		do u.y :: -150.0
+	end switch
+end func
+
++func initMS(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.a :: 45
+	do u.g :: "b3_b1.png"
+	do u.setWH()
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x
+	do u.y :: \main@oBOSS.y
+	do u.setAtari(880.0, 640.0, 180.0)
+	;do u.setAtari(530.0, 150.0, 140.0)
+	;do u.setAtari2(530.0, 150.0, 180.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.boss :: true
+end func
++func actMS(u: \main@UNIT)
+	if(u.g = "b3_b1.png")
+		do u.g :: "b3_b2.png"
+	else
+		do u.g :: "b3_b1.png"
+	end if
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x
+end func
+
++func initM1(u: \main@UNIT)
+	do u.u :: 9001.0
+	do u.a :: 45
+	do u.kai :: 0.0
+	do u.g :: "bosssONm2_1.png"
+	do u.setWH()
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x + 150.0
+	do u.y :: \main@oBOSS.y + 75.0
+	do u.vx :: 0.0
+	do u.vy :: 16.0
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.5)
+	;do u.boss :: true
+	;do u.bomb :: true
+	do u.gai :: true
+	do \main@sndd(14)
+end func
++func actM1(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.moveDown(300.0)
+	case 1
+		do \main@snd[14].stop()
+		do u.setV(0.1, lib@rnd(-1, 1) $ float)
+		do \main@sndd(10)
+		do u.u :: -1000.0
+		do u.incMode()
+	case 2
+		do u.moveRightK(900.0, 1.0, 60.0)
+	case 3
+		do u.x :- 50.0
+		do u.y :: 300.0 - 70.0
+		do \main@sndd(11)
+		do u.setAtari(u.w / 2.0, u.h / 2.0 + 120.0, u.w / 2.0 * 0.6)
+		do u.incMode()
+	case 4
+		do u.cnt :+ 1
+		if(u.cnt < 10)
+			do u.g :: "bosssONB_1.png"
+		elif(u.cnt < 20)
+			do u.g :: "bosssONB_2.png"
+		else
+			do u.g :: "bosssONB_3.png"
+		end if
+		if(u.cnt > 40)
+			do u.d :: true
+		end if
+	end switch
+	
+	if(u.mode < 4)
+		do u.cnt2 :+ 1
+		if(u.cnt2 % 2 = 0)
+			if(u.g = "bosssONm2_1.png")
+				do u.g :: "bosssONm2_2.png"
+			else
+				do u.g :: "bosssONm2_1.png"
+			end if
+		end if
+	end if
+end func

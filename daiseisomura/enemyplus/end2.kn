@@ -1,0 +1,39 @@
++func initddm(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: -9190992.0
+	do u.g :: "DMMM2.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	do u.gai :: true
+	do \main@bgmchg("prm", 1)
+	do \main@sndstop()
+	if(\main@oMy <>& null & \main@oMy.d = false)
+		do \main@oMy.d :: true
+	end if
+	do u.vy :: -1.0
+end func
++func actddm(u: \main@UNIT)
+	if(u.cnt4 = 0 & \main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :- 4.324
+	end if
+	if(u.cnt4 = 1 & \main@drawMain.focused() = true & input@pad(0, %a) = 1)
+		do \main@gamemode :: %title
+		do u.d :: true
+	end if
+	if(u.y < -u.h + 720.0)
+		do u.cnt4 :: 1
+		do u.vy :: 0.0
+	end if
+end func
+
++func initddm2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9190990.0
+	do u.g :: "exend.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+end func
++func actddm2(u: \main@UNIT)
+end func

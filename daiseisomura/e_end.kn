@@ -1,0 +1,198 @@
++func init0(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 999994.0
+	do u.g :: "eblack.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do \main@cObj("ENDM")
+end func
++func act0(u: \main@UNIT)
+end func
+
++func init1(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei1.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h
+	do u.vy :: 4.0
+	do u.gai :: true
+end func
++func act1(u: \main@UNIT)
+	if(u.y > u.h)
+		do u.d :: true
+		do \main@cObj("END2")
+	end if
+end func
+
++func init2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei2.png"
+	do u.setWH()
+	do u.x :: -u.w - 50.0
+	do u.y :: 0.0
+	do u.vx :: 4.0
+	do u.gai :: true
+end func
++func act2(u: \main@UNIT)
+	if(u.x > 1280.0)
+		do u.d :: true
+		do \main@cObj("END3")
+	end if
+end func
+
++func init3(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei3.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h - 50.0
+	do u.vy :: 4.0
+	do u.gai :: true
+end func
++func act3(u: \main@UNIT)
+	if(u.y > u.h)
+		do u.d :: true
+		do \main@cObj("END4")
+	end if
+end func
+
++func init4(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei4.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h - 50.0
+	do u.vy :: 4.0
+	do u.gai :: true
+end func
++func act4(u: \main@UNIT)
+	if(u.y > u.h)
+		do u.d :: true
+		do \main@cObj("END5")
+	end if
+end func
+
+
++func init5(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei5.png"
+	do u.setWH()
+	do u.x :: 1280.0 + 50.0
+	do u.y :: 0.0
+	do u.vx :: -4.0
+	do u.gai :: true
+end func
++func act5(u: \main@UNIT)
+	if(u.x < -u.w)
+		do u.d :: true
+		do \main@cObj("END6")
+	end if
+end func
+
+
++func init6(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei6clip.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: u.w + 50.0
+	do u.vy :: -4.0
+	do u.gai :: true
+end func
++func act6(u: \main@UNIT)
+	if(u.y < -u.h)
+		do u.d :: true
+		do \main@cObj("END7")
+	end if
+end func
+
++func init7(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei7.png"
+	do u.setWH()
+	do u.x :: -u.w - 50.0
+	do u.y :: 0.0
+	do u.vx :: 4.0
+	do u.gai :: true
+end func
++func act7(u: \main@UNIT)
+	if(u.x > 1280.0)
+		do u.d :: true
+		do \main@cObj("END8")
+	end if
+end func
+
++func init8(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei8.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: u.w + 50.0
+	do u.vy :: -4.0
+	do u.gai :: true
+end func
++func act8(u: \main@UNIT)
+	if(u.y < -u.h)
+		do u.d :: true
+		do \main@cObj("END9")
+	end if
+end func
+
++func init9(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9994.0
+	do u.g :: "haikei9.png"
+	do u.setWH()
+	do u.x :: 1280.0 + 50.0
+	do u.y :: 0.0
+	do u.vx :: -4.0
+	do u.gai :: true
+end func
++func act9(u: \main@UNIT)
+	if(u.x < -u.w)
+		do u.d :: true
+		do \main@cObj("ENDMM")
+	end if
+end func
+
++func initm(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -90994.0
+	do u.g :: "rrrrrr.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	do u.vy :: -0.805
+	do u.gai :: true
+end func
++func actm(u: \main@UNIT)
+	if(u.y < -u.h)
+		do u.d :: true
+	end if
+end func
+
++func initmm(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -90994.0
+	do u.g :: "stafff.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	do u.vy :: -0.805
+	do u.gai :: true
+end func
++func actmm(u: \main@UNIT)
+	if(u.y < -u.h + 720.0)
+		do u.vy :: 0.0
+	end if
+end func

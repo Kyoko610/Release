@@ -1,0 +1,414 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "densya1-1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.mhp :: 400.0
+	do u.hp :: u.mhp
+	do u.setAtari(2100.0, 180.0, 100.0)
+	do u.df1 :: 5.0
+	do u.df2 :: 1.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	;	do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	do \main@snd[82].setPos(0.0)
+	do \main@snd[82].playLoop()
+end func
+
++func act(u: \main@UNIT)
+	
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 5)
+		do u.cnt3 :: 0
+		switch(u.mode)
+		case 0, 1, 2, 3, 4, 17, 18, 19, 20
+			switch(u.g)
+			case "densya1-1.png"
+				do u.g :: "densya1-2.png"
+			case "densya1-2.png"
+				do u.g :: "densya1-3.png"
+			case "densya1-3.png"
+				do u.g :: "densya1-4.png"
+			default
+				do u.g :: "densya1-1.png"
+			end switch
+		case 5, 6, 7, 8, 9, 10
+			switch(u.g)
+			case "densya2-1.png"
+				do u.g :: "densya2-2.png"
+			case "densya2-2.png"
+				do u.g :: "densya2-3.png"
+			case "densya2-3.png"
+				do u.g :: "densya2-4.png"
+			default
+				do u.g :: "densya2-1.png"
+			end switch
+		case 11, 12, 13, 14, 15, 16
+			switch(u.g)
+			case "densya3-1.png"
+				do u.g :: "densya3-2.png"
+			case "densya3-2.png"
+				do u.g :: "densya3-3.png"
+			case "densya3-3.png"
+				do u.g :: "densya3-4.png"
+			default
+				do u.g :: "densya3-1.png"
+			end switch
+		end switch
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-2000.0)
+	case 1
+		do u.loop1(50)
+		do u.setAtari2(2100.0, 180.0, 150.0)
+	case 2
+		;車輪
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BOSSD_2")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 3
+		do u.loop1(50)
+	case 4
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-100.0)
+	case 5
+		do u.loop1(50)
+	case 6
+		;ビーム
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BOSSD_6")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 7
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-2000.0)
+	case 8
+		do u.loop1(50)
+	case 9
+		;炎
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BOSSD_4")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 10
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-100.0)
+	case 11
+		do u.loop1(50)
+	case 12
+		;ビーム
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BOSSD_6")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 13
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-2000.0)
+	case 14
+		do u.loop1(50)
+		
+	case 15
+		;ppppp
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BOSSD_5")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 16
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-100.0)
+	case 17
+		do u.loop1(50)
+	case 18
+		;ビーム
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BOSSD_6")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 19
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-2000.0)
+	default
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func
+
++func initSHARI(u: \main@UNIT)
+	do u.u :: -500.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.x :: -0.0
+	do u.y :: 350.0
+	do u.g :: "densyat1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.8)
+	do u.boss :: true
+	do u.gai :: true
+	do \main@sndd(48)
+end func
++func actSHARI(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 2)
+		switch(u.g)
+		case "densyat1.png"
+			do u.g :: "densyat2.png"
+		default
+			do u.g :: "densyat1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1400.0, 1.0, 50.0)
+	case 1
+		do u.loop1(50)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeftK(-500.0, -1.0, -50.0)
+	default
+		do u.d :: true
+		do \main@snd[48].stop()
+	end switch
+end func
+
+
+
++func initBEAM(u: \main@UNIT)
+	do u.u :: -500.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.x :: 400.0
+	do u.y :: 360.0
+	do u.g :: "densyab1.png"
+	do u.setWH()
+	do u.boss :: true
+	do u.gai :: true
+end func
++func actBEAM(u: \main@UNIT)
+	if((u.vx >= 0.0 & u.vy >= 0.0) | (u.vx < 0.0 & u.vy < 0.0))
+		do u.g :: "densyab1.png"
+	else
+		do u.g :: "densyab2.png"
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: lib@rnd(5, 8) $ float
+			do u.vy :: u.vx
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+		end if
+		do u.incMode()
+	case 1
+		if(u.x > 1280.0 - u.w | u.x < 0.0)
+			do u.vx :: -u.vx
+		end if
+		if(u.y > 720.0 - u.h | u.y < 0.0)
+			do u.vy :: -u.vy
+			do u.cnt3 :+ 1
+		end if
+		if(u.cnt3 > 5)
+			do u.d :: true
+		end if
+	end switch
+end func
+
++func initHI(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "denshaframe.png"
+	do u.setWH()
+	do u.x :: 200.0
+	do u.y :: 300.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.5)
+	;	do u.setAtari(u.w / 2.0, 264.0, 85.0)
+	do u.boss :: true
+	do \main@sndd(11)
+end func
++func actHI(u: \main@UNIT)
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.vx :: 1.0
+		if(u.cnt > 20)
+			do u.mode :: 1
+		end if
+	case 1
+		do u.vx :: 40.0
+		do u.vy :: 0.0
+		do u.mode :+ 1
+	default
+	end switch
+end func
+
+
++func initICE(u: \main@UNIT)
+	do u.u :: -99.0
+	do u.kai :: 0.0
+	do u.g :: "denshareiki1.png"
+	do u.setWH()
+	do u.x :: 200.0
+	do u.y :: 200.0
+	do u.vx :: 2.0
+	do u.vy :: 8.0
+	;	do u.setAtari(u.w / 2.0, 264.0, 85.0)
+	do u.boss :: true
+	do \main@sndd(81)
+end func
++func actICE(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		switch(u.g)
+		case "denshareiki1.png"
+			do u.g :: "denshareiki2.png"
+		case "denshareiki2.png"
+			do u.g :: "denshareiki3.png"
+		case "denshareiki3.png"
+			do u.g :: "denshareiki4.png"
+		case "denshareiki4.png"
+			do u.g :: "denshareiki5.png"
+		default
+			do u.g :: "denshareiki1.png"
+		end switch
+	default
+		switch(u.g)
+		case "ice1.png"
+			do u.g :: "ice2.png"
+		case "ice2.png"
+			do u.g :: "ice3.png"
+		case "ice3.png"
+			do u.g :: "ice4.png"
+		case "ice4.png"
+			do u.g :: "ice5.png"
+		default
+			do u.g :: "ice6.png"
+		end switch
+	end switch
+	switch(u.mode)
+	case 0
+		if(u.y > 720.0 - u.h)
+			do u.incMode()
+			do u.a :: 40
+			do u.g :: "ice1.png"
+			do u.setWH()
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.x :: 0.0
+			do u.y :: -20.0
+			do u.setAtari(640.0, 360.0, 2000.0)
+		end if
+	case 1
+		do u.loop1(30)
+	case 2
+		do u.d :: true
+	end switch
+end func
+
++func initDD(u: \main@UNIT)
+	do u.a :: 30
+	do u.u :: -1000.0
+	do u.kai :: 40.0
+	do u.g :: "densyadanndou.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.setAtari(950.0, 470.0, 300.0)
+	do u.boss :: true
+	do \main@sndd(33)
+end func
++func actDD(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 2)
+		switch(u.g)
+		case "densyadanndou.png"
+			do u.g :: "densyafire.png"
+		default
+			do u.g :: "densyadanndou.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	switch(u.mode)
+	case 0
+		do u.loop1(50)
+	default
+		do u.d :: true
+		do \main@snd[33].stop()
+	end switch
+end func

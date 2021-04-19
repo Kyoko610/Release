@@ -1,0 +1,1974 @@
+var wndMain: wnd@Wnd
++var drawMain: wnd@Draw
++const wx: float :: 1280.0
++const wy: float :: 720.0
++var move: int
++var movex: float
++const ty: float :: 120.0
+
++var snd: []snd@Snd
++var gamemode: @GameState
++var kansnd: snd@Snd
++var kanstr: [][]char
++var music: [][]char
++var stagePos: int
++var stagePosA: int
+
++enum UnitKind
+	my
+	myms
+	enemy
+	haikei
+	shaikei
+	music
+end enum
+
++enum GameState
+	start
+	normal
+	pause
+	clear
+	next
+	gameover
+	replay
+	endd
+	title
+end enum
++var ata: [][]char
+enum PorgKind
+	basic
+	stage
+end enum
+class PORG()
+	+var kind: @PorgKind
+	+var flg: int
+	+var tex: draw@Tex
+	
+	*func ctor()
+		do me.kind :: %stage
+		do me.flg :: 1
+		do me.tex :: null
+	end func
+end class
++var porg: dict<[]char, @PORG>
+
+func loadSnd(): int
+	var cnt: int :: 0
+	var handle: file@Reader :: file@makeReader("res/se/se.txt")
+	do handle.delimiter(['\n'])
+	while(handle.term() = false)
+		do handle.readStr()
+		do cnt :+ 1
+	end while
+	do handle.fin()
+	
+	do @snd :: #[cnt]snd@Snd
+	
+	do cnt :: 0
+	do handle :: file@makeReader("res/se/se.txt")
+	do handle.delimiter(['\n'])
+	while(handle.term() = false)
+		var ss: []char :: handle.readStr()
+		do @snd[cnt] :: snd@makeSnd("res/se/\{ss}")
+		do cnt :+ 1
+		if(wnd@act() = false)
+			ret - 1
+		end if
+		do draw@render(0)
+	end while
+	do handle.fin()
+	ret 0
+end func
+
+func checkPorg(dir: []char, NM: []char, df: @PorgKind): int
+	var popo: int :: 1
+	var cn: int :: 0
+	block
+		var o: []@PORG :: @porg.toArrayValue()
+		for n(0, ^o - 1)
+			do o[n].flg :: 0
+		end for
+	end block
+	var handle: file@Reader :: file@makeReader("res/\{dir}/\{NM}")
+	do handle.delimiter(['\n'])
+	var cr: []char :: ""
+	while(handle.term() = false)
+		var ss: []char :: handle.readStr()
+		if(ss = "cd")
+			do cr :: handle.readStr()
+		elif(ss[0] <> ';')
+			if(@porg.exist(ss) = true)
+				var g: @PORG :: @porg.get(ss, &)
+				do g.flg :: 1
+				if(g.kind = %stage)
+					var oo: @PORG :: #@PORG
+					if(cr = "")
+						do oo.tex :: draw@makeTex("res/\{ss}")
+					else
+						do oo.tex :: draw@makeTex("res/\{cr}/\{ss}")
+					end if
+					do @porg.add(ss, oo)
+				end if
+			else
+				;存在しないものについてはロードする
+				var oo: @PORG :: #@PORG
+				;do dbg@print("\{ss}\n")
+				if(cr = "")
+					do oo.tex :: draw@makeTex("res/\{ss}")
+				else
+					do oo.tex :: draw@makeTex("res/\{cr}/\{ss}")
+				end if
+				do oo.kind :: df
+				do @porg.add(ss, oo)
+				;	;do dbg@print(ss ~ "\n")
+			end if
+			if(wnd@act() = false)
+				ret - 1
+			end if
+			
+			do cn :+ 1
+			if(cn > 2)
+				if(NM = "texbasic.txt")
+					do @porg.get("LOAD.png", &).tex.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+					do @porg.get("LOADt\{popo}.png", &).tex.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+					do popo :+ 1
+					if(popo > 11)
+						do popo :: 1
+					end if
+				end if
+				do draw@render(0)
+				do cn :: 0
+			end if
+		end if
+	end while
+	do handle.fin()
+	
+	block
+		var o: []@PORG :: @porg.toArrayValue()
+		for n(0, ^o - 1)
+			if(o[n].flg = 0 & o[n].kind = %stage)
+				do o[n].tex :: null
+			end if
+		end for
+	end block
+	
+	ret 0
+end func
+var batari: @Atari
++class UNIT()
+	+var move: int
+	+var muteki: float
+	+var color: int
+	+var kind: @UnitKind {ユニットの種類}
+	+var boss: bool {ユニットの種類}
+	+var kie: bool {消去処理中か？}
+	+var gai: bool {画面外に消えると自動消滅するか？}
+	+var bomb: bool {ボムか？}
+	+var bomb2: bool
+	+var hp: float {HP}
+	+var mhp: float {MAX HP}
+	+var kai: float {回復量}
+	+var d: bool {破壊処理開始フラグ(TRUEにすると消えだす}
+	+var x: float
+	+var y: float
+	+var al: int {αブレンド}
+	+var a: int {攻撃力}
+	+var g: []char {グラフィック名}
+	+var gg: list<[]char>
+	+var p: int {パターン}
+	+var df1: float {ディフェンス}
+	+var df2: float
+	+var df3: float
+	+var df4: float
+	+var vx: float {X移動量}
+	+var vy: float {Y移動量}
+	+var i: func<(@UNIT)> {最初に実行されるの関数}
+	+var iFlg: bool {初期処理が実行された？}
+	+var f: func<(@UNIT)> {通常実行関数}
+	+var w: float {表示幅}
+	+var h: float {表示高さ}
+	+var mp: float {魔力}
+	+var u: float {表示優先度。大きいほど奥、小さいほど手前}
+	+var sp: int {スピード}
+	+var sp2: int {スピード}
+	+var spMax: int {スピードMax}
+	+var jFlg: int {ジャンプフラグ}
+	+var jS: float {ジャンプ量}
+	+var jKasoku: float {ジャンプ加速量}
+	+var atari: @Atari
+	+var atari2: @Atari
+	+var mode: int
+	+var cnt: int
+	+var cnt2: int
+	+var cnt3: int
+	+var cnt4: int
+	+var cnt5: int
+	+var cnt6: int
+	+var child: @UNIT
+	+var child2: @UNIT
+	+var child3: @UNIT
+	+var parent: @UNIT
+	+var kaiten: float
+	+var str: [][]char
+	+var kinit: int
+	+var dir: int
+	+var roll: float
+	;+var nm: []char
+	
+	+var cntf: float
+	+var cntf2: float
+	+var cntd: float
+	+var cntr: float
+	
+	+var oto: bool
+	
+	+*func cmp(t: kuin@Class): int
+		var t2: @UNIT :: t $ @UNIT
+		if(me.u < t2.u)
+			ret 0
+		else
+			ret - 1
+		end if
+	end func
+	*func ctor()
+		do me.kind :: %enemy
+		do me.hp :: 1.0
+		do me.iFlg :: false
+		do me.al :: draw@white
+		do me.atari :: null
+		do me.atari2 :: null
+		do me.mode :: 0
+		do me.cnt :: 0
+		do me.cnt2 :: 0
+	end func
+	
+	+func setWH()
+		;if(@porg.exist(me.g) = false)
+		;		do wnd@msgBox(@wndMain, "ERR:\{me.g}\n", "Kuinote", %info, %ok)
+		;	end if
+		do me.w :: @porg.get(me.g, &).tex.imgWidth() $ float
+		do me.h :: @porg.get(me.g, &).tex.imgHeight() $ float
+	end func
+	+func setAtari(x: float, y: float, r: float)
+		do me.atari :: #@Atari
+		do me.atari.x :: x
+		do me.atari.y :: y
+		do me.atari.r :: r
+	end func
+	+func setAtari2(x: float, y: float, r: float)
+		do me.atari2 :: #@Atari
+		do me.atari2.x :: x
+		do me.atari2.y :: y
+		do me.atari2.r :: r
+	end func
+	
+	;瞬間移動
+	+func setXY(x: float, y: float)
+		do me.x :: x
+		do me.y :: y
+	end func
+	
+	;VX,VY設定
+	+func setV(x: float, y: float)
+		do me.vx :: x
+		do me.vy :: y
+	end func
+	
+	;VX,VYリセット
+	+func stopV()
+		do me.vx :: 0.0
+		do me.vy :: 0.0
+	end func
+	
+	;モード加算
+	+func incMode()
+		do me.mode :+ 1
+		do me.cnt :: 0
+		do me.cnt2 :: 0
+		do me.kinit :: 0
+	end func
+	
+	;左方向移動
+	+func moveLeft(x: float)
+		if(me.x < x)
+			do me.x :: x
+			do me.stopV()
+			do me.incMode()
+		end if
+	end func
+	
+	;右方向移動
+	+func moveRight(x: float)
+		if(me.x > x)
+			do me.x :: x
+			do me.stopV()
+			do me.incMode()
+		end if
+	end func
+	
+	;上方向移動
+	+func moveUp(y: float)
+		if(me.y < y)
+			do me.y :: y
+			do me.stopV()
+			do me.incMode()
+		end if
+	end func
+	
+	;下方向移動
+	+func moveDown(y: float)
+		if(me.y > y)
+			do me.y :: y
+			do me.stopV()
+			do me.incMode()
+		end if
+	end func
+	
+	;加速左方向移動
+	+func moveLeftK(x: float, vx: float, max: float)
+		do me.vx :+ vx
+		if(me.vx < max)
+			do me.vx :: max
+		end if
+		
+		if(me.x < x)
+			do me.x :: x
+			do me.stopV()
+			do me.incMode()
+		end if
+	end func
+	
+	;加速右方向移動
+	+func moveRightK(x: float, vx: float, min: float)
+		do me.vx :+ vx
+		if(me.vx > min)
+			do me.vx :: min
+		end if
+		
+		if(me.x > x)
+			do me.x :: x
+			do me.stopV()
+			do me.incMode()
+		end if
+	end func
+	
+	+func loop1(cnt: int)
+		do me.cnt :+ 1
+		if(me.cnt > cnt)
+			do me.incMode()
+		end if
+	end func
+	
+	+func loop2(cnt: int)
+		do me.cnt :+ 1
+		if(me.cnt >= cnt)
+			do me.incMode()
+		end if
+	end func
+	
+	+func cObj(nm: []char): @UNIT
+		if(@ojob.exist(nm) = false)
+			ret null
+		end if
+		
+		var j: @JOB :: @ojob.get(nm, &)
+		var o: @UNIT :: #@UNIT
+		if(me.dir = 1)
+			do o.dir :: 1
+		end if
+		do o.i :: j.i
+		do o.f :: j.f
+		;do @olst.tail()
+		;if(@olst.findLast(o) = true)
+		;		do @olst.ins(o)
+		;	else
+		do @olst.add(o)
+		;	end if
+		ret o
+	end func
+end class
+
++class Atari()
+	+var x: float
+	+var y: float
+	+var r: float
+end class
+
+class Stage()
+	+var tim: float
+	+var pat: []char
+	+var prm: float
+end class
+
+func pop(wnd: wnd@WndBase, a: bool, b: bool)
+	if(a = true & b = false)
+		do @drawMain.focus()
+	end if
+end func
+
++var stageu: []int
++var bs: []int
++var at: [][]char
++var stage: int
+;+var score: int
+;+var scorep: int
+
+class JOB()
+	+var i: func<(@UNIT)>
+	+var f: func<(@UNIT)>
+end class
++func cObj(nm: []char): @UNIT
+	if(@ojob.exist(nm) = false)
+		ret null
+	end if
+	
+	var j: @JOB :: @ojob.get(nm, &)
+	var o: @UNIT :: #@UNIT
+	do o.i :: j.i
+	do o.f :: j.f
+	;do o.nm :: nm
+	do @olst.add(o)
+	
+	;	do @olst.add(o)
+	ret o
+end func
+
++func addJob(nm: []char, i: func<(@UNIT)>, f: func<(@UNIT)>)
+	if(@ojob.exist(nm) = false)
+		var j: @JOB :: #@JOB
+		do j.i :: i
+		do j.f :: f
+		do @ojob.add(nm, j)
+	end if
+end func
+
+
+
+var ojob: dict<[]char, @JOB>
+var olst: list<@UNIT>
++var mnm: []char
++var oMy: @UNIT
++var oBOSS: @UNIT
++var oBARI: @UNIT
++var oGURU: bool
++var pg: []char
++var sndnari: snd@Snd
++var intvv: int
++var stageOP: list<@Stage>
++var buki: int
++var bukig: int
++var sflg: int
++var timall: int
++var timcnt: int
+
++func bgmchg(snd: []char, mus: int)
+	var sndd: []char :: snd ~ @stageu[@stage].toStr()
+	if(snd = "")
+		if(@sndnari <>& null)
+			do @sndnari.stop()
+		end if
+		do @sndnari :: null
+		do @mnm :: ""
+	elif(@mnm <> sndd)
+		if(@sndnari <>& null)
+			do @sndnari.stop()
+		end if
+		if(mus = 1)
+			do @sndnari :: snd@makeSnd("res/mus/\{snd}.ogg")
+		else
+			do @sndnari :: snd@makeSnd("res/\{@stageu[@stage]}/\{snd}.ogg")
+		end if
+		do @sndnari.setPos(0.0)
+		if(snd = "endd")
+			do @sndnari.playLoop()
+		elif(snd = "boss7" | @stage = 27)
+			do @sndnari.play()
+		else
+			do @sndnari.playLoop()
+		end if
+		var o: @UNIT :: @cObj("BGM")
+		do o.g :: snd ~ ".png"
+		do @mnm :: sndd
+	end if
+end func
+
++func sndd(n: int)
+	do @snd[n].setPos(0.0)
+	do @snd[n].play()
+end func
+
++func sndstop()
+	for n(0, ^@snd - 1)
+		if(@snd[n] <>& null)
+			do @snd[n].stop()
+		end if
+	end for
+end func
+
+func main()
+	;do dbg@print("AAAAA")
+	if(file@exist(wnd@exeDir() ~ "/save.dat") = false)
+		var handle: file@Writer :: file@makeWriter(wnd@exeDir() ~ "/save.dat", false)
+		do handle.write([1 $ bit8])
+		do handle.fin()
+	end if
+	
+	{ウインドウ関連初期化}
+	do @wndMain :: wnd@makeWnd(null, %fix, @wx $ int, @wy $ int, "大清楚村v2.0")
+	do @drawMain :: wnd@makeDraw(@wndMain, 0, 0, @wx $ int, @wy $ int, %fix, %fix, false)
+	do @wndMain.onActivate :: @pop
+	
+	do draw@clearColor(0xFF000000)
+	do draw@autoClear(false)
+	do draw@sampler(%point)
+	do @drawMain.focus()
+	
+	do @porg :: #dict<[]char, @PORG>
+	
+	if(@checkPorg("0", "load.txt", %basic) = -1)
+		ret
+	end if
+	do @porg.get("LOAD.png", &).tex.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+	do draw@render(0)
+	
+	if(@checkPorg("0", "texbasic.txt", %basic) = -1)
+		ret
+	end if
+	
+	do ogg@init()
+	do snd@setMainVolume(0.65)
+	if(@loadSnd() = -1)
+		ret
+	end if
+	
+	do @ojob :: #dict<[]char, @JOB>
+	
+	do \usr@setfunc()
+	
+	;do @addJob("BOSS3_C", \boss\bosss02@initMB, \boss\bosss02@actMB)
+	
+	var sndOP: snd@Snd :: snd@makeSnd("res/mus/op.ogg")
+	
+	
+	do input@setCfgKey(0, %a, [%x $ input@Key])
+	do input@setCfgKey(0, %b, [%c $ input@Key])
+	do input@setCfgKey(0, %c, [%z $ input@Key, %space $ input@Key])
+	do input@setCfgKey(0, %d, [%v $ input@Key])
+	do input@setCfgKey(0, %e, [%a $ input@Key])
+	do input@setCfgKey(0, %f, [%shiftL $ input@Key])
+	
+	var maxlevel: int
+	
+	while MMMAIN(true)
+		
+		var han: file@Reader :: file@makeReader(wnd@exeDir() ~ "/save.dat")
+		var size: int :: han.fileSize() {ファイルサイズの取得}
+		var bin: []bit8 :: han.read(size) {指定したbyte分だけバイナリを取得}
+		do han.fin()
+		do maxlevel :: bin[0] $ int
+		
+		do sndOP.setPos(0.0)
+		do sndOP.playLoop()
+		do @mnm :: "AAAA"
+		
+		var prestage: int :: -1
+		var stagee: int :: maxlevel
+		;maxlevel
+		
+		do @buki :: 0
+		block
+			var xx: int :: 1
+			var yy: int :: 0
+			var g: []char :: "TIT1.png"
+			while fff(true)
+				if(wnd@act() = false)
+					ret
+				end if
+				
+				if(xx = 1)
+					switch(yy)
+					case 0
+						do g :: "TIT1.png"
+					case 1
+						do g :: "TIT2.png"
+					case 2
+						do g :: "TIT4.png"
+						;case 3
+						;do g :: "TIT4.png"
+					end switch
+				elif(xx = 0)
+					do g :: "TIT5.png"
+				else
+					do g :: "TIT6.png"
+				end if
+				do @porg.get(g, &).tex.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+				do @porg.get("NM\{stagee}.png", &).tex.draw(1280.0 - 384.0, 0.0, 0.0, 0.0, 384.0, 270.0, draw@white)
+				do @porg.get("BK\{@buki + 1}.png", &).tex.draw(0.0, 0.0, 0.0, 0.0, 372.0, 255.0, draw@white)
+				do draw@render(60)
+				if(@drawMain.focused() = true)
+					if(input@pad(0, %a) = 1 & g = "TIT2.png")
+						while(true)
+							do @porg.get("howto.png", &).tex.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+							if(wnd@act() = false)
+								ret
+							end if
+							if(input@pad(0, %a) = 1)
+								skip fff
+							end if
+							do draw@render(60)
+						end while
+					elif(input@pad(0, %a) = 1 & g = "TIT4.png")
+						ret
+					elif(input@pad(0, %a) = 1)
+						break fff
+					elif(input@pad(0, %left) = 1)
+						do xx :- 1
+					elif(input@pad(0, %right) = 1)
+						do xx :+ 1
+					elif(xx = 1)
+						if(input@pad(0, %left) = 0 & input@pad(0, %right) = 0)
+							if(input@pad(0, %up) = 1 | (input@pad(0, %up) > 10 & input@pad(0, %up) % 10 = 0))
+								do yy :- 1
+							elif(input@pad(0, %down) = 1 | (input@pad(0, %down) > 10 & input@pad(0, %down) % 10 = 0))
+								do yy :+ 1
+							end if
+						end if
+					elif(xx = 2)
+						if(input@pad(0, %left) = 0 & input@pad(0, %right) = 0)
+							if(input@pad(0, %up) = 1 | (input@pad(0, %up) > 10 & input@pad(0, %up) % 10 = 0))
+								do stagee :+ 1
+							elif(input@pad(0, %down) = 1 | (input@pad(0, %down) > 10 & input@pad(0, %down) % 10 = 0))
+								do stagee :- 1
+							end if
+						end if
+						
+					elif(xx = 0)
+						if(input@pad(0, %left) = 0 & input@pad(0, %right) = 0)
+							if(input@pad(0, %up) = 1)
+								do @buki :+ 1
+							elif(input@pad(0, %down) = 1)
+								do @buki :- 1
+							end if
+						end if
+					end if
+				end if
+				do stagee :: lib@clamp(stagee, 1, maxlevel)
+				do xx :: lib@clamp(xx, 0, 2)
+				if(xx = 2 | xx = 0)
+					do yy :: 0
+				elif(xx = 1)
+					do yy :: lib@clamp(yy, 0, 4)
+				end if
+				do @buki :: lib@clamp(@buki, 0, 2)
+			end while
+		end block
+		do sndOP.stop()
+		do @stage :: @stageu.find(stagee, -1)
+		;do @score :: 8245
+		;do @stage :: 28
+		do @sndd(79)
+		while(@snd[79].playing() = true)
+			if(wnd@act() = false)
+				ret
+			end if
+		end while
+		
+		while wol(true)
+			do @sndstop()
+			;do @scorep :: @score
+			if(prestage <> @stageu[@stage])
+				if(@sndnari <>& null)
+					do @sndnari.stop()
+				end if
+				do prestage :: @stageu[@stage]
+				if(@stageu[@stage] <> 1 & @stage <> 26 & @stage <> 27 & @stage <> 28)
+					var px: []int :: #[20]int
+					var py: []int :: #[20]int
+					
+					;清楚ガルド
+					do px[1] :: 966
+					do py[1] :: 360
+					
+					;清楚田園地帯
+					do px[2] :: 820
+					do py[2] :: 330
+					
+					;清楚橋
+					do px[3] :: 660
+					do py[3] :: 318
+					
+					;清楚京
+					do px[4] :: 440
+					do py[4] :: 390
+					
+					;清楚温泉
+					do px[5] :: 702
+					do py[5] :: 153
+					
+					;清楚鉄道
+					do px[6] :: 410
+					do py[6] :: 255
+					
+					;清楚樹海
+					do px[7] :: 424
+					do py[7] :: 162
+					
+					;清楚山脈
+					do px[8] :: 310
+					do py[8] :: 100
+					
+					;セイソローナ
+					do px[9] :: 911
+					do py[9] :: 183
+					;清楚タワー１
+					do px[10] :: 823
+					do py[10] :: 250
+					;清楚輪ター2
+					do px[11] :: 750
+					do py[11] :: 290
+					;清楚タワー３
+					do px[12] :: 660
+					do py[12] :: 330
+					;清楚ステーション
+					do px[13] :: 290
+					do py[13] :: 210
+					
+					var cnt: int :: 0
+					var s: int :: 0
+					var p: int :: 0
+					var sppp: int :: 9
+					var mx: float :: 1280.0
+					var MA: draw@Tex
+					if(@stageu[@stage] > 8)
+						do MA :: draw@makeTex("res/img/map2.png")
+					else
+						do MA :: draw@makeTex("res/img/map1.png")
+					end if
+					var PO: draw@Tex :: draw@makeTex("res/img/point.png")
+					var SA: []draw@Tex :: #[11]draw@Tex
+					do SA[0] :: draw@makeTex("res/img/seiatsu1.png")
+					do SA[1] :: draw@makeTex("res/img/seiatsu2.png")
+					do SA[2] :: draw@makeTex("res/img/seiatsu3.png")
+					do SA[3] :: draw@makeTex("res/img/seiatsu4.png")
+					do SA[4] :: draw@makeTex("res/img/seiatsu5.png")
+					do SA[5] :: draw@makeTex("res/img/seiatsu6.png")
+					do SA[6] :: draw@makeTex("res/img/seiatsu5.png")
+					do SA[7] :: draw@makeTex("res/img/seiatsu4.png")
+					do SA[8] :: SA[2]
+					do SA[9] :: SA[2]
+					do SA[10] :: SA[2]
+					var NW: draw@Tex :: draw@makeTex("res/img/NOWLOAD.png")
+					
+					var cnn: int :: 0
+					var cnn2: int :: 0
+					while ll(true)
+						if(wnd@act() = false)
+							ret
+						end if
+						do MA.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+						if(@stageu[@stage] > 8)
+							;清楚山脈
+							do px[8] :: 1055
+							do py[8] :: 89
+							
+							for n(8, @stageu[@stage] - 2)
+								do SA[2].draw(px[n] $ float - 640.0, py[n] $ float - 360.0, 0.0, 0.0, 1280.0, 640.0, draw@white)
+							end for
+						else
+							for n(1, @stageu[@stage] - 2)
+								do SA[2].draw(px[n] $ float - 640.0, py[n] $ float - 360.0, 0.0, 0.0, 1280.0, 640.0, draw@white)
+							end for
+						end if
+						do SA[cnn].draw(px[@stageu[@stage] - 1] $ float - 640.0, py[@stageu[@stage] - 1] $ float - 360.0, 0.0, 0.0, 1280.0, 640.0, draw@white)
+						if(cnn <> 9)
+							do cnn2 :+ 1
+							if(cnn2 > 5 & cnn < 9)
+								do cnn :+ 1
+								do cnn2 :: 0
+							end if
+							if(cnn = 3 & cnn2 = 0)
+								do @sndd(12)
+							end if
+						end if
+						if(cnn = 9)
+							do NW.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+							if(@checkPorg(@stageu[@stage].toStr(), "tex.txt", %stage) = -1)
+								ret
+							end if
+							do @snd[43].setPos(0.0)
+							do @snd[43].playLoop()
+							do cnn :+ 1
+						end if
+						if(cnn = 10)
+							if(s = 0)
+								do PO.draw(px[@stageu[@stage]] $ float - 50.0, py[@stageu[@stage]] $ float - 50.0, 0.0, 0.0, 98.0, 100.0, draw@white)
+							end if
+							do @porg.get(@at[p], &).tex.draw(mx, 80.0, 0.0, 0.0, 840.0, 730.0, draw@white)
+							do mx :- 6.0
+							if(mx < -629.0 - 200.0)
+								break ll
+							end if
+							do sppp :- 1
+							if(sppp = 0)
+								do p :+ 1
+								if(p >= ^@at)
+									do p :: 0
+								end if
+								do sppp :: 9
+							end if
+						end if
+						do draw@render(60)
+						do cnt :+ 1
+						if(cnt > 20)
+							do s :: 1 - s
+							do cnt :: 0
+						end if
+					end while
+					do @snd[43].stop()
+				else
+					if(@checkPorg(@stageu[@stage].toStr(), "tex.txt", %stage) = -1)
+						ret
+					end if
+				end if
+			end if
+			
+			
+			;環境音
+			if(@kanstr[@stage] <> "")
+				do @kansnd :: snd@makeSnd("res/mus/\{@kanstr[@stage]}")
+			else
+				do @kansnd :: null
+			end if
+			
+			do @stagePos :: 0
+			do @stagePosA :: 0
+			
+			while stg(true)
+				do @sflg :: 0
+				do @gamemode :: %normal
+				do @stageOP :: #list<@Stage>
+				do @timall :: 0
+				do @timcnt :: @stagePosA
+				
+				block
+					var handle: file@Reader :: file@makeReader("res/\{@stageu[@stage]}/stage\{@stage}.txt")
+					;do dbg@print("\{@stage}\n")
+					do handle.delimiter(['\n', '\t'])
+					while(handle.term() = false)
+						var o: @Stage :: #@Stage
+						do o.tim :: handle.readFloat()
+						do @timall :+ o.tim $ int
+						do o.pat :: handle.readStr()
+						do o.prm :: handle.readFloat()
+						do @stageOP.add(o)
+					end while
+					do handle.fin()
+				end block
+				
+				do @olst :: #list<@UNIT>
+				
+				block
+					var handle: file@Reader :: file@makeReader("res/\{@stageu[@stage]}/set\{@stage}.txt")
+					do handle.delimiter(['\n'])
+					while(handle.term() = false)
+						var ss: []char :: handle.readStr()
+						var tt: [][]char :: ss.split("\t")
+						var fn: list<[]char> :: #list<[]char>
+						var pot: []char :: "HKA"
+						var pot2: []char :: "HKA"
+						for n(4, ^tt - 1)
+							if(@stage = 26)
+								do pot :: "HKC"
+								do pot2 :: "HKC"
+							end if
+							if(tt[n] = "tower28.png" |
+								|tt[n] = "tower27.png" |
+								|tt[n] = "tower26.png" |
+								|tt[n] = "tower25a.png" |
+								|tt[n] = "tower24.png")
+								do pot :: "HKT"
+								do pot2 :: "HKT2"
+								do fn.add(tt[n])
+								break n
+							end if
+							if(tt[n] = "wall2.8_1.png")
+								do pot :: "HKJ"
+								do pot2 :: "HKJ"
+								do fn.add(tt[n])
+								break n
+							end if
+							if(tt[n] = "wall2.7_1.png")
+								do pot :: "HKJ2"
+								do pot2 :: "HKJ2"
+								do fn.add(tt[n])
+								break n
+							end if
+							if(tt[n] = "jukai26.png" | tt[n] = "jukai27.png")
+								do pot :: "HKK"
+								do pot2 :: "HKK"
+								do fn.add(tt[n])
+								break n
+							end if
+							do fn.add(tt[n])
+						end for
+						var unit1: @UNIT :: @cObj(pot)
+						do unit1.cnt3 :: tt[3].toInt(&)
+						do unit1.sp :: tt[2].toFloat(&) $ int
+						do unit1.cntf :: tt[1].toFloat(&)
+						do unit1.u :: tt[0].toFloat(&)
+						do unit1.gg :: fn
+						do unit1.gg.head()
+						do unit1.x :: 0.0
+						var unit2: @UNIT :: @cObj(pot2)
+						do unit2.cnt3 :: unit1.cnt3
+						do unit2.sp :: unit1.sp
+						do unit2.cntf :: unit1.cntf
+						do unit2.u :: unit1.u
+						do unit2.gg :: ##fn
+						do unit2.gg.head()
+						if(@stage = 26)
+							;do @dbgg(unit2.gg.get())
+							do unit2.y :: +@porg.get(unit2.gg.get(), &).tex.imgHeight() $ float
+						else
+							;do @dbgg(unit2.gg.get())
+							do unit2.x :: -@porg.get(unit2.gg.get(), &).tex.imgWidth() $ float
+						end if
+					end while
+					do handle.fin()
+				end block
+				
+				if(@stageu[@stage] = 3 | @stageu[@stage] = 6)
+					do @oMy :: @cObj("MYB")
+				elif(@stage = 27)
+				elif(@stageu[@stage] = 4)
+					do @oMy :: @cObj("MYBB")
+				else
+					do @oMy :: @cObj("MY")
+					;		end if
+				end if
+				if(@stage = 25 & @stagePosA >= 1600)
+					do @bgmchg("", 0)
+					do @sndstop()
+				else
+					if(@stage <> 26)
+						do @bgmchg(@music[@stage], 0)
+						do @sndstop()
+						if(@kansnd <>& null)
+							do @kansnd.setPos(0.0)
+							do @kansnd.playLoop()
+						end if
+					else
+						do @bgmchg("", 0)
+						do @sndstop()
+					end if
+				end if
+				
+				if(@stage <> 27)
+					do @cObj("HPBAR")
+					do @cObj("HPBAR22")
+					do @cObj("HPBARG")
+					do @cObj("HPBAR2")
+					if(@stage < 25)
+						do @cObj("PO1")
+						do @cObj("PO2")
+						do @cObj("PO3")
+					end if
+					if(@stage <> 26)
+						do @cObj("MOJI")
+					end if
+					;do @cObj("SC")
+					;do @cObj("SCORE")
+					do @oBARI :: null
+					if(@stage <> 26)
+						do @cObj("BLACK")
+					else
+						do @cObj("BLACK2")
+					end if
+				end if
+				
+				var intv: int :: 0
+				do @intvv :: 0
+				
+				do @gamemode :: %normal
+				
+				do @oBOSS :: null
+				do @stageOP.head()
+				
+				if(@stagePos > 0)
+					for nstage(0, @stagePos)
+						;	;do dbg@print("A")
+						do @stageOP.next()
+						do @intvv :+ 1
+					end for
+				end if
+				
+				var fp: int :: 0
+				while one(true)
+					if(wnd@act() = false)
+						ret
+					end if
+					;do draw@clear()
+					
+					if(@gamemode = %normal)
+						if(@oBOSS =& null | @stageu[@stage] = 3 | @stageu[@stage] = 6)
+							;if(@move = 1)
+							do @timcnt :+ 1
+							if(@timall < @timcnt)
+								do @timcnt :: @timall
+							end if
+							do intv :+ 1
+							;end if
+						end if
+						if(@stageOP.term() = false)
+							if(@oBOSS =& null)
+								var oo: @Stage :: @stageOP.get()
+								if(oo.tim <= intv $ float)
+									if(oo.pat = "PAU")
+										;do @scorep :: @score
+										do @stagePos :: @intvv
+										do @stagePosA :: @timcnt
+										do @cObj("PLUS_CHECKPOINT")
+									else
+										var OB: @UNIT :: @cObj(oo.pat.replace("@", ""))
+										if(oo.pat[0] = '@')
+											do OB.dir :: 1
+										end if
+										do OB.vx :: oo.prm
+									end if
+									do @stageOP.next()
+									do intv :: 0
+									do @intvv :+ 1
+								end if
+							end if
+						else
+							var eCnt: int :: 0
+							do @olst.head()
+							while v(@olst.term() = false)
+								var o: @UNIT :: @olst.get()
+								if(o.kind = %enemy & o.iFlg = true)
+									do eCnt :+ 1
+								end if
+								do @olst.next()
+							end while
+							if(eCnt = 0 & @gamemode = %normal)
+								if(@stage <> 25 & @stage <> 26)
+									do @cObj("GCLEAR")
+								else
+									do @cObj("GCLEAR2")
+								end if
+								do @intvv :: ^@stageOP
+							end if
+						end if
+					end if
+					
+					;
+					;
+					var oov: []@UNIT :: @olst.toArray()
+					do @olst :: #list<@UNIT>
+					for nnn(0, ^oov - 1)
+						do @olst.head()
+						if(@olst.find(oov[nnn]) = true)
+							do @olst.ins(oov[nnn])
+						else
+							do @olst.add(oov[nnn])
+						end if
+					end for
+					;
+					do @olst.head()
+					while v(@olst.term() = false)
+						var o: @UNIT :: @olst.get()
+						if(@gamemode <> %pause)
+							if(o.iFlg = false)
+								do o.i()
+								do o.iFlg :: true
+								
+								;::::::::::::::::::::::::
+								if(o.d = true)
+									do @olst.del()
+									skip v
+								end if
+								;::::::::::::::::::::::::
+								
+								do @olst.next()
+								skip v
+							end if
+							
+							;if(@oBOSS =& null)
+							;end if
+							;if(@move = 1 & o.kind <> %haikei & o.kind <> %shaikei)
+							;if(o.vx > 0.0 & o.vx - @movex > 0.0)
+							;if(@movex >= 8.0)
+							;							do o.x :+ @movex - 8.0
+							;						end if
+							;/9.0
+							;									end if
+							;end if
+							;end if
+							;end if
+							do o.x :+ o.vx
+							do o.y :+ o.vy
+							
+							do o.muteki :- 1.0
+							if(o.muteki < 0.0)
+								do o.muteki :: 0.0
+							end if
+							
+							block
+								var ol2: @Atari :: o.atari2
+								if(ol2 <>& null)
+									var ol: []@UNIT :: @olst.toArray()
+									for nn(0, ^ol - 1)
+										if(ol[nn].f =& \boss\bosss07_2@actWEB2 & o.f =& \boss\bosss07_2@act & o.kie = false & ol[nn].kie = false)
+											var onn: @Atari :: ol[nn].atari
+											if(onn <>& null)
+												var x1: float :: o.x + ol2.x
+												var y1: float :: o.y + ol2.y
+												var x2: float :: ol[nn].x + onn.x
+												var y2: float :: ol[nn].y + onn.y
+												var dist: float :: lib@sqrt((x1 - x2) ^ 2.0 + (y1 - y2) ^ 2.0)
+												if(dist < (ol2.r + onn.r))
+													block
+														var oooo: @UNIT :: @cObj("KIEG")
+														do oooo.x :: ol[nn].x
+														do oooo.y :: ol[nn].y - 300.0
+														do oooo.u :: ol[nn].u - 0.5
+														do oooo.color :: ol[nn].color
+													end block
+													do @sndd(10)
+													do ol[nn].kie :: true
+													do ol[nn].vx :: 0.0
+													do ol[nn].vy :: 0.0
+													do ol[nn].f :: @KIE
+													break nn
+												end if
+											end if
+										end if
+										if(@oMy.kie = false & o.kind = %enemy & o.kie = false & ol[nn].kie = false & (ol[nn].kind = %my | ol[nn].kind = %myms) & o.muteki = 0.0)
+											var onn: @Atari :: ol[nn].atari2
+											if(onn <>& null)
+												var x1: float :: o.x + ol2.x
+												var y1: float :: o.y + ol2.y
+												if(o.dir = 1)
+													do x1 :: 1280.0 - (o.x) + ol2.x - o.w
+												end if
+												var x2: float :: ol[nn].x + onn.x
+												var y2: float :: ol[nn].y + onn.y
+												var dist: float :: lib@sqrt((x1 - x2) ^ 2.0 + (y1 - y2) ^ 2.0)
+												if(dist < (ol2.r + onn.r))
+													
+													
+													var a: int
+													
+													if((ol[nn].kind = %my | ol[nn].kind = %myms) & o.f =& \enemyplus\ahi@act)
+														do @sndd(91)
+														do a :: 1
+													elif(ol[nn].kind = %myms & ol[nn].f =& \my@actTAMA)
+														do a :: 30 - o.df3 $ int
+														do ol[nn].d :: true
+														do ol[nn].kie :: true
+														if(a > 0)
+															block
+																var oooo: @UNIT :: @cObj("SHO")
+																do oooo.x :: x1 - 185.0
+																;if(o.dir = 1)
+																;																do oooo.x :: 1280.0 - x1 - 185.0 - o.w
+																;															end if
+																do oooo.y :: y1 - 185.0
+															end block
+														end if
+														do @sndd(30)
+														;elif(ol[nn].kind = %my & ol[nn].f =& \myb@act)
+													elif(ol[nn].kind = %my & o.f =& \enemy\e_akikan@actk)
+														do ol[nn].hp :- 10.0
+														if(ol[nn].hp <= 0.0)
+															do ol[nn].hp :: 1.0
+														end if
+													elif(ol[nn].kind = %my & (o.f =& \boss\mother2@actTA1 | o.f =& \boss\mother2@actTA2))
+														do a :: 1
+														;												do a :: 30
+													elif(ol[nn].kind = %myms & ol[nn].f =& \boss\bosss07@actK2)
+														do a :: 130
+														do ol[nn].atari2 :: null
+														do @sndd(30)
+													elif(ol[nn].kind = %myms & ol[nn].f =& \enemyplus\clasher@act2)
+														do a :: 9999
+														;do ol[nn].atari2 :: null
+													elif(ol[nn].kind = %my & ol[nn].f =& \myb@act)
+														
+														do a :: 10 - o.df1 $ int
+														
+													elif(ol[nn].kind = %myms & ol[nn].f =& \myb@actTAMA)
+														do a :: 30 - o.df3 $ int
+														do ol[nn].d :: true
+														do ol[nn].kie :: true
+														if(a > 0)
+															block
+																var oooo: @UNIT :: @cObj("SHO")
+																do oooo.x :: x1 - 185.0
+																;if(o.dir = 1)
+																;do oooo.x :: 1280.0 - x1 - 185.0 - o.w
+																;end if
+																do oooo.y :: y1 - 185.0
+															end block
+														end if
+														do @sndd(30)
+														
+													elif(ol[nn].kind = %myms & ol[nn].f =& \my@actGURU)
+														;do a :: 5
+														if(ol[nn].mode < 2)
+															do a :: 3
+														else
+															do a :: 12
+														end if
+														{
+														block
+															var oooo: @UNIT :: @cObj("SL")
+															do oooo.x :: ol[nn].x - 400.0
+															do oooo.y :: ol[nn].y + 200.0
+														end block
+														}
+													elif(ol[nn].kind = %myms & ol[nn].f =& \my@actBARU)
+														;do a :: 5
+														do a :: 3
+														block
+															var oooo: @UNIT :: @cObj("SHO")
+															do oooo.x :: x1 - 185.0
+															;	if(o.dir = 1)
+															;do oooo.x :: 1280.0 - x1 - 185.0 - o.w
+															;end if
+															do oooo.y :: y1 - 185.0
+														end block
+													elif(ol[nn].kind = %myms & ol[nn].f =& \my@actBOMB)
+														do a :: 35 - o.df3 $ int
+														if(a > 0)
+															block
+																var oooo: @UNIT :: @cObj("BAKU1")
+																do oooo.x :: ol[nn].x - 250.0
+																if(ol[nn].dir = 1)
+																	do oooo.x :: 1280.0 - ol[nn].x - 250.0 - ol[nn].w
+																end if
+																do oooo.y :: ol[nn].y - 360.0
+																do ol[nn].d :: true
+															end block
+														end if
+														
+													elif(ol[nn].kind = %myms & ol[nn].f =& \my@actBOOM)
+														do a :: 4
+													elif(ol[nn].kind = %myms & ol[nn].f =& \my@actBAKU)
+														do a :: 10 - o.df3 $ int
+													elif(ol[nn].kind = %my & (ol[nn].f =& \my@act | ol[nn].f =& \mybb@act) & (ol[nn].mode = 1 | ol[nn].mode = 100 | ol[nn].mode = 97))
+														do a :: 10 - o.df1 $ int
+														if(a > 0)
+															block
+																var oooo: @UNIT :: @cObj("SL")
+																do oooo.x :: x1 - 640.0
+																;if(o.dir = 1)
+																;																do oooo.x :: 1280.0 - x1 - 640.0 - o.w
+																;															end if
+																do oooo.y :: y1 - 500.0
+															end block
+														end if
+													elif(ol[nn].kind = %my & ol[nn].mode = 101)
+														do a :: 18 - o.df1 $ int
+														block
+															var oooo: @UNIT :: @cObj("SL")
+															do oooo.x :: x1 - 640.0
+															;if(o.dir = 1)
+															;do oooo.x :: 1280.0 - x1 - 640.0 - o.w
+															;end if
+															do oooo.y :: y1 - 500.0
+														end block
+													elif(ol[nn].kind = %my & ol[nn].mode = 55)
+														do a :: 14 - o.df4 $ int
+														if(a > 0)
+															block
+																var oooo: @UNIT :: @cObj("SHO")
+																do oooo.x :: x1 - 185.0
+																;if(o.dir = 1)
+																;do oooo.x :: 1280.0 - x1 - 185.0 - o.w
+																;end if
+																do oooo.y :: y1 - 185.0
+															end block
+														end if
+														
+														;do @sndd(30)
+													elif(ol[nn].kind = %my & ol[nn].mode = 98)
+														do a :: 22 - o.df1 $ int
+														if(a > 0)
+															block
+																var oooo: @UNIT :: @cObj("SL")
+																do oooo.x :: x1 - 640.0
+																;if(o.dir = 1)
+																;do oooo.x :: 1280.0 - x1 - 640.0 - o.w
+																;end if
+																do oooo.y :: y1 - 500.0
+															end block
+														end if
+													elif(ol[nn].kind = %my & ol[nn].mode = 2)
+														do a :: 5 - o.df2 $ int
+														if(a > 0)
+															block
+																var oooo: @UNIT :: @cObj("SL")
+																do oooo.x :: x1 - 640.0
+																;if(o.dir = 1)
+																;do oooo.x :: 1280.0 - x1 - 640.0 - o.w
+																;end if
+																do oooo.y :: y1 - 500.0
+															end block
+														end if
+													elif(ol[nn].kind = %my & ol[nn].mode = 9)
+														do a :: 50 - o.df4 $ int
+														
+													elif(ol[nn].kind = %my & ol[nn].mode = 10001)
+														do a :: 50 - o.df1 $ int
+													end if
+													if(a <= 0)
+														do a :: 0
+														block
+															if(o.atari2 <>& null)
+																var ooo: @UNIT :: @cObj("MUKOU")
+																do ooo.child :: o
+															end if
+														end block
+													end if
+													do o.hp :- a $ float
+													do ol[nn].mp :: (ol[nn].mp + 3.0)
+													if(ol[nn].mp > 209.0)
+														do ol[nn].mp :: 209.0
+													end if
+													if(o.hp <= 0.0)
+														if(o =& @oBOSS)
+															do @sndstop()
+															if(o.oto = false)
+																do @sndnari.stop()
+																do @mnm :: "AAA"
+															end if
+															do o.hp :: 0.0
+															do o.vx :: 0.0
+															do o.vy :: 0.0
+															var fff: bool :: false
+															if(o.f =& \boss\mother@act)
+																do fff :: true
+															end if
+															do o.f :: @NOP
+															do o.cnt :: 0
+															do o.mode :: 0
+															do o.cnt2 :: 0
+															do o.kie :: true
+															do o.atari :: null
+															do @batari :: o.atari2
+															do o.atari2 :: null
+															;do o.atari2 :: null
+															if(fff = true)
+																do @cObj("BAKUL").p :: 1
+															else
+																do @cObj("BAKUL")
+															end if
+															break nn
+														else
+															;do @score :+ 1
+															block
+																var oooo: @UNIT :: @cObj("KIEG")
+																do oooo.x :: o.x
+																if(o.dir = 1)
+																	do oooo.x :: 1280.0 - (o.x) - o.w
+																end if
+																do oooo.y :: o.y
+																do oooo.u :: o.u - 0.5
+																do oooo.color :: o.color
+															end block
+															do @sndd(10)
+															do o.hp :: 0.0
+															do o.kie :: true
+															do o.vx :: 0.0
+															do o.vy :: 0.0
+															do o.f :: @KIE
+														end if
+														if(ol[nn].kind = %my)
+															if(o.i =& \enemy\e_etc@initj3)
+																do @oMy.hp :+ o.kai
+																do @oMy.hp :: lib@clampFloat(@oMy.hp, 0.0, 209.0)
+																do @sndd(26)
+															elif(o.i =& \enemy\e_etc@initj1)
+																do @oMy.mp :+ o.kai
+																do @oMy.mp :: lib@clampFloat(@oMy.mp, 0.0, 209.0)
+																do @sndd(26)
+																
+															else
+																do @oMy.mp :+ o.kai
+																do @oMy.mp :: lib@clampFloat(@oMy.mp, 0.0, 209.0)
+															end if
+														end if
+													else
+														if(ol[nn].bomb = true)
+														else
+															do @sndd(21)
+														end if
+														if(ol[nn].kind = %my & ol[nn].mode = 98)
+															do o.muteki :: 20.0
+														else
+															do o.muteki :: 10.0
+														end if
+													end if
+													;break nn
+												end if
+											end if
+										end if
+									end for
+								end if
+							end block
+							block
+								var ol2: @Atari :: o.atari
+								if(ol2 <>& null)
+									var ol: []@UNIT :: @olst.toArray()
+									for nn(0, ^ol - 1)
+										if(o.kie = false & o.kind = %my & ol[nn].kie = false & ol[nn].kind = %enemy & o.muteki = 0.0 & ol[nn].muteki = 0.0)
+											var onn: @Atari :: ol[nn].atari
+											if(onn <>& null)
+												var x1: float :: o.x + ol2.x
+												var y1: float :: o.y + ol2.y
+												var x2: float :: ol[nn].x + onn.x
+												if(ol[nn].dir = 1)
+													do x2 :: 1280.0 - (ol[nn].x) + onn.x - ol[nn].w
+												end if
+												var y2: float :: ol[nn].y + onn.y
+												var dist: float :: lib@sqrt((x1 - x2) ^ 2.0 + (y1 - y2) ^ 2.0)
+												if(dist < (ol2.r + onn.r))
+													if(ol[nn] <>& null & ol[nn].f =& \enemy\e_trap@actJUMP & ol[nn].mode = 0 & @oMy <>& null & @oMy.mode = 0)
+														do @oMy.jS :: -20.0
+														do @oMy.jKasoku :: 0.03
+														do @oMy.jFlg :: 1
+														do @sndd(89)
+														do ol[nn].mode :: 1
+													elif(ol[nn] <>& null & ol[nn].f =& \boss\mother3@act & ol[nn].mode = 12 & @oMy <>& null)
+														do ol[nn].incMode()
+														do ol[nn].mode :: 999
+														do @oMy.mode :: 40000
+														;do ol[nn].mode :: 1
+													elif(ol[nn] <>& null & ol[nn].f =& \enemy\e_trap@actJUMPT & ol[nn].mode = 0 & @oMy <>& null & @oMy.mode = 0)
+														do @oMy.jS :: -20.0
+														do @oMy.jKasoku :: 0.03
+														do @oMy.jFlg :: 1
+														do @sndd(44)
+														;do ol[nn].mode :: 1
+													elif(ol[nn] <>& null & ol[nn].f =& \enemy\e_trap@actJUMP & @oMy <>& null)
+													elif(ol[nn] <>& null & ol[nn].f =& \enemy\e_trap@actJUMPT & @oMy <>& null)
+													elif(@oBARI <>& null & @oMy.x > 355.0)
+														if(@snd[51].playing() = false)
+															do @sndd(51)
+														end if
+													elif(@oBARI <>& null & @stage = 28)
+														if(@snd[51].playing() = false)
+															do @sndd(51)
+														end if
+													elif(ol[nn] <>& null & (ol[nn].f =& \boss\bosssden@actICE | ol[nn].f =& \boss\bosssa_03@actICE) & (ol[nn].mode <> 1 | (ol[nn].mode = 1 & @oMy <>& null & @oMy.jFlg = 1)))
+													elif(ol[nn] <>& null & ol[nn].f =& \boss\bosssa_03@actICE & (ol[nn].mode <> 1 | (ol[nn].mode = 1 & @oMy <>& null & @oMy.jFlg = 1)))
+														do ol[nn].atari :: null
+													elif(ol[nn] <>& null & (ol[nn].f =& \boss\mother@actICE & @oMy <>& null & @oMy.jFlg = 1))
+														do ol[nn].atari :: null
+													elif(ol[nn] <>& null & ol[nn].f =& \boss\mother@actB5 & @oMy <>& null & @oMy.jFlg = 1)
+														;	do ol[nn].atari :: null
+													else
+														do @sndd(4)
+														do o.hp :- 0.66 * ol[nn].a $ float
+														for ni(68, 80)
+															do @snd[ni].stop()
+														end for
+														do @sndd(76) {VOICE}
+														if(ol[nn].bomb2 = true)
+															;&ol[nn].f =& \boss\bossss@actM1)
+															do @sndd(11)
+															do ol[nn].d :: true
+															block
+																var oooo: @UNIT :: @cObj("BAKULMY2")
+																do oooo.x :: o.x + o.atari.x - 320.0
+																do oooo.y :: o.y + o.atari.y - 400.0
+															end block
+														elif(ol[nn].bomb = true)
+															;&ol[nn].f =& \boss\bossss@actM1)
+															do @sndd(11)
+															do ol[nn].d :: true
+															block
+																var oooo: @UNIT :: @cObj("BAKULMY")
+																do oooo.x :: o.x + o.atari.x - 150.0
+																do oooo.y :: o.y + o.atari.y - 140.0
+															end block
+															{
+														do ol[nn].bomb :: false
+														do ol[nn].boss :: false
+														do ol[nn].g :: "tama2.png"
+														do ol[nn].setWH()
+														do ol[nn].f :: \my@actTsho
+														}
+														end if
+														
+														if(o.hp <= 0.0)
+															do @snd[76].stop()
+															do @sndd(77) {VOICE}
+															if(o.kind = %my & o.kie = false)
+																do @gamemode :: %gameover
+																do @cObj("GMOVER")
+																;do @move :: 0
+																;do @movex :: 0.0
+															end if
+															do o.hp :: 0.0
+															do o.kie :: true
+															do o.vx :: 0.0
+															do o.vy :: 0.0
+															do o.f :: @KIE
+															do @snd[10].stop()
+														else
+															do o.muteki :: 56.0
+														end if
+													end if
+													break nn
+												end if
+											end if
+										end if
+									end for
+								end if
+							end block
+							
+							if(o.gai = false)
+								if(o.x < -o.w | o.x > @wx | o.y < -o.h | o.y > @wy)
+									do @olst.get().d :: true
+									do @olst.del()
+									skip v
+								end if
+							end if
+							
+							do o.f()
+							
+							if(o.d = true)
+								do @olst.del()
+								skip v
+							end if
+						end if
+						
+						;if(fp = 0)
+						if((o.muteki / 6.0) $ int % 2 = 0 | (o.kind = %my & o.mode = 8888))
+							if(@porg.exist(o.g) = false)
+								;do dbg@print("ERR:\{o.g}\n")
+							end if
+							if(o.dir = 0)
+								if(o.roll <> 0.0)
+									do @porg.get(o.g, &).tex.drawRot(o.x, o.y, o.w, o.h, 0.0, 0.0, o.w, o.h, o.w / 2.0, o.h / 2.0, lib@toRad(o.roll), o.al)
+								else
+									do @porg.get(o.g, &).tex.draw(o.x, o.y, 0.0, 0.0, o.w, o.h, o.al)
+								end if
+							else
+								do @porg.get(o.g, &).tex.draw(1280.0 - o.x - o.w, o.y, -o.w, 0.0, o.w, o.h, o.al)
+							end if
+						end if
+						
+						if(input@pad(0, %f) > 0 & @drawMain.focused() = true & @gamemode <> %pause)
+							if(o.atari <>& null)
+								if(o.dir = 0)
+									do draw@circleLine(o.x + o.atari.x, o.y + o.atari.y, o.atari.r, o.atari.r, 0xFF0000FF)
+								else
+									do draw@circleLine(1280.0 - (o.x) - o.w + o.atari.x, o.y + o.atari.y, o.atari.r, o.atari.r, 0xFF0000FF)
+								end if
+							end if
+							if(o.atari2 <>& null)
+								if(o.dir = 0)
+									do draw@circleLine(o.x + o.atari2.x, o.y + o.atari2.y, o.atari2.r, o.atari2.r, 0xFF00FF00)
+								else
+									do draw@circleLine(1280.0 - (o.x) - o.w + o.atari2.x, o.y + o.atari2.y, o.atari2.r, o.atari2.r, 0xFF00FF00)
+								end if
+							end if
+						end if
+						
+						;	if(@sflg = 1)
+						;	var ss: []char :: @score.toStr()
+						;	for nn(0, ^ss - 1)
+						;;;do dbg@print("\{ss[cn].toStr()}.png}\n")
+						;	do @porg.get("\{ss[nn].toStr()}.png", &).tex.draw(-40.0 + 1120.0 + (nn * 40) $ float + 40.0 * (4 - (^ss - 1)) $ float, 666.0, 0.0, 0.0, 40.0, 66.0, draw@white)
+						;	end for
+						;		end if
+						;end if
+						
+						
+						do @olst.next()
+					end while
+					
+					;	do fp :: 1 - fp
+					
+					
+					if(@gamemode = %pause)
+						do @porg.get(@pg, &).tex.draw(0.0, 0.0, 0.0, 0.0, 1280.0, 720.0, draw@white)
+					end if
+					
+					if(@gamemode = %replay)
+						do @sndstop()
+						;do @score :: @scorep
+						skip stg
+					end if
+					
+					if(@gamemode = %next)
+						do @stagePos :: 0
+						do @stagePosA :: 0
+						do @sndstop()
+						if(@kansnd <>& null)
+							do @kansnd.stop()
+						end if
+						do @stage :+ 1
+						block
+							if(maxlevel < @stageu[@stage])
+								var handle: file@Writer :: file@makeWriter(wnd@exeDir() ~ "/save.dat", false)
+								do handle.write([@stageu[@stage] $ bit8])
+								do handle.fin()
+								do maxlevel :: @stageu[@stage]
+							end if
+						end block
+						skip wol
+					end if
+					
+					if(@gamemode = %pause)
+						if(input@pad(0, %up) = 1 & @drawMain.focused() = true)
+							do @pg :: "PS1.png"
+						end if
+						if(input@pad(0, %down) = 1 & @drawMain.focused() = true)
+							do @pg :: "PS2.png"
+						end if
+						if(@drawMain.focused() = true & (input@pad(0, %a) = 1 | input@pad(0, %b) = 1 | input@pad(0, %c) = 1 | input@pad(0, %d) = 1))
+							if(@pg = "PS1.png")
+								do @gamemode :: %normal
+							else
+								do @gamemode :: %title
+							end if
+						end if
+					else
+						if(@gamemode = %normal & input@pad(0, %e) = 1 & @drawMain.focused() = true & @stage <> 27)
+							if(@stage = 28 & (@oMy =& null | @oMy.d = true))
+							else
+								do @gamemode :: %pause
+								do @pg :: "PS1.png"
+							end if
+						end if
+					end if
+					
+					if(@gamemode = %title)
+						do @sndstop()
+						do @sndnari.stop()
+						if(@kansnd <>& null)
+							do @kansnd.stop()
+						end if
+						skip MMMAIN
+					end if
+					;if(@gamemode = %endd)
+					;					do @sndstop()
+					;					skip MMMAIN
+					;				end if
+					do draw@render(0)
+					do lib@sleep(12)
+					;do draw@render(60)
+				end while
+			end while
+		end while
+	end while
+end func
+
++func KIE(u: @UNIT)
+	do @snd[87].stop()
+	do u.al :- 0x10101010
+	if(u.al <= 0)
+		do u.d :: true
+	end if
+end func
+
++func NOP(u: @UNIT)
+end func
+
++func initKIEG(u: @UNIT)
+	do u.kind :: %haikei
+	switch(u.color)
+	case 1
+		do u.str :: ["mhp1.png", "mhp2.png", "mhp3.png", "mhp4.png", "mhp5.png", "mhp6.png", "mhp7.png"]
+	case 2
+		do u.str :: ["mhg1.png", "mhg2.png", "mhg3.png", "mhg4.png", "mhg5.png", "mhg6.png", "mhg7.png"]
+	case 3
+		do u.str :: ["mhv1.png", "mhv2.png", "mhv3.png", "mhv4.png", "mhv5.png", "mhv6.png", "mhv7.png"]
+	case 4
+		do u.str :: ["mhb.png", "mhb2.png", "mhb3.png", "mhb4.png", "mhb5.png", "mhb6.png", "mhb7.png"]
+	case 5
+		do u.str :: ["mhd1.png", "mhd2.png", "mhd3.png", "mhd4.png", "mhd5.png", "mhd6.png", "mhd7.png"]
+	case 6
+		do u.str :: ["mh1.png", "mh2.png", "mh3.png", "mh4.png", "mh5.png", "mh6.png", "mh7.png"]
+	default
+		do u.str :: ["mhbb.png", "mhbb2.png", "mhbb3.png", "mhbb4.png", "mhbb5.png", "mhbb6.png", "mhbb7.png"]
+	end switch
+	do u.g :: u.str[0]
+	do u.setWH()
+end func
++func actKIEG(u: @UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 4)
+		if(u.mode < 7)
+			do u.mode :+ 1
+			if(u.mode >= ^u.str)
+				do u.d :: true
+				do u.mode :: 1
+			end if
+			do u.g :: u.str[u.mode]
+		end if
+		do u.cnt :: 0
+	end if
+end func
+
+
++func KIE2init(u: @UNIT)
+	do u.kind :: %enemy
+	do u.u :: -99500.0
+	do u.g :: "bs1.png"
+	do u.setWH()
+	do u.x :: @oBOSS.x + lib@rndFloat(@batari.x - @batari.r, @batari.x + @batari.r) - u.w / 2.0
+	do u.y :: @oBOSS.y + lib@rndFloat(@batari.y - @batari.r, @batari.y + @batari.r) - u.h / 2.0
+	do u.str :: ["bs1.png", "bs2.png", "bs3.png", "bs4.png", "bs5.png", "bs6.png"]
+	
+	do @sndd(23)
+	do u.cnt2 :- 1
+	do u.gai :: true
+end func
++func KIE2act(u: @UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 1)
+		do u.cnt2 :+ 1
+		if(u.cnt2 >= ^u.str)
+			do @oBOSS.cnt :+ 1
+			if(@oBOSS.cnt < 60)
+				do @cObj("BAKUL").p :: u.p
+				do @cObj("BAKUL").p :: u.p
+			elif(@oBOSS.cnt2 = 0)
+				do @cObj("BAKUL2").p :: u.p
+				;do ooo.x :: @oBOSS.x + @batari.x - u.w / 2.0
+				do @oBOSS.cnt2 :: 1
+			end if
+			do u.d :: true
+			ret
+		end if
+		do u.g :: u.str[u.cnt2]
+		do u.cnt :: 0
+	end if
+end func
++func KIE2initLL(u: @UNIT)
+	do u.kind :: %enemy
+	do u.u :: -99500.0 + 1.0
+	do u.g :: "WHHH.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.al :: 0x22000000
+	do @sndd(53)
+	;do @oBOSS.f :: @KIE
+	;do u.gai :: true
+end func
++func KIE2actLL(u: @UNIT)
+	switch(u.mode)
+	case 0
+		do u.al :+ 0x08FFFFFF
+		if(u.al > draw@white)
+			do u.al :: draw@white
+			do u.incMode()
+		end if
+	case 1
+		do u.al :- 0x06FFFFFF
+		if(u.al < 0x44FFFFFF & u.p = 0)
+			do @cObj("BAKUL2")
+			do u.p :: 1
+		end if
+		if(u.al < 0x0)
+			do u.al :: 0x0
+			do u.d :: true
+			;do @cObj("BAKUL2")
+			;do @oBOSS.cnt2 :: 1
+			do u.d :: true
+		end if
+	end switch
+end func
++func KIE2initL(u: @UNIT)
+	do u.kind :: %enemy
+	do u.u :: -99500.0 - 1.0
+	do u.g :: "bl1.png"
+	do u.setWH()
+	do u.x :: @oBOSS.x + @batari.x - u.w / 2.0
+	do u.y :: @oBOSS.y + @batari.y - u.h / 2.0
+	do u.str :: ["bs1.png", "bs2.png", "bs3.png", "bs4.png", "bs5.png", "bs6.png"]
+	do u.cnt2 :: -1
+	do @sndd(23)
+	
+	;do @oBOSS.kie :: true
+	do @oBOSS.f :: @KIE
+	do u.gai :: true
+end func
++func KIE2actL(u: @UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 1)
+		do u.cnt2 :+ 1
+		if(u.cnt2 >= ^u.str)
+			;do @score :+ 100
+			do u.d :: true
+			if(@oBOSS.oto = true)
+				do @oBOSS :: null
+				do @cObj("PO1")
+				do @cObj("PO2")
+				do @cObj("PO3")
+			end if
+			do @oBOSS :: null
+			ret
+		end if
+		do u.g :: u.str[u.cnt2]
+		do u.cnt :: 0
+	end if
+end func
+
+
++func initMUKOU(u: @UNIT)
+	do u.kind :: %enemy
+	do u.u :: -99.0
+	do u.g :: "mukou1.png"
+	do u.setWH()
+	if(u.child.atari2 =& null)
+		do u.w :: 0.0
+		do u.h :: 0.0
+	else
+		do u.x :: u.child.x + u.child.atari2.x - u.w / 2.0
+		if(u.child.dir = 1)
+			do u.x :: 1280.0 - (u.child.x + u.child.atari2.x - u.w / 2.0) - u.w
+		end if
+		
+		do u.y :: u.child.y + u.child.atari2.y - u.h / 2.0
+		do @sndd(51)
+	end if
+	do u.hp :: 1.0
+	do u.str :: ["mukou1.png", "mukou2.png", "mukou3.png", "mukou4.png", "mukou5.png", "mukou6.png", "mukou7.png", "mukou8.png", "mukou9.png", "mukou10.png"]
+end func
++func actMUKOU(u: @UNIT)
+	if(u.child =& null)
+		do u.d :: true
+		ret
+	end if
+	
+	if(u.w = 0.0)
+		do u.d :: true
+		ret
+	end if
+	if(u.child.atari2 =& null)
+		do u.d :: true
+		ret
+	end if
+	if(u.child.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: u.child.x + u.child.atari2.x - u.w / 2.0
+	if(u.child <>& null & u.child.dir = 1)
+		do u.x :: 1280.0 - (u.child.x + u.child.atari2.x - u.w / 2.0) - u.w
+	end if
+	do u.y :: u.child.y + u.child.atari2.y - u.h / 2.0
+	
+	do u.cnt :+ 1
+	if(u.cnt >= 10)
+		do u.cnt :: 0
+		do u.cnt2 :+ 1
+		if(u.cnt2 >= 3)
+			do u.d :: true
+		end if
+	end if
+	do u.g :: u.str[u.cnt]
+end func
+
++func initBOMB(u: @UNIT)
+	do u.kind :: %enemy
+	do u.u :: -99500.0
+	do u.g :: "bs1.png"
+	do u.setWH()
+	;o u.x :: @oBOSS.x + lib@rndFloat(@batari.x - @batari.r, @batari.x + @batari.r)
+	;	do u.y :: @oBOSS.y + lib@rndFloat(@batari.y - @batari.r, @batari.y + @batari.r)
+	do u.str :: ["bs1.png", "bs2.png", "bs3.png", "bs4.png", "bs5.png", "bs6.png"]
+	do @sndd(23)
+	do u.cnt2 :- 1
+	do u.gai :: true
+end func
++func actBOMB(u: @UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 1)
+		do u.cnt2 :+ 1
+		if(u.cnt2 >= ^u.str)
+			;do @oBOSS.cnt :+ 1
+			;if(@oBOSS.cnt < 60)
+			;	do @cObj("BAKUL")
+			;	do @cObj("BAKUL")
+			;elif(@oBOSS.cnt2 = 0)
+			;	do @cObj("BAKUL2")
+			;	do @oBOSS.cnt2 :: 1
+			;end if
+			do u.d :: true
+			ret
+		end if
+		do u.g :: u.str[u.cnt2]
+		do u.cnt :: 0
+	end if
+end func
+
+
++func initBOMB2(u: @UNIT)
+	do u.kind :: %enemy
+	do u.u :: -99500.0 - 1.0
+	do u.g :: "bl1.png"
+	do u.setWH()
+	;do u.x :: @oBOSS.x + @batari.x - u.w / 2.0
+	;do u.y :: @oBOSS.y + @batari.y - u.h / 2.0
+	do u.str :: ["bl1.png", "bl2.png", "bl3.png", "bl4.png", "bl5.png", "bl6.png", "bl7.png"]
+	do u.cnt2 :: -1
+	do @sndd(23)
+	;do @oBOSS.kie :: true
+	do u.gai :: true
+end func
++func actBOMB2(u: @UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 1)
+		do u.cnt2 :+ 1
+		if(u.cnt2 >= ^u.str)
+			;do @score :+ 100
+			do u.d :: true
+			ret
+		end if
+		do u.g :: u.str[u.cnt2]
+		do u.cnt :: 0
+	end if
+end func
+
+
+
++func initBOMB2S(u: @UNIT)
+	do u.kind :: %enemy
+	do u.u :: -99500.0 - 1.0
+	do u.g :: "bl1.png"
+	do u.setWH()
+	;do u.x :: @oBOSS.x + @batari.x - u.w / 2.0
+	;do u.y :: @oBOSS.y + @batari.y - u.h / 2.0
+	do u.str :: ["bl1.png", "bl2.png", "bl3.png", "bl4.png", "bl5.png", "bl6.png", "bl7.png"]
+	do u.cnt2 :: -1
+	;do @sndd(23)
+	;do @oBOSS.kie :: true
+	do u.gai :: true
+end func
++func actBOMB2S(u: @UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 1)
+		do u.cnt2 :+ 1
+		if(u.cnt2 >= ^u.str)
+			;do @score :+ 100
+			do u.d :: true
+			ret
+		end if
+		do u.g :: u.str[u.cnt2]
+		do u.cnt :: 0
+	end if
+end func
+
+func dbgg(s: []char)
+	var handle1: file@Writer :: file@makeWriter("dbg.txt", true)
+	do handle1.writeStr(s)
+	do handle1.fin()
+end func

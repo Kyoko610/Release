@@ -1,0 +1,434 @@
++func initG(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "sesoniataiki1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -400.0
+	do u.y :: 0.0
+	do u.mhp :: 900.0
+	;do u.mhp :: 700.0
+	do u.hp :: u.mhp
+	do u.setAtari2(345.0, 390.0, 290.0)
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@oBOSS :: u
+	do \main@bgmchg("boss4", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	;do u.cObj("SHITO4NM")
+end func
+
+
++func actG(u: \main@UNIT)
+	if(u.kinit = 0)
+		do u.p :: 0
+		do u.sp :: 0
+	else
+		;do u.sp :+ 1
+	end if
+	
+	switch(u.mode)
+		;case 11, 12
+		;do u.g :: "zzs005.png"
+		;do u.setWH()
+	case 6, 7, 8, 9, 10
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			do u.cnt3 :: 0
+			switch(u.g)
+			case "sesoniaanime1.png"
+				do u.g :: "sesoniaanime2.png"
+			case "sesoniaanime2.png"
+				do u.g :: "sesoniaanime3.png"
+			case "sesoniaanime3.png"
+				do u.g :: "sesoniaanime4.png"
+			case "sesoniaanime4.png"
+				do u.g :: "sesoniaanime5.png"
+			case "sesoniaanime5.png"
+				do u.g :: "sesoniaanime6.png"
+			default
+				do u.g :: "sesoniaanime1.png"
+			end switch
+		end if
+		{
+	case 12, 13
+		if(u.mode = 13 | (u.mode = 12 & u.child.cntf > 0.0))
+			;do u.u :: -4000.0
+			do u.cnt3 :+ 1
+			if(u.cnt3 > 5)
+				do u.cnt3 :: 0
+				switch(u.g)
+				case "sesoniataiki1.png"
+					do u.g :: "sesoniataiki2.png"
+				case "sesoniataiki2.png"
+					do u.g :: "sesoniataikis.png"
+				default
+					do u.g :: "sesoniataiki1.png"
+				end switch
+			end if
+		end if
+}
+	case 2, 4
+	case 3
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 8)
+			do u.cnt3 :: 0
+			switch(u.g)
+			case "sesoniataiki14.png"
+				do u.g :: "sesoniataiki15.png"
+			default
+				do u.g :: "sesoniataiki14.png"
+			end switch
+		end if
+	default
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			do u.cnt3 :: 0
+			switch(u.g)
+			case "sesoniataiki1.png"
+				do u.g :: "sesoniataiki2.png"
+			case "sesoniataiki2.png"
+				do u.g :: "sesoniataiki3.png"
+			default
+				do u.g :: "sesoniataiki1.png"
+			end switch
+		end if
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 1
+		do u.loop1(100)
+		do u.setAtari(345.0, 390.0, 260.0)
+	case 2
+		do u.loop1(30)
+		if(u.cnt > 20)
+			do u.g :: "sesoniataiki13.png"
+		elif(u.cnt > 10)
+			do u.g :: "sesoniataiki12.png"
+		elif(u.cnt > 0)
+			do u.g :: "sesoniataiki11.png"
+		end if
+	case 3
+		if(u.kinit = 0)
+			do \main@sndd(86)
+			do u.child :: u.cObj("SHITO3S1")
+			do u.child.x :: 400.0
+			do u.child.cntf :: 10.0
+			do u.child2 :: u.cObj("SHITO3S1")
+			do u.child2.x :: 1000.0
+			do u.child2.cntf :: -10.0
+			do u.kinit :: 1
+		end if
+		if((u.child =& null | u.child.d = true) & (u.child2 =& null | u.child2.d = true))
+			do \main@snd[86].stop()
+			do u.incMode()
+		end if
+		
+	case 4
+		do u.loop1(30)
+		if(u.cnt > 20)
+			do u.g :: "sesoniataiki11.png"
+		elif(u.cnt > 10)
+			do u.g :: "sesoniataiki12.png"
+		elif(u.cnt > 0)
+			do u.g :: "sesoniataiki13.png"
+		end if
+	case 5
+		do u.loop1(100)
+	case 6
+		if(u.kinit = 0)
+			do u.child :: u.cObj("SHITO3B1")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 7
+		do u.loop1(30)
+	case 8
+		if(u.kinit = 0)
+			do u.child :: u.cObj("SHITO3B1")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+		
+	case 9
+		do u.loop1(30)
+	case 10
+		if(u.kinit = 0)
+			do u.child :: u.cObj("SHITO3B1")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+		
+	case 11
+		do u.loop1(50)
+		
+	case 12
+		if(u.kinit = 0)
+			if(\main@oMy =& null | \main@oMy.d = true)
+				do u.mode :: 20
+				ret
+			end if
+			do u.child :: u.cObj("SHITO3S2")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 13
+		do \main@snd[86].stop()
+		if(\main@oMy =& null | \main@oMy.d = true | \main@oMy.mode <> 89999)
+			do u.incMode()
+		end if
+	default
+		;do u.u :: 8000.0
+		do u.setWH()
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "syokusyu1.png"
+	do u.y :: 0.0
+	;"hadou-kage.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.boss :: true
+	do u.gai :: true
+	do u.setAtari(80.0, 250.0, 50.0)
+end func
++func actTE(u: \main@UNIT)
+	;if(u.cnt > 20)
+	;do u.setAtari(230.0, 175.0, 150.0)
+	;do u.y :: 260.0
+	do u.p :+ 1
+	if(u.p > 5)
+		do u.p :: 0
+		switch(u.g)
+		case "syokusyu1.png"
+			do u.g :: "syokusyu2.png"
+			
+		case "syokusyu2.png"
+			do u.g :: "syokusyu3.png"
+		case "syokusyu3.png"
+			do u.g :: "syokusyu4.png"
+		default
+			do u.g :: "syokusyu1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.y :: 720.0
+			do u.vx :: 0.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(720.0 - u.h)
+	case 1
+		if(u.kinit = 0)
+			do u.vx :: u.cntf
+			do u.cnt3 :: 0
+			do u.kinit :: 1
+		end if
+		if(u.x < 300.0 | u.x > 1280.0 - u.w)
+			do u.vx :: -u.vx
+			do u.cnt3 :+ 1
+			if(u.cnt3 > 2)
+				do u.incMode()
+			end if
+		end if
+	case 2
+		if(u.x < -100.0 | u.x > 1280.0)
+			do u.d :: true
+		end if
+	default
+	end switch
+end func
+
+
++func initB(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "sesoniatama1.png"
+	do u.x :: 210.0 + 120.0
+	do u.y :: 243.0
+	;"hadou-kage.png"
+	do u.setWH()
+	do u.vx :: 1.0
+	do u.vy :: 0.0
+	do u.boss :: true
+	do \main@sndd(85)
+end func
++func actTB(u: \main@UNIT)
+	switch(u.g)
+	case "sesoniatama1.png"
+		do u.g :: "sesoniatama2.png"
+	default
+		do u.g :: "sesoniatama1.png"
+	end switch
+	;if(u.cnt > 20)
+	do u.setAtari(345.0, 130.0, 60.0)
+	;do u.y :: 260.0
+	switch(u.mode)
+	case 0
+		do u.moveRightK(1280.0, 1.0, 60.0)
+	default
+	end switch
+end func
+
+
++func initS2(u: \main@UNIT)
+	do u.u :: -5000.0
+	do u.kai :: 0.0
+	do u.g :: "uja1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -140.0
+	;"hadou-kage.png"
+	do u.boss :: true
+end func
++func actS2(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 5)
+		do u.cnt3 :: 0
+		switch(u.g)
+		case "uja1.png"
+			do u.g :: "uja2.png"
+		default
+			do u.g :: "uja1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-735.0)
+	case 1
+		if(u.kinit = 0)
+			if(\main@oMy <>& null & \main@oMy.d = false)
+				do \main@oMy.mode :: 89999
+				do \main@oMy.cnt3 :: 0
+				do \main@oMy.cnt :: 320
+				do \main@oMy.kinit :: 0
+				for ni(68, 80)
+					do \main@snd[ni].stop()
+				end for
+				do \main@sndd(78) {VOICE}
+			end if
+			do u.vx :: -20.0
+			do u.vy :: 0.0
+			do u.cntf :: 2.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-2000.0)
+	default
+		do u.d :: true
+	end switch
+end func
+
+
+
++func initDEN(u: \main@UNIT)
+	;do u.kind :: %haikei
+	do u.a :: 50
+	do u.u :: -4999.0
+	do u.g :: "bakun1-1.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+end func
++func actDEN(u: \main@UNIT)
+	if(\main@oMy =& null | \main@oMy.d = true | \main@oMy.mode <> 89999)
+		do u.d :: true
+	end if
+	switch(u.mode)
+	case 0
+		if(u.cnt = 0)
+			do \main@sndd(22)
+		end if
+		do u.g :: "bakun1-1.png"
+	case 1
+		do u.g :: "bakun1-2.png"
+	case 2
+		do u.g :: "bakun2-1.png"
+	case 3
+		do u.g :: "bakun2-2.png"
+	case 4
+		do u.g :: "bakun3-1.png"
+	case 5
+		do u.g :: "bakun3-2.png"
+	case 6
+		do u.g :: "bakun4-1.png"
+	case 7
+		do u.g :: "bakun4-2.png"
+	case 8
+		do u.g :: "bakun5-1.png"
+	case 9
+		do u.g :: "bakun5-2.png"
+	case 10
+		do u.g :: "bakun5-3.png"
+	default
+		do u.g :: "bakun5-4.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.loop1(140)
+	case 1
+		do u.loop1(5)
+	case 2
+		do u.loop1(5)
+	case 3
+		do u.loop1(5)
+	case 4
+		do u.loop1(5)
+	case 5
+		do u.loop1(5)
+	case 6
+		do u.loop1(5)
+	case 7
+		do u.loop1(5)
+	case 8
+		do u.loop1(5)
+	case 9
+		if(u.kinit = 0)
+			do u.setAtari(640.0, 360.0, 2000.0)
+			do u.kinit :: 1
+			do \main@sndd(67)
+		end if
+		do u.loop1(3)
+	case 10
+		do u.atari :: null
+		do u.loop1(3)
+	case 11
+		do u.loop1(3)
+	default
+		do u.incMode()
+		do u.mode :: 0
+	end switch
+end func

@@ -1,0 +1,445 @@
++func init(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ec11.png"
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: \main@ty
+	do u.hp :: 6.0
+	do u.setAtari(280.0, 400.0, 80.0)
+	do u.setAtari2(280.0, 400.0, 100.0)
+	;do u.setAtari2(304.0, 350.0, 80.0) {かり}
+	do u.color :: 1
+	do u.vx :: 6.0
+end func
++func act(u: \main@UNIT)
+	
+	switch(u.mode)
+	case 0
+		if(u.x > -140.0)
+			do u.x :: -140.0
+			do u.vx :: 0.0
+			do u.incMode()
+		end if
+	case 1
+		do u.loop1(8)
+	case 2
+		var oo: \main@UNIT :: u.cObj("CANOT")
+		do oo.x :: u.x + 290.0
+		do oo.y :: u.y + 220.0
+		do u.child :: oo
+		do u.g :: "ec12.png"
+		do u.incMode()
+	case 3
+		if(u.child =& null)
+			do u.incMode()
+			ret
+		end if
+		do u.cnt :+ 1
+		if(u.cnt > 5)
+			do u.g :: "ec11.png"
+		end if
+		if(u.child.d = true)
+			do u.g :: "ec11.png"
+			do u.incMode()
+		end if
+	case 4
+		do u.vx :: -6.0
+		do u.incMode()
+	default
+	end switch
+end func
+
++func initMB(u: \main@UNIT)
+	do u.u :: -1000.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "ecb.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 1.6)
+	do u.bomb :: true
+	do \main@sndd(40)
+end func
++func actMB(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.vy :: 0.0
+		do u.jS :: -8.0
+		do u.jKasoku :: 0.2
+		do u.vx :: 24.0
+		do u.incMode()
+	default
+		do u.y :+ u.jS
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.02
+	end switch
+end func
+
+
++func init2(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ec21.png"
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: \main@ty
+	do u.hp :: 6.0
+	do u.setAtari(280.0, 400.0, 80.0)
+	do u.setAtari2(280.0, 400.0, 140.0)
+	do u.color :: 1
+	do u.vx :: 6.0
+end func
++func act2(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.x > -140.0)
+			do u.x :: -140.0
+			do u.vx :: 0.0
+			do u.incMode()
+		end if
+	case 1
+		do u.loop1(8)
+	case 2
+		var oo: \main@UNIT :: u.cObj("CANOT2")
+		do oo.x :: u.x + 235.0
+		do oo.y :: u.y + 45.0
+		do u.child :: oo
+		do u.g :: "ec22.png"
+		do u.incMode()
+	case 3
+		if(u.child =& null)
+			do u.incMode()
+			ret
+		end if
+		do u.cnt :+ 1
+		if(u.cnt > 5)
+			do u.g :: "ec21.png"
+		end if
+		if(u.child.d = true)
+			do u.g :: "ec21.png"
+			do u.incMode()
+		end if
+	case 4
+		do u.vx :: -6.0
+		do u.incMode()
+	default
+	end switch
+end func
+
++func initMB2(u: \main@UNIT)
+	do u.u :: -1000.0
+	do u.a :: 60
+	do u.kai :: 0.0
+	do u.g :: "ecb.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 1.6)
+	do u.bomb :: true
+	do u.gai :: true
+	do \main@sndd(40)
+end func
++func actMB2(u: \main@UNIT)
+	
+	switch(u.mode)
+	case 0
+		do u.vy :: 0.0
+		do u.jS :: -40.0
+		do u.jKasoku :: 0.2
+		do u.vx :: 6.0
+		do u.incMode()
+	case 1
+		do u.y :+ u.jS
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.02
+		if(u.y < -1000.0)
+			if(\main@oMy =& null | \main@oMy.d = true)
+				do u.x :: 200.0 + 300.0
+			else
+				do u.x :: \main@oMy.x + 300.0
+			end if
+			do u.y :: -u.h
+			do u.vx :: 6.0
+			do u.vy :: 40.0
+			do u.gai :: false
+			do u.incMode()
+		end if
+	default
+	end switch
+end func
+
+
++func initj1(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ej1.png"
+	do u.a :: 20
+	do u.kai :: 300.0
+	do u.setWH()
+	do u.x :: -400.0
+	do u.y :: \main@ty
+	do u.hp :: 20.0
+	do u.setAtari(304.0, 350.0, 50.0)
+	do u.setAtari2(304.0, 350.0, 80.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.str :: ["ej1.png", "ej2.png", "ej3.png", "ej4.png"]
+	do u.sp :: 8
+	do u.color :: 1
+end func
++func actj1(u: \main@UNIT)
+	do u.sp :- 1
+	if(u.sp = 0)
+		do u.p :+ 1
+		if(u.p >= ^u.str)
+			do u.p :: 0
+		end if
+		do u.sp :: 8
+	end if
+	do u.g :: u.str[u.p]
+end func
+
++func initj3(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ej31.png"
+	do u.a :: 45
+	do u.kai :: 300.0
+	;コメントかり回復
+	do u.setWH()
+	do u.x :: -400.0
+	do u.y :: \main@ty
+	do u.hp :: 20.0
+	do u.setAtari(304.0, 350.0, 50.0)
+	do u.setAtari2(304.0, 350.0, 80.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.str :: ["ej31.png", "ej32.png", "ej33.png", "ej34.png"]
+	do u.sp :: 8
+	do u.color :: 3
+end func
++func actj3(u: \main@UNIT)
+	do u.sp :- 1
+	if(u.sp = 0)
+		do u.p :+ 1
+		if(u.p >= ^u.str)
+			do u.p :: 0
+		end if
+		do u.sp :: 8
+	end if
+	do u.g :: u.str[u.p]
+end func
+
+
++func initDON(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ed11.png"
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: \main@ty
+	do u.hp :: 20.0
+	do u.setAtari(300.0, 310.0, 100.0)
+	do u.setAtari2(300.0, 310.0, 140.0)
+	do u.color :: 5
+	do u.vx :: 16.0
+	do \main@sndd(1)
+end func
++func actDON(u: \main@UNIT)
+	do u.cnt2 :+ 1
+	if(u.cnt2 > 1)
+		switch(u.g)
+		case "ed12.png"
+			do u.g :: "ed11.png"
+		default
+			do u.g :: "ed12.png"
+		end switch
+		do u.cnt2 :: 0
+	end if
+	switch(u.mode)
+	case 0
+		if(u.x > -200.0)
+			do u.x :: -200.0
+			do u.vx :: 0.0
+			do u.incMode()
+		end if
+	case 1
+		do u.loop1(10)
+	case 2
+		var oo: \main@UNIT :: u.cObj("BAZU")
+		do oo.x :: u.x + 450.0
+		do oo.y :: u.y + 180.0
+		do u.child :: oo
+		do u.incMode()
+	case 3
+		if(u.child.d = true)
+			do u.vx :: 1.0
+			do u.incMode()
+		end if
+	case 4
+		do u.loop1(20)
+	case 5
+		do \main@sndd(44)
+		do u.incMode()
+	default
+		do u.moveRightK(1400.0, 1.0, 60.0)
+	end switch
+end func
+
+
++func initBUZ(u: \main@UNIT)
+	do u.u :: -1000.0
+	do u.a :: 60
+	do u.kai :: 0.0
+	do u.g :: "edm1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.60)
+	do u.bomb :: true
+	do \main@sndd(10)
+end func
++func actBUZ(u: \main@UNIT)
+	switch(u.g)
+	case "edm1.png"
+		do u.g :: "edm2.png"
+	default
+		do u.g :: "edm1.png"
+	end switch
+	switch(u.mode)
+	case 0
+		do u.vx :: 1.0
+		do u.incMode()
+	default
+		do u.moveRightK(1400.0, 1.0, 30.0)
+	end switch
+end func
+
++func initDONS(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: -98.0
+	do u.g :: "ed31.png"
+	do u.a :: 40
+	do u.kai :: 20.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: \main@ty
+	do u.hp :: 24.0
+	do u.df2 :: 999.0
+	do u.df3 :: 999.0
+	do u.setAtari(330.0, 300.0, 100.0)
+	do u.setAtari2(380.0, 300.0, 180.0)
+	do u.df1 :: 9999.0
+	do u.df2 :: 9999.0
+	do u.df3 :: 9999.0
+	do u.color :: 5
+	do u.vx :: 1.0
+	do \main@sndd(1)
+end func
++func actDONS(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if((u.mode = 0 & u.cnt3 > 1) | (u.mode > 0 & u.cnt3 > 3))
+		switch(u.g)
+		case "ed31.png"
+			do u.g :: "ed32.png"
+		default
+			do u.g :: "ed31.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		do u.moveRightK(0.0, 0.5, 40.0)
+	case 1
+		do u.incMode()
+		do u.vx :: 4.0
+		do \main@sndd(41)
+	default
+		;if(\main@snd[41].playing() = false)
+		;		do \main@sndd(41)
+		;	end if
+		do u.moveRight(1280.0)
+	end switch
+end func
+
++func initDONSW(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ed21-1.png"
+	do u.a :: 50
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: \main@ty
+	do u.hp :: 20.0
+	do u.setAtari(300.0, 310.0, 100.0)
+	do u.setAtari2(300.0, 310.0, 140.0)
+	do u.color :: 6
+	do u.str :: ["ed22-1.png", "ed22-2.png", "ed23-1.png", "ed23-2.png", "ed24-1.png", "ed24-2.png"]
+	do u.vx :: 16.0
+	do u.color :: 5
+	do \main@sndd(41)
+end func
++func actDONSW(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	switch(u.mode)
+	case 0, 2, 3, 4
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "ed21-1.png"
+				do u.g :: "ed21-2.png"
+			default
+				do u.g :: "ed21-1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+	default
+	end switch
+	switch(u.mode)
+		
+	case 0
+		var i: float
+		
+		if(\main@oMy =& null | \main@oMy.d = true)
+			do i :: 500.0
+		else
+			do i :: \main@oMy.x - u.x
+		end if
+		if(i < 120.0 & i >= 0.0)
+			do u.sp :: 2
+			do u.vx :: 0.0
+			do u.incMode()
+			do \main@sndd(37)
+		end if
+	case 1
+		do u.sp :- 1
+		if(u.sp = 0)
+			do u.p :+ 1
+			if(u.p = 4)
+				do u.setAtari(500.0, 270.0, 150.0)
+			end if
+			if(u.p >= ^u.str)
+				do u.vx :: 10.0
+				do u.incMode()
+				do u.sp :: 0
+				do u.p :: 0
+				do u.g :: "ed21-1.png"
+				do u.vx :: 1.0
+				do u.setAtari(300.0, 310.0, 100.0)
+				ret
+			end if
+			do u.sp :: 2
+		end if
+		do u.g :: u.str[u.p]
+	case 2
+		do u.loop1(20)
+	case 3
+		do \main@sndd(44)
+		do u.incMode()
+	case 4
+		do u.moveRightK(1400.0, 1.0, 60.0)
+	end switch
+end func

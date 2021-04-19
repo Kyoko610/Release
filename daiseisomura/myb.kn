@@ -1,0 +1,169 @@
++func init(u: \main@UNIT)
+	do u.kind :: %my
+	do u.gai :: true
+	do u.u :: -100.0
+	do u.p :: 0
+	do u.hp :: 209.0
+	do u.mp :: 209.0
+	do u.x :: 0.0 + 550.0
+	do u.y :: \main@ty - 320.0 + 245.0
+	do u.spMax :: 6
+	do u.sp :: u.spMax
+	do u.w :: 840.0
+	do u.h :: 730.0
+	do u.jFlg :: 0
+	do u.jS :: 0.0
+	do u.jKasoku :: 6.0
+	do u.p :: 0
+	;do u.addAtari2(720.0, 540.0, 220.0)
+	do u.setAtari(900.0 - 450.0, 635.0 - 245.0, 70.0)
+	do \main@snd[28].setPos(0.0)
+	do \main@snd[28].playLoop()
+end func
+
++func act(u: \main@UNIT)
+	;do \main@move :: 1
+	if(\main@gamemode = %normal)
+		do u.mp :+ 3.0
+		if(u.mp > 209.0)
+			do u.mp :: 209.0
+		end if
+		if(u.mode = 0 | u.mode = 2)
+			if(\main@drawMain.focused() = true & input@pad(0, %left) > 0)
+				do u.x :- 8.0
+			end if
+			if(\main@drawMain.focused() = true & input@pad(0, %right) > 0)
+				do u.x :+ 8.0
+			end if
+		end if
+		do u.x :: lib@clampFloat(u.x, -300.0, 300.0 + 550.0)
+		if(\main@drawMain.focused() = true & input@pad(0, %d) = 1)
+			if(\main@oMy.mp = 209.0)
+				do u.mode :: 3
+				do u.cnt :: 0
+				do \main@sndd(39)
+				do \main@sndd(73) {VOICE}
+				block
+					var oooo: \main@UNIT :: u.cObj("MTAMAB")
+					do oooo.x :: u.x
+					do oooo.y :: u.y
+				end block
+				do \main@oMy.mp :- 209.0
+				if(\main@oMy.mp < 0.0)
+					do \main@oMy.mp :: 0.0
+				end if
+				;do \main@snd[11].setPos(0.0)
+				;do \main@snd[11].play()
+				;else
+				;do \main@sndd(34)
+			end if
+		end if
+		if(u.mode = 0)
+			if(u.jFlg = 0)
+				if(\main@drawMain.focused() = true & input@pad(0, %a) = 1)
+					do u.jS :: -16.0
+					do u.jKasoku :: 0.2
+					do u.jFlg :: 1
+					do u.setAtari2(700.0 - 450.0, 620.0 - 245.0, 100.0)
+					do u.mode :: 2
+					do \main@sndd(29)
+				end if
+			end if
+		end if
+	end if
+	do u.cnt2 :+ 1
+	if(u.cnt2 > 3)
+		if(u.p = 0)
+			do u.p :: 1
+		else
+			do u.p :: 0
+		end if
+		do u.cnt2 :: 0
+	end if
+	if(u.jFlg = 1)
+		do u.y :+ u.jS
+		;do u.y :: u.y.clampMin(-500.0)
+		do u.jS :+ u.jKasoku
+		do u.jKasoku :+ 0.03
+	end if
+	if(u.jFlg = 1 & u.y >= \main@ty - 320.0 + 245.0)
+		do u.y :: \main@ty - 320.0 + 245.0
+		do u.jFlg :: 0
+		;do u.p :: 0
+		do u.atari2 :: null
+		if(u.mode <> 3)
+			do u.mode :: 0
+		end if
+	end if
+	if(u.jFlg = 0)
+		if(u.mode = 0)
+			if(u.p = 0)
+				do u.g :: "bike1.png"
+			else
+				do u.g :: "bike2.png"
+			end if
+		else
+			if(u.p = 0)
+				do u.g :: "bike_jump1.png"
+			else
+				do u.g :: "bike_jump2.png"
+			end if
+		end if
+	else
+		if(u.p = 0)
+			do u.g :: "bike_jump1.png"
+		else
+			do u.g :: "bike_jump2.png"
+		end if
+	end if
+	
+	if(u.mode = 3)
+		if(u.cnt < 8)
+			if(u.jFlg = 0)
+				do u.g :: "bike_gun11.png"
+			else
+				do u.g :: "bike_jump_gun11.png"
+			end if
+		elif(u.cnt < 16)
+			if(u.jFlg = 0)
+				do u.g :: "bike_gun12.png"
+			else
+				do u.g :: "bike_jump_gun12.png"
+			end if
+		elif(u.cnt < 24)
+			if(u.jFlg = 0)
+				do u.g :: "bike_gun21.png"
+			else
+				do u.g :: "bike_jump_gun21.png"
+			end if
+		else
+			if(u.jFlg = 0)
+				do u.g :: "bike_gun22.png"
+			else
+				do u.g :: "bike_jump_gun22.png"
+			end if
+		end if
+		do u.cnt :+ 1
+		if(u.cnt >= 30)
+			do u.cnt :: 0
+			do u.mode :: 0
+			do u.atari2 :: null
+		end if
+	end if
+end func
+
++func initTAMA(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: -89998.0
+	do u.g :: "TDUM.png"
+	do u.a :: 16
+	do u.setWH()
+	do u.x :: \main@oMy.x + 630.0 - 450.0
+	do u.y :: \main@oMy.y + 600.0 - 245.0
+	do u.vx :: -60.0
+	do u.hp :: 0.0
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, 80.0)
+end func
+
++func actTAMA(u: \main@UNIT)
+end func

@@ -1,0 +1,62 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.g :: "bossb2_1.png"
+	do u.setWH()
+	do u.x :: -u.w + 300.0
+	do u.y :: 0.0
+	do u.vx :: 0.2
+	do u.mhp :: 99999.0
+	do u.hp :: u.mhp
+	do u.setAtari(800.0, 525.0, 130.0)
+	var o: \main@UNIT :: \main@cObj("PLUS_CLSC2")
+	do o.child :: u
+	do \main@sndd(47)
+	do \main@sndd(45)
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		switch(u.g)
+		case "bossb2_at1.png"
+			do u.g :: "bossb2_at2.png"
+		case "bossb2_at2.png"
+			do u.g :: "bossb2_at1.png"
+		default
+			do u.g :: "bossb2_at1.png"
+		end switch
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(1200.0)
+	case 1
+		do u.d :: true
+		do \main@snd[47].stop()
+		do \main@snd[45].stop()
+	end switch
+end func
+
+
++func init2(u: \main@UNIT)
+	do u.kind :: %myms
+	do u.u :: 9000.0
+	do u.a :: 100
+	do u.g :: "boss2dummy.png"
+	do u.setWH()
+	do u.setAtari2(800.0, 525.0, 130.0)
+end func
+
++func act2(u: \main@UNIT)
+	if(u.child =& null | u.child.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: u.child.x
+	do u.y :: u.child.y
+end func

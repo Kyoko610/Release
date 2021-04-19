@@ -1,0 +1,803 @@
+enum un
+	first
+	wait1
+	first3
+	first4
+	wait2
+	wheel
+	arm1
+	leftright
+	stop1
+	stop2
+	arm2
+	wait3
+	mis1
+	mis2
+	;	fire
+end enum
++func initX(u: \main@UNIT)
+	do u.u :: 79999.0
+	do u.g :: "r3taiki1.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	do u.mhp :: 2600.0
+	do u.hp :: u.mhp
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.gai :: true
+	do u.boss :: true
+	do \main@oBOSS :: u
+	do \main@bgmchg("boss5", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+end func
+
++func actX(u: \main@UNIT)
+	switch(u.mode)
+	case 1001, 1002, 1003
+		do u.p :+ 1
+		if(u.p > 2)
+			switch(u.g)
+			case "r3houkouk1.png"
+				do u.g :: "r3houkouk2.png"
+			case "r3houkouk2.png"
+				do u.g :: "r3houkouk3.png"
+			case "r3houkouk3.png"
+				do u.g :: "r3houkouk4.png"
+			case "r3houkouk4.png"
+				do u.g :: "r3houkouk1.png"
+			default
+				do u.g :: "r3houkouk1.png"
+			end switch
+			do u.p :: 0
+		end if
+	case 1004
+		do u.p :+ 1
+		if(u.p > 10)
+			switch(u.g)
+			case "r3houkouowari1.png"
+				do u.g :: "r3houkouowari2.png"
+			case "r3houkouowari2.png"
+				do u.g :: "r3houkouowari3.png"
+			case "r3houkouowari3.png"
+			default
+				do u.g :: "r3houkouowari1.png"
+			end switch
+			do u.p :: 0
+		end if
+	case 1000
+		do u.p :+ 1
+		if(u.p > 10)
+			switch(u.g)
+			case "r3meteo1.png"
+				do u.g :: "r3meteo2.png"
+			case "r3meteo2.png"
+				do u.g :: "r3meteo3.png"
+			case "r3meteo3.png"
+				do u.g :: "r3meteo4.png"
+			case "r3meteo4.png"
+			default
+				do u.g :: "r3meteo1.png"
+			end switch
+			do u.p :: 0
+		end if
+	default
+		do u.p :+ 1
+		if(u.p > 10)
+			switch(u.g)
+			case "r3taiki1.png"
+				do u.g :: "r3taiki2.png"
+			case "r3taiki2.png"
+				do u.g :: "r3taiki3.png"
+			case "r3taiki3.png"
+				do u.g :: "r3taiki4.png"
+			case "r3taiki4.png"
+				do u.g :: "r3taiki5.png"
+			case "r3taiki5.png"
+				do u.g :: "r3taiki6.png"
+			case "r3taiki6.png"
+				do u.g :: "r3taiki7.png"
+			case "r3taiki7.png"
+				do u.g :: "r3taiki1.png"
+			default
+				do u.g :: "r3taiki1.png"
+			end switch
+			do u.p :: 0
+		end if
+	end switch
+	
+	if(u.cnt5 = 0)
+		if(u.hp < u.mhp * 0.65)
+			do \main@bgmchg("boss9", 1)
+			do u.cnt5 :: 1
+		end if
+	end if
+	switch(u.mode)
+	case %first $ @un $ int
+		if(u.kinit = 0)
+			do u.x :: 0.0
+			do u.vx :: 0.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(0.0)
+	case %wait1 $ @un $ int, %wait2 $ @un $ int, %wait3 $ @un $ int
+		do u.loop1(80)
+		if(u.cnt = 79 & u.cnt5 = 1)
+			do u.incMode()
+			var o: \main@UNIT :: u.cObj("PLUS_RONO_MO")
+			do u.cnt5 :: 2
+			do u.mode :: 1000
+		end if
+	case %first3 $ @un $ int
+		if(u.kinit = 0)
+			do u.x :: 0.0
+			do u.vx :: 0.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(-180.0)
+	case %first4 $ @un $ int
+		do u.setAtari2(620.0, 420.0, 300.0)
+		do u.incMode()
+		;wait2
+	case %wheel $ @un $ int
+		if(u.kinit = 0)
+			var oo: \main@UNIT :: u.cObj("PLUS_RONO_WH")
+			;do oo.x :: u.x - 212.0
+			;do oo.y :: u.y - 80.0
+			do u.child :: oo
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case %arm1 $ @un $ int
+		if(u.kinit = 0)
+			do u.child :: u.cObj("PLUS_RONO_L")
+			do u.child2 :: u.cObj("PLUS_RONO_R")
+			do u.kinit :: 1
+		end if
+		if(u.child.mode = 1 & u.child2.mode = 1)
+			do u.incMode()
+		end if
+	case %leftright $ @un $ int
+		if(u.kinit = 0)
+			do u.cnt4 :: 0
+			do u.cnt2 :: 0
+			do u.kinit :: 1
+		end if
+		do u.cnt4 :+ 1
+		if(u.cnt4 > 16)
+			do u.cnt2 :+ 1
+			var o: \main@UNIT :: \main@cObj("PLUS_RONO_FIRE")
+			if(u.cnt2 > 6)
+				do u.incMode()
+			end if
+			do u.cnt4 :: 0
+		end if
+	case %stop1 $ @un $ int
+		do u.loop1(100)
+	case %stop2 $ @un $ int
+		do u.loop1(150)
+	case %arm2 $ @un $ int
+		if(u.kinit = 0)
+			do u.child.mode :: 10
+			do u.child2.mode :: 10
+			do u.kinit :: 1
+		end if
+		if(u.child2 =& null | u.child2.d = true)
+			do u.incMode()
+		end if
+		;wait3
+	case %mis1 $ @un $ int
+		if(u.kinit = 0)
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do u.kinit :: 1
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 20)
+			var o: \main@UNIT :: \main@cObj("PLUS_RONO_MIS")
+			do u.cnt4 :+ 1
+			do u.cnt3 :: 0
+		end if
+		if(u.cnt4 > 20)
+			do u.incMode()
+		end if
+	case %mis2 $ @un $ int
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+		;
+		;
+		;パワーアップ
+	case 1000
+		do u.loop1(60)
+	case 1000 + 1
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do \main@sndd(93)
+		end if
+		do u.loop1(240)
+	case 1001 + 1
+		if(u.kinit = 0)
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do u.kinit :: 1
+		end if
+		var shf: []int :: lib@shuffle(51)
+		var shf2: []int :: lib@shuffle(51)
+		var shf3: []int :: lib@shuffle(51)
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 4)
+			var o: \main@UNIT :: \main@cObj("PLUS_RONO_ME")
+			do o.x :: shf[u.cnt4] $ float * 36.0 + 200.0
+			var o2: \main@UNIT :: \main@cObj("PLUS_RONO_ME")
+			do o2.x :: shf[u.cnt4] $ float * 36.0 + 200.0
+			var o3: \main@UNIT :: \main@cObj("PLUS_RONO_ME")
+			do o3.x :: shf[u.cnt4] $ float * 36.0 + 200.0
+			
+			do u.cnt4 :+ 1
+			do u.cnt3 :: 0
+		end if
+		if(u.cnt4 % 10 = 0)
+			do \main@sndd(11)
+		end if
+		if(u.cnt4 > 50)
+			do u.incMode()
+		end if
+	case 1002 + 1
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 1004
+		do u.loop1(70)
+	case 1005
+		if(u.kinit = 0)
+			var oo: \main@UNIT :: u.cObj("PLUS_RONO_WH2")
+			do u.child :: oo
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 1006
+		do u.loop1(100)
+	case 1007
+		if(u.kinit = 0)
+			do u.child :: u.cObj("PLUS_RONO_L")
+			do u.child2 :: u.cObj("PLUS_RONO_R")
+			do u.kinit :: 1
+		end if
+		if(u.child.mode = 1 & u.child2.mode = 1)
+			do u.incMode()
+		end if
+	case 1008
+		if(u.kinit = 0)
+			do u.cnt4 :: 0
+			do u.cnt2 :: 0
+			do u.kinit :: 1
+		end if
+		do u.cnt4 :+ 1
+		if(u.cnt4 > 16)
+			do u.cnt2 :+ 1
+			var o: \main@UNIT :: \main@cObj("PLUS_RONO_FIRE2")
+			if(u.cnt2 > 6)
+				do u.incMode()
+			end if
+			do u.cnt4 :: 0
+		end if
+	case 1009
+		do u.loop1(100)
+	case 1010
+		do u.loop1(150)
+	case 1011
+		if(u.kinit = 0)
+			do u.child.mode :: 10
+			do u.child2.mode :: 10
+			do u.kinit :: 1
+		end if
+		if(u.child2 =& null | u.child2.d = true)
+			do u.incMode()
+			do u.mode :: 1000
+		end if
+	default
+		do u.incMode()
+		do u.mode :: %wait1 $ @un $ int
+	end switch
+	
+end func
+
++func initME(u: \main@UNIT)
+	do u.u :: -2000.0
+	do u.g :: "firerono2.png"
+	do u.setWH()
+	do u.a :: 80
+	;do u.x :: lib@rndFloat(200.0, 2180.0)
+	do u.y :: -u.h
+	do u.vx :: -40.0
+	do u.vy :: 40.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w * 0.4)
+	do u.gai :: true
+end func
++func actME(u: \main@UNIT)
+	if(u.y > 720.0)
+		do u.d :: true
+	end if
+end func
+
++func initWH(u: \main@UNIT)
+	do u.u :: -101.0
+	do u.a :: 50
+	do u.kai :: 0.0
+	do u.g :: "sidensyat1.png"
+	do u.setWH()
+	do u.y :: 720.0 - 30.0 - 500.0
+	if(lib@rnd(0, 10) > 5)
+		do u.x :: -u.w
+		do u.vx :: 1.0
+		do u.cnt3 :: 0
+	else
+		do u.x :: 1280.0
+		do u.vx :: -1.0
+		do u.cnt3 :: 1
+	end if
+	do u.vy :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 180.0)
+	do u.gai :: true
+	do \main@sndd(48)
+end func
++func actWH(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 4)
+		switch(u.g)
+		case "sidensyat1.png"
+			do u.g :: "sidensyat2.png"
+		case "sidensyat2.png"
+			do u.g :: "sidensyat1.png"
+		default
+			do u.g :: "sidensyat1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.cnt3 = 0)
+			do u.moveRightK(1380.0, 1.0, 20.0)
+		else
+			do u.moveLeftK(-u.w - 100.0, -1.0, -20.0)
+		end if
+	case 1
+		if(u.cnt3 = 0)
+			do u.moveLeftK(-u.w - 300.0, -1.0, -50.0)
+		else
+			do u.moveRightK(1580.0, 1.0, 50.0)
+		end if
+	case 2
+		do u.d :: true
+		do \main@snd[48].stop()
+		
+	end switch
+end func
+
+
++func initWH2(u: \main@UNIT)
+	do u.u :: -101.0
+	do u.a :: 50
+	do u.kai :: 0.0
+	do u.g :: "sidensyat1.png"
+	do u.setWH()
+	do u.y :: 720.0 - 30.0 - 500.0
+	if(lib@rnd(0, 10) > 5)
+		do u.x :: -u.w
+		do u.vx :: 1.0
+		do u.cnt3 :: 0
+	else
+		do u.x :: 1280.0
+		do u.vx :: -1.0
+		do u.cnt3 :: 1
+	end if
+	do u.vy :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 180.0)
+	do u.gai :: true
+	do \main@sndd(48)
+end func
++func actWH2(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 4)
+		switch(u.g)
+		case "sidensyat1.png"
+			do u.g :: "sidensyat2.png"
+		case "sidensyat2.png"
+			do u.g :: "sidensyat1.png"
+		default
+			do u.g :: "sidensyat1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.cnt3 = 0)
+			do u.moveRightK(1380.0, 1.0, 20.0)
+		else
+			do u.moveLeftK(-u.w - 100.0, -1.0, -20.0)
+		end if
+	case 1
+		if(u.cnt3 = 0)
+			do u.moveLeftK(-u.w - 100.0, -1.0, -30.0)
+		else
+			do u.moveRightK(1380.0, 1.0, 30.0)
+		end if
+	case 2
+		if(u.cnt3 = 0)
+			do u.moveRightK(1580.0, 1.0, 45.0)
+		else
+			do u.moveLeftK(-u.w - 600.0, -1.0, -45.0)
+		end if
+	case 3
+		do u.d :: true
+		do \main@snd[48].stop()
+		
+	end switch
+end func
+
++func initL(u: \main@UNIT)
+	do u.u :: 7000.0
+	do u.g :: "srobohandl1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -100.0
+end func
++func actL(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-120.0)
+	case 10
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-u.w)
+	case 11
+		do u.d :: true
+	end switch
+end func
+
++func initR(u: \main@UNIT)
+	do u.u :: 7000.0
+	do u.g :: "srobohandr1.png"
+	do u.setWH()
+	do u.x :: 1280.0
+	do u.y :: -100.0
+end func
++func actR(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(1280.0 - u.w + 120.0)
+	case 10
+		if(u.kinit = 0)
+			do u.vx :: 20.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(800.0)
+	case 11
+		do u.d :: true
+	end switch
+end func
+
+
++func initFIRE(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 50
+	do u.g :: "firerono.png"
+	do u.setWH()
+	do u.cntr :: 0.0
+	do u.cntd :: 300.0
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: 688.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: 377.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0 + 40.0, u.w * 0.2)
+	do u.gai :: true
+	do u.boss :: true
+	do u.p :: 0
+	do u.sp :: 0
+end func
++func actFIRE(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: 688.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: 377.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do \main@sndd(11)
+			do u.kinit :: 1
+		end if
+		do u.cntr :+ 3.0
+		if(u.cntr > 360.0)
+			do u.cntr :- 360.0
+		end if
+		if(\main@oBOSS.mode = %stop2 $ @un $ int)
+			do u.incMode()
+		end if
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(11)
+			do u.kinit :: 1
+			do u.gai :: false
+		end if
+		do u.cntd :- 8.0
+	end switch
+end func
+
+
+
++func initFIRE2(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 50
+	do u.g :: "firerono.png"
+	do u.setWH()
+	do u.cntr :: 0.0
+	do u.cntd :: 300.0
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: 688.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: 377.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0 + 40.0, u.w * 0.2)
+	do u.gai :: true
+	do u.boss :: true
+	do u.p :: 0
+	do u.sp :: 0
+end func
++func actFIRE2(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: 688.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: 377.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do \main@sndd(11)
+			do u.kinit :: 1
+		end if
+		do u.cntr :+ 12.0
+		if(u.cntr > 360.0)
+			do u.cntr :- 360.0
+		end if
+		if(\main@oBOSS.mode = 1010)
+			do u.incMode()
+		end if
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(11)
+			do u.kinit :: 1
+			do u.gai :: false
+		end if
+		do u.cntd :- 20.0
+	end switch
+end func
+
+
++func initBB(u: \main@UNIT)
+	do u.u :: 80000.0
+	do u.a :: 60
+	do u.kai :: 0.0
+	do u.g :: "sbosssONm_3.png"
+	do u.setWH()
+	if(\main@oMy =& null | \main@oMy.d = true)
+		do u.x :: lib@rndFloat(200.0, 1000.0)
+	else
+		do u.x :: \main@oMy.x + 170.0
+	end if
+	do u.y :: 360.0
+	do u.vy :: -30.0
+	do \main@sndd(10)
+	do u.gai :: true
+end func
++func actBB(u: \main@UNIT)
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		if(u.cnt % 2 = 0)
+			if(u.g = "sbosssONm_1.png")
+				do u.g :: "sbosssONm_2.png"
+			else
+				do u.g :: "sbosssONm_1.png"
+			end if
+		end if
+		if(u.y < -u.h)
+			do u.mode :+ 1
+			do u.vy :: 40.0
+			do u.cnt :: 0
+			do u.u :: -3000.0
+		end if
+	case 1
+		if(u.cnt % 2 = 0)
+			if(u.g = "sbosssONm_3.png")
+				do u.g :: "sbosssONm_4.png"
+			else
+				do u.g :: "sbosssONm_3.png"
+			end if
+		end if
+		if(u.y > 150.0)
+			do u.mode :+ 1
+			do u.vy :: 0.0
+			do u.cnt :: 0
+			do u.setAtari(u.w / 2.0, u.h / 2.0 + 120.0, u.w / 2.0 * 0.3)
+			do \main@sndd(11)
+		end if
+	case 2
+		do u.cnt :+ 1
+		if(u.cnt < 10)
+			do u.g :: "sbosssONB_1.png"
+		elif(u.cnt < 20)
+			do u.g :: "sbosssONB_2.png"
+		else
+			do u.g :: "sbosssONB_3.png"
+		end if
+		if(u.cnt > 40)
+			do u.d :: true
+		end if
+	end switch
+end func
+
+
++func initMO(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.g :: "monoris1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 143.0
+	do u.vx :: 0.0
+	do u.mhp :: 240.0
+	do u.df1 :: 3.0
+	do u.df2 :: 1.0
+	do u.hp :: u.mhp
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, 110.0)
+	
+	do u.boss :: true
+	;	do \main@bgmchg("boss3", 1)
+	;	do \main@oBOSS :: u
+	;	do u.cObj("HPBARE")
+	;	do u.cObj("HPBARE2")
+	;	do u.cObj("HPBARGE")
+end func
+
+
++func actMO(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.kind :: %haikei
+		ret
+	end if
+	if(u.cnt5 = 0 & u.x < 0.0)
+		do u.x :+ 6.0
+	else
+		do u.cnt5 :: 1
+		if(u.vx = 0.0)
+			do u.vx :: 4.0
+		end if
+		if(u.x < 0.0)
+			do u.vx :: -u.vx
+		end if
+		if(u.x > 1270.0 - u.w)
+			do u.vx :: -u.vx
+		end if
+	end if
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 6)
+		do u.cnt3 :: 0
+	end if
+	if(\main@oBARI =& null)
+		if(u.hp < 150.0)
+			var o: \main@UNIT :: u.cObj("PLUS_RONO_BA")
+			do o.child :: u
+			do u.hp :: u.mhp
+			do u.atari2 :: null
+			;do u.kie :: true
+			;do u.f :: \main@KIE
+		else
+			do u.setAtari2(u.w / 2.0, u.h / 2.0, 200.0)
+			if(u.hp - 150.0 < (u.mhp - 150.0) * 0.25)
+				if(u.cnt3 = 0)
+					if(u.g = "monoris3-1.png")
+						do u.g :: "monoris3-2.png"
+					else
+						do u.g :: "monoris3-1.png"
+					end if
+				else
+					do u.g :: "monoris3-1.png"
+				end if
+			elif(u.hp - 150.0 < (u.mhp - 150.0) * 0.50)
+				if(u.cnt3 = 0)
+					if(u.g = "monoris2-1.png")
+						do u.g :: "monoris2-2.png"
+					else
+						do u.g :: "monoris2-1.png"
+					end if
+				else
+					do u.g :: "monoris2-1.png"
+				end if
+			elif(u.hp - 150.0 < (u.mhp - 150.0) * 0.75)
+				if(u.cnt3 = 0)
+					if(u.g = "monoris1-1.png")
+						do u.g :: "monoris1-2.png"
+					else
+						do u.g :: "monoris1-1.png"
+					end if
+				else
+					do u.g :: "monoris1-1.png"
+				end if
+			else
+				do u.g :: "monoris1.png"
+			end if
+		end if
+	else
+		if(u.cnt3 = 0)
+			if(u.g = "monoris3-1.png")
+				do u.g :: "monoris3-2.png"
+			else
+				do u.g :: "monoris3-1.png"
+			end if
+		else
+			do u.g :: "monoris3-1.png"
+		end if
+	end if
+	
+end func
+
++func initB(u: \main@UNIT)
+	do u.u :: -1000.0
+	do u.g :: "shield33.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.boss :: true
+	do \main@sndd(63)
+	do \main@oBARI :: u
+end func
+
++func actB(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt = 3)
+		do u.al :- 0x01000000
+		if(u.al < 0x80000000)
+			do u.child.child :: null
+			do u.child.setAtari2(640.0, 360.0, 360.0)
+			do u.d :: true
+			do \main@oBARI :: null
+		end if
+		do u.cnt :: 0
+	end if
+end func
+
+
+

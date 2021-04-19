@@ -1,0 +1,50 @@
++func init(u: \main@UNIT)
+	do u.u :: 1000.0
+	do u.g :: "jumpred01.png"
+	do u.hp :: 23.0
+	do u.kai :: 4.0
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -50.0
+	do u.setAtari(280.0, 580.0, 110.0)
+	do u.setAtari2(280.0, 250.0, 160.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.str :: ["jumpred01.png", "jumpred02.png", "jumpred03.png"]
+	do u.cnt :: 20
+	do u.color :: 3
+end func
+
++func act(u: \main@UNIT)
+	if(u.mode = 0)
+		do u.g :: u.str[1]
+		do u.cnt :- 1
+		if(u.cnt = 0)
+			do u.mode :: 1
+			do u.vy :: -13.0
+			do \main@sndd(46)
+		end if
+	elif(u.mode = 1)
+		do u.g :: u.str[0]
+		do u.vy :+ 0.3
+		if(u.y > -50.0)
+			do u.y :: -50.0
+			do u.vy :: 0.0
+			do u.mode :: 2
+			do u.cnt :: 5
+			do \main@sndd(8)
+		end if
+	else
+		do u.g :: u.str[2]
+		do u.cnt :- 1
+		if(u.cnt = 0)
+			do u.y :: -50.0
+			do u.vy :: 0.0
+			do u.mode :: 0
+			do u.cnt :: 20
+			
+		end if
+	end if
+end func

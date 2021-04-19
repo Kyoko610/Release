@@ -1,0 +1,433 @@
++func setfunc()
+	;:::::::::::::::::PLS:::::::::::::::
+	do \main@addJob("PLUS_CHECKPOINT", \enemyplus\checkpoint@init, \enemyplus\checkpoint@act)
+	
+	do \main@addJob("PLUS_JUMP", \enemyplus\jump2@init, \enemyplus\jump2@act)
+	do \main@addJob("PLUS_CLS", \enemyplus\clasher@init, \enemyplus\clasher@act)
+	do \main@addJob("PLUS_CLSC2", \enemyplus\clasher@init2, \enemyplus\clasher@act2)
+	do \main@addJob("PLUS_MK3", \enemyplus\mikuko3@init, \enemyplus\mikuko3@act)
+	do \main@addJob("PLUS_MK3T", \enemyplus\mikuko3@initE, \enemyplus\mikuko3@actTE)
+	do \main@addJob("PLUS_MK3L", \enemyplus\mikukol@init, \enemyplus\mikukol@act)
+	do \main@addJob("PLUS_MK3LT", \enemyplus\mikukol@initE, \enemyplus\mikukol@actTE)
+	
+	do \main@addJob("PLUS_MK4", \enemyplus\mikuko4@init, \enemyplus\mikuko4@act)
+	do \main@addJob("PLUS_MK4T", \enemyplus\mikuko4@initE, \enemyplus\mikuko4@actTE)
+	do \main@addJob("PLUS_MK4R", \enemyplus\mikuko4r@init, \enemyplus\mikuko4r@act)
+	do \main@addJob("PLUS_MK4RT", \enemyplus\mikuko4r@initE, \enemyplus\mikuko4r@actTE)
+	
+	do \main@addJob("PLUS_AHIRU", \enemyplus\ahi@init, \enemyplus\ahi@act)
+	
+	do \main@addJob("PLUS_DON", \enemyplus\donu2@initDON, \enemyplus\donu2@actDON)
+	
+	do \main@addJob("PLUS_DONH", \enemyplus\donugold@initDON, \enemyplus\donugold@actDON)
+	do \main@addJob("BAZZ", \enemyplus\donugold@initGE, \enemyplus\donugold@actGE)
+	
+	
+	do \main@addJob("PLUS_DENKO", \enemyplus\denko1@init, \enemyplus\denko1@act)
+	do \main@addJob("PLUS_DENKOR", \enemyplus\denko1@init2, \enemyplus\denko1@act2)
+	do \main@addJob("PLUS_LOCK", \enemyplus\denko1@initL, \enemyplus\denko1@actL)
+	do \main@addJob("PLUS_MISS", \enemyplus\denko1@initBB, \enemyplus\denko1@actBB)
+	
+	do \main@addJob("PLUS_CAMERA", \enemyplus\camera@init, \enemyplus\camera@act)
+	do \main@addJob("PLUS_CAMERA2", \enemyplus\camera@init2, \enemyplus\camera@act2)
+	
+	do \main@addJob("PLUS_RONO", \enemyplus\ronoex@initX, \enemyplus\ronoex@actX)
+	do \main@addJob("PLUS_RONO_WH", \enemyplus\ronoex@initWH, \enemyplus\ronoex@actWH)
+	do \main@addJob("PLUS_RONO_WH2", \enemyplus\ronoex@initWH2, \enemyplus\ronoex@actWH2)
+	do \main@addJob("PLUS_RONO_L", \enemyplus\ronoex@initL, \enemyplus\ronoex@actL)
+	do \main@addJob("PLUS_RONO_R", \enemyplus\ronoex@initR, \enemyplus\ronoex@actR)
+	do \main@addJob("PLUS_RONO_FIRE", \enemyplus\ronoex@initFIRE, \enemyplus\ronoex@actFIRE)
+	do \main@addJob("PLUS_RONO_FIRE2", \enemyplus\ronoex@initFIRE2, \enemyplus\ronoex@actFIRE2)
+	do \main@addJob("PLUS_RONO_MIS", \enemyplus\ronoex@initBB, \enemyplus\ronoex@actBB)
+	do \main@addJob("PLUS_RONO_ME", \enemyplus\ronoex@initME, \enemyplus\ronoex@actME)
+	do \main@addJob("PLUS_RONO_MO", \enemyplus\ronoex@initMO, \enemyplus\ronoex@actMO)
+	do \main@addJob("PLUS_RONO_BA", \enemyplus\ronoex@initB, \enemyplus\ronoex@actB)
+	
+	do \main@addJob("PLUS_END_BL", \enemyplus\end2@initddm2, \enemyplus\end2@actddm2)
+	
+	do \main@addJob("PLUS_END", \enemyplus\end2@initddm, \enemyplus\end2@actddm)
+	
+	
+	;do \main@addJob("PLUS_RONO_FIRE", \enemyplus\ronoex@initFIRE, \enemyplus\ronoex@actFIRE)
+	
+	;:::::::::::::::::PLS:::::::::::::::
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	do \main@addJob("MY", \my@init, \my@act) {自機}
+	do \main@addJob("MYBB", \mybb@init, \mybb@act) {自機}
+	
+	do \main@addJob("MYB", \myb@init, \myb@act) {自機バイク}
+	
+	do \main@addJob("HAZU", \my@initHAZU, \my@actHAZU) {自機}
+	do \main@addJob("HAZU2", \my@initHAZU2, \my@actHAZU2) {自機}
+	
+	do \main@addJob("GURU", \my@initGURU, \my@actGURU)
+	do \main@addJob("BAKU1", \my@initBAKU, \my@actBAKU)
+	do \main@addJob("BOMB", \my@initBOMB, \my@actBOMB)
+	do \main@addJob("BOOM", \my@initBOOM, \my@actBOOM)
+	do \main@addJob("BARU", \my@initBARU, \my@actBARU)
+	
+	do \main@addJob("MTAMA", \my@initTAMA, \my@actTAMA)
+	do \main@addJob("MTAMAB", \myb@initTAMA, \myb@actTAMA)
+	do \main@addJob("SHO", \my@initsho, \my@actTsho)
+	do \main@addJob("SL", \my@initsl, \my@actTsl)
+	do \main@addJob("WH", \my@initBB, \my@actBB)
+	do \main@addJob("MUKOU", \main@initMUKOU, \main@actMUKOU)
+	
+	do \main@addJob("HKA", \haikei@initA, \haikei@act)
+	do \main@addJob("HKJ", \haikei@initA, \haikei@act2)
+	do \main@addJob("HKJ2", \haikei@initA, \haikei@act3)
+	do \main@addJob("HKH", \haikei@initA, \haikei@acth)
+	do \main@addJob("HKK", \haikei@initA, \haikei@actk)
+	do \main@addJob("HKT", \haikei@initA, \haikei@actTower)
+	do \main@addJob("HKT2", \haikei@initA, \haikei@actTower2)
+	do \main@addJob("HKC", \haikei@initC, \haikei@actC)
+	
+	do \main@addJob("BLACK", \haikei@initBB, \haikei@actBB)
+	do \main@addJob("BLACK2", \haikei@initBB2, \haikei@actBB2)
+	
+	do \main@addJob("HPBAR", \haikei@initHPBAR, \haikei@actHPBAR)
+	do \main@addJob("HPBAR22", \haikei@initHPBAR2, \haikei@actHPBAR)
+	do \main@addJob("HPBARG", \haikei@initHPBARG, \haikei@actHPBARG)
+	do \main@addJob("HPBAR2", \haikei@initHPBARG2, \haikei@actHPBARG2)
+	
+	do \main@addJob("HPBARE", \haikei@initHPBARE, \haikei@actHPBARE)
+	do \main@addJob("HPBARE2", \haikei@initHPBARE2, \haikei@actHPBARE)
+	do \main@addJob("HPBARGE", \haikei@initHPBARGE, \haikei@actHPBARGE)
+	do \main@addJob("PO1", \haikei@initPO1, \haikei@actPO1)
+	do \main@addJob("PO2", \haikei@initPO2, \haikei@actPO2)
+	do \main@addJob("PO3", \haikei@initPO3, \haikei@actPO1)
+	do \main@addJob("GMOVER", \haikei@initGMOVER, \haikei@actGMOVER)
+	do \main@addJob("GCLEAR", \haikei@initCLEAR, \haikei@actCLEAR)
+	do \main@addJob("GCLEAR2", \haikei@initCLEAR2, \haikei@actCLEAR2)
+	do \main@addJob("GCLEAR3", \haikei@initCLEAR3, \haikei@actCLEAR3)
+	do \main@addJob("MOJI", \haikei@initMOJI, \haikei@actMOJI)
+	do \main@addJob("BGM", \haikei@initBGM, \haikei@actBGM)
+	do \main@addJob("SC", \haikei@initSC, \haikei@actSC)
+	
+	do \main@addJob("KIEG", \main@initKIEG, \main@actKIEG)
+	
+	do \main@addJob("CANO1", \enemy\e_etc@init, \enemy\e_etc@act)
+	do \main@addJob("CANOT", \enemy\e_etc@initMB, \enemy\e_etc@actMB)
+	do \main@addJob("CANO2", \enemy\e_etc@init2, \enemy\e_etc@act2)
+	do \main@addJob("CANOT2", \enemy\e_etc@initMB2, \enemy\e_etc@actMB2)
+	
+	do \main@addJob("DON", \enemy\e_etc@initDON, \enemy\e_etc@actDON)
+	do \main@addJob("BAZU", \enemy\e_etc@initBUZ, \enemy\e_etc@actBUZ)
+	
+	
+	do \main@addJob("DONS", \enemy\e_etc@initDONS, \enemy\e_etc@actDONS)
+	do \main@addJob("BAKULMY2", \main@initBOMB2, \main@actBOMB2)
+	do \main@addJob("BAKULMY2S", \main@initBOMB2S, \main@actBOMB2S)
+	do \main@addJob("DONSW", \enemy\e_etc@initDONSW, \enemy\e_etc@actDONSW)
+	
+	do \main@addJob("BUKU", \enemy\taman@initDONL, \enemy\taman@actDONL)
+	do \main@addJob("BUKU2", \enemy\taman@initDONR, \enemy\taman@actDONR)
+	do \main@addJob("BAZUB", \enemy\taman@initBUZ, \enemy\taman@actBUZ)
+	
+	do \main@addJob("BOSSJANK", \boss\blast22@initL, \boss\blast22@actL)
+	do \main@addJob("BOSSJANK2", \boss\blast22@initR, \boss\blast22@actR)
+	do \main@addJob("BOSSJANK22", \boss\blast22@initE, \boss\blast22@actE)
+	
+	;:::::::::::::::::::::::::
+	
+	do \main@addJob("NORMAL", \enemy\e_normal@init, \enemy\e_normal@act)
+	do \main@addJob("GOMI", \enemy\e_normal@init2, \enemy\e_normal@act2)
+	do \main@addJob("BULL", \enemy\e_bull@init, \enemy\e_bull@act)
+	do \main@addJob("AKIKAN", \enemy\e_akikan@init, \enemy\e_akikan@act)
+	do \main@addJob("KAN", \enemy\e_normal@init3, \enemy\e_normal@act3)
+	do \main@addJob("NS", \enemy\e_normal@init4, \enemy\e_normal@act4)
+	do \main@addJob("NSG", \enemy\e_normal@init4G, \enemy\e_normal@act4G)
+	
+	do \main@addJob("NSB", \enemy\e_normal@initAO, \enemy\e_normal@actAO)
+	do \main@addJob("MIK", \enemy\e_mik@init, \enemy\e_mik@act)
+	do \main@addJob("MIK2", \enemy\e_mik@init2, \enemy\e_mik@act2)
+	do \main@addJob("MIKT", \enemy\e_mik@initE, \enemy\e_mik@actTE)
+	do \main@addJob("WH1", \enemy\e_normal@initW1, \enemy\e_normal@actW1)
+	do \main@addJob("WH2", \enemy\e_normal@initW2, \enemy\e_normal@actW1)
+	do \main@addJob("WHKAMA", \enemy\e_normal@initKAMA, \enemy\e_normal@actKAMA)
+	do \main@addJob("CORN", \enemy\e_normal@initCOR, \enemy\e_normal@actCOR)
+	do \main@addJob("OKE", \enemy\e_normal@initOKE, \enemy\e_normal@actOKE)
+	
+	;:::::trap:::::::::
+	do \main@addJob("TRAP1", \enemy\e_trap@init1, \enemy\e_trap@act1)
+	do \main@addJob("TRAP2", \enemy\e_trap@init2, \enemy\e_trap@act2)
+	do \main@addJob("TRAPJUMP", \enemy\e_trap@initJUMP, \enemy\e_trap@actJUMP)
+	do \main@addJob("TRAPJUMPT", \enemy\e_trap@initJUMPT, \enemy\e_trap@actJUMPT)
+	do \main@addJob("TRAPRAKU", \enemy\e_trap@initRAKU, \enemy\e_trap@actRAKU)
+	
+	do \main@addJob("ROBO", \enemy\e_normal@initRO, \enemy\e_normal@actRO)
+	
+	do \main@addJob("J1", \enemy\e_etc@initj1, \enemy\e_etc@actj1)
+	do \main@addJob("J3", \enemy\e_etc@initj3, \enemy\e_etc@actj3)
+	
+	do \main@addJob("BLAST2", \boss\blast2@init, \boss\blast2@act)
+	do \main@addJob("BLAST2E", \boss\blast2@initE, \boss\blast2@actE)
+	
+	do \main@addJob("GFIRE", \boss\bosssa_01@init, \boss\bosssa_01@act)
+	do \main@addJob("GFIREE", \boss\bosssa_01@initE, \boss\bosssa_01@actE)
+	
+	do \main@addJob("GIRON", \boss\bosssa_02@init, \boss\bosssa_02@act)
+	do \main@addJob("GIRONN", \boss\bosssa_02@initE, \boss\bosssa_02@actE)
+	
+	do \main@addJob("GICE", \boss\bosssa_03@init, \boss\bosssa_03@act)
+	do \main@addJob("GICEN", \boss\bosssa_03@initICE, \boss\bosssa_03@actICE)
+	
+	
+	do \main@addJob("BOSS1", \boss\bosss01@init, \boss\bosss01@act)
+	do \main@addJob("BOSS1_3", \boss\bosss01@initE, \boss\bosss01@actTE)
+	do \main@addJob("BOSS1_2", \boss\bosss01@initT, \boss\bosss01@actT)
+	
+	do \main@addJob("BOSS2", \boss\bosss02@init, \boss\bosss02@act)
+	do \main@addJob("BOSS2_C", \boss\bosss02@initMB, \boss\bosss02@actMB)
+	
+	do \main@addJob("BOSSS", \boss\bosss06@init, \boss\bosss06@act)
+	do \main@addJob("BOSSS_2", \boss\bosss06@initM1, \boss\bosss06@actM1)
+	do \main@addJob("BOSSS_3", \boss\bosss06@initMB, \boss\bosss06@actMB)
+	do \main@addJob("BOSSS_4", \boss\bosss06@initMBB, \boss\bosss06@actMBB)
+	do \main@addJob("BOSSS_5", \boss\bosss06@initS, \boss\bosss06@actS)
+	
+	
+	
+	do \main@addJob("KUMA1", \enemy\e_bull@initKUMA, \enemy\e_bull@actKUMA)
+	do \main@addJob("MAGG", \enemy\e_bull@initMSG, \enemy\e_bull@actMSG)
+	
+	do \main@addJob("BOSS3", \boss\bosss03@init, \boss\bosss03@act)
+	do \main@addJob("BOSS3_2", \boss\bosss03@initMS, \boss\bosss03@actMS)
+	do \main@addJob("BOSS3_3", \boss\bosss03@initM1, \boss\bosss03@actM1)
+	
+	do \main@addJob("BOSSSEMI", \boss\shito333@init, \boss\shito333@act)
+	do \main@addJob("BOSSSEMIE", \boss\shito333@initE, \boss\shito333@actTE)
+	
+	do \main@addJob("BOSSSESO", \boss\shito222@init, \boss\shito222@act)
+	do \main@addJob("BOSSSESOS", \boss\shito222@initE, \boss\shito222@actTE)
+	
+	do \main@addJob("BOSS5", \boss\bosss05@init, \boss\bosss05@act)
+	do \main@addJob("BOSS5_Z", \boss\bosss05@initZAN, \boss\bosss05@actZAN)
+	do \main@addJob("B5FAN", \boss\bosss05@initFAN, \boss\bosss05@actFAN)
+	do \main@addJob("B5FAN2", \boss\bosss05@initFAN2, \boss\bosss05@actFAN2)
+	do \main@addJob("B5FAN3", \boss\bosss05@initFAN3, \boss\bosss05@actFAN3)
+	do \main@addJob("B5TATU", \boss\bosss05@initTATU, \boss\bosss05@actTATU)
+	
+	do \main@addJob("BOSSD_1", \boss\bosssden@init, \boss\bosssden@act)
+	do \main@addJob("BOSSD_2", \boss\bosssden@initSHARI, \boss\bosssden@actSHARI)
+	do \main@addJob("BOSSD_3", \boss\bosssden@initBEAM, \boss\bosssden@actBEAM)
+	do \main@addJob("BOSSD_4", \boss\bosssden@initHI, \boss\bosssden@actHI)
+	do \main@addJob("BOSSD_5", \boss\bosssden@initICE, \boss\bosssden@actICE)
+	do \main@addJob("BOSSD_6", \boss\bosssden@initDD, \boss\bosssden@actDD)
+	
+	do \main@addJob("BOSS7", \boss\bosss07@init, \boss\bosss07@act)
+	do \main@addJob("BOSS7_2", \boss\bosss07@initMB, \boss\bosss07@actMB)
+	do \main@addJob("BOSS7_3", \boss\bosss07@initKI, \boss\bosss07@actKI)
+	do \main@addJob("BOSS7_4", \boss\bosss07@initKEN5, \boss\bosss07@actKEN5)
+	do \main@addJob("BOSS7_5", \boss\bosss07@initKI, \boss\bosss07@actKI)
+	do \main@addJob("BOSS7_6", \boss\bosss07@initK, \boss\bosss07@actK)
+	do \main@addJob("BOSS7_7", \boss\bosss07@initK2, \boss\bosss07@actK2)
+	do \main@addJob("BOSS7_8", \boss\bosss07@initZ, \boss\bosss07@actKz)
+	do \main@addJob("BOSS7_9", \boss\bosss07@inith, \boss\bosss07@acth)
+	
+	do \main@addJob("BOSS7_A_2", \boss\bosss07_2@init, \boss\bosss07_2@act)
+	do \main@addJob("BOSS7_A_2_w", \boss\bosss07_2@initWEB, \boss\bosss07_2@actWEB)
+	do \main@addJob("BOSS7_A_2_w2", \boss\bosss07_2@initWEB2, \boss\bosss07_2@actWEB2)
+	do \main@addJob("BOSS7_A_2_m", \boss\bosss07_2@initMANE, \boss\bosss07_2@actMANE)
+	do \main@addJob("BOSS7_A_2_wt", \boss\bosss07_2@initWEBT, \boss\bosss07_2@actWEBT)
+	do \main@addJob("BOSS7_A_2_wtw", \boss\bosss07_2@initWEBTW, \boss\bosss07_2@actWEBTW)
+	
+	do \main@addJob("BOSS8_B_1", \boss\bosss08_2@init, \boss\bosss08_2@act)
+	
+	do \main@addJob("BOSS8", \boss\bosss08@init, \boss\bosss08@act)
+	do \main@addJob("BOSS8_1", \boss\bosss08@initKEN, \boss\bosss08@actKEN)
+	do \main@addJob("BOSS8_2", \boss\bosss08@initKEN2, \boss\bosss08@actKEN2)
+	do \main@addJob("BOSS8_3", \boss\bosss08@initKEN3, \boss\bosss08@actKEN3)
+	do \main@addJob("BOSS8_4", \boss\bosss08@initKENL, \boss\bosss08@actKENL)
+	do \main@addJob("BOSS8_5", \boss\bosss08@initKEN4, \boss\bosss08@actKEN4)
+	do \main@addJob("BOSS8_6", \boss\bosss08@initKEN5, \boss\bosss08@actKEN5)
+	do \main@addJob("BOSS8_7", \boss\bosss08@initKENPW1, \boss\bosss08@actKENPW1)
+	do \main@addJob("BOSS8_8", \boss\bosss08@initKENPW2, \boss\bosss08@actKENPW2)
+	do \main@addJob("BOSS8_B", \boss\bosss08@initB, \boss\bosss08@actB)
+	do \main@addJob("BOSS8_R", \boss\bosss08@initR, \boss\bosss08@actR)
+	
+	do \main@addJob("BOSSGG", \boss\bosssggg@init, \boss\bosssggg@act)
+	do \main@addJob("BOSSGB", \boss\bosssggg@initB, \boss\bosssggg@actB)
+	do \main@addJob("BOSSGGG", \boss\bosssggg@initG, \boss\bosssggg@actG)
+	do \main@addJob("BOSSGT", \boss\bosssggg@initE, \boss\bosssggg@actTE)
+	do \main@addJob("BOSSGH", \boss\bosssggg@initHI, \boss\bosssggg@actHI)
+	do \main@addJob("BOSSGK", \boss\bosssggg@initKUDA, \boss\bosssggg@actKUDA)
+	do \main@addJob("BOSSGM", \boss\bosssggg@initMEGA, \boss\bosssggg@actMEGA)
+	do \main@addJob("BOSSGMF", \boss\bosssggg@initMEGA2, \boss\bosssggg@actMEGA2)
+	
+	do \main@addJob("SHITO4", \boss\bos_shito4@initG, \boss\bos_shito4@actG)
+	do \main@addJob("SHITO4S", \boss\bos_shito4@initE, \boss\bos_shito4@actTE)
+	do \main@addJob("SHITO4G", \boss\bos_shito4@initGE, \boss\bos_shito4@actGE)
+	do \main@addJob("SHITO4NM", \boss\bos_shito4@initNM, \boss\bos_shito4@actNM)
+	do \main@addJob("SHITO4GM", \boss\bos_shito4@initGM, \boss\bos_shito4@actGM)
+	
+	do \main@addJob("SHITO3", \boss\bos_shito3@initG, \boss\bos_shito3@actG)
+	do \main@addJob("SHITO3S1", \boss\bos_shito3@initE, \boss\bos_shito3@actTE)
+	do \main@addJob("SHITO3B1", \boss\bos_shito3@initB, \boss\bos_shito3@actTB)
+	do \main@addJob("SHITO3S2", \boss\bos_shito3@initS2, \boss\bos_shito3@actS2)
+	do \main@addJob("SHITO3DEN", \boss\bos_shito3@initDEN, \boss\bos_shito3@actDEN)
+	
+	do \main@addJob("SHITO1", \boss\bos_shito1@initG, \boss\bos_shito1@actG)
+	do \main@addJob("SHITO1E", \boss\bos_shito1@initE, \boss\bos_shito1@actE)
+	do \main@addJob("SHITO1AX", \boss\bos_shito1@initAX, \boss\bos_shito1@actAX)
+	
+	do \main@addJob("RONO1", \boss\bosssrono@init, \boss\bosssrono@act)
+	do \main@addJob("RONOR", \boss\bosssrono@initRL, \boss\bosssrono@actRL)
+	do \main@addJob("RONOR2", \boss\bosssrono@initR2, \boss\bosssrono@actR2)
+	do \main@addJob("RONORR", \boss\bosssrono@initRR, \boss\bosssrono@actRR)
+	do \main@addJob("RONORG", \boss\bosssrono@initRLL, \boss\bosssrono@actRLL)
+	do \main@addJob("RONORG2", \boss\bosssrono@initRLLL, \boss\bosssrono@actRLLL)
+	do \main@addJob("RONOEG", \boss\bosssrono@initE, \boss\bosssrono@actTE)
+	
+	do \main@addJob("BOSSDENN", \boss\bosssdenbani@init, \boss\bosssdenbani@act)
+	do \main@addJob("BOSSDENB", \boss\bosssdenbani@initSHARI, \boss\bosssdenbani@actSHARI)
+	do \main@addJob("BOSSDENE", \boss\bosssdenbani@initE, \boss\bosssdenbani@actTE)
+	
+	do \main@addJob("ABOSSS", \boss\bosss0333@init, \boss\bosss0333@act)
+	do \main@addJob("ABOSSS_2", \boss\bosss0333@initM1, \boss\bosss0333@actM1)
+	do \main@addJob("ABOSSS_3", \boss\bosss0333@initMB, \boss\bosss0333@actMB)
+	do \main@addJob("ABOSSS_4", \boss\bosss0333@initMBB, \boss\bosss0333@actMBB)
+	
+	
+	do \main@addJob("MOTHER", \boss\mother@init, \boss\mother@act)
+	do \main@addJob("MOTHERT", \boss\mother@initE, \boss\mother@actE)
+	do \main@addJob("MOTHERTF", \boss\mother@initKEN, \boss\mother@actKEN)
+	do \main@addJob("MOTHERTL", \boss\mother@initLEN, \boss\mother@actLEN)
+	do \main@addJob("MOTHERHASH", \boss\mother@initHASH, \boss\mother@actHASH)
+	
+	do \main@addJob("MOTHER2", \boss\mother2@init, \boss\mother2@act)
+	do \main@addJob("MOTHER2L", \boss\mother2@initL, \boss\mother2@actL)
+	do \main@addJob("MOTHER2R", \boss\mother2@initR, \boss\mother2@actR)
+	do \main@addJob("MOTHER2G", \boss\mother2@initGE, \boss\mother2@actGE)
+	do \main@addJob("MOTHER2G2", \boss\mother2@initGE2, \boss\mother2@actGE2)
+	do \main@addJob("MOTHER2TA", \boss\mother2@initTA1, \boss\mother2@actTA1)
+	do \main@addJob("MOTHER2TA2", \boss\mother2@initTA2, \boss\mother2@actTA2)
+	do \main@addJob("MOTHER2FAN", \boss\mother2@initFAN, \boss\mother2@actFAN)
+	do \main@addJob("MOTHER2B", \boss\mother2@initB, \boss\mother2@actB)
+	do \main@addJob("MOTHER2SS", \boss\mother2@initTE, \boss\mother2@actTE)
+	do \main@addJob("MOTHER2TAA", \boss\mother2@initE, \boss\mother2@actE)
+	
+	do \main@addJob("MOTHER3", \boss\mother3@init, \boss\mother3@act)
+	do \main@addJob("MOTHER3G", \boss\mother3@initGE, \boss\mother3@actGE)
+	do \main@addJob("MOTHER3E", \boss\mother3@initKOU, \boss\mother3@actKOU)
+	do \main@addJob("MOTHER3B", \boss\mother3@initKARA, \boss\mother3@actKARA)
+	do \main@addJob("MOTHER3B2", \boss\mother3@initKARA2, \boss\mother3@actKARA2)
+	do \main@addJob("MOTHER3T", \boss\mother3@initTAMA, \boss\mother3@actTAMA)
+	do \main@addJob("MOTHER3Z", \boss\mother3@initZUGA, \boss\mother3@actZUGA)
+	
+	
+	do \main@addJob("MOTHERAPP", \boss\mother@initAPPLE, \boss\mother@actAPPLE)
+	do \main@addJob("MOTHERBOMB", \boss\mother@initBOMB, \boss\mother@actBOMB)
+	do \main@addJob("MOTHERKES2", \boss\mother@initKES, \boss\mother@actKES)
+	do \main@addJob("MOTHERKES", \boss\mother@initICE, \boss\mother@actICE)
+	do \main@addJob("MOTHERBLL", \boss\mother@initBLLL, \boss\mother@actBLLL)
+	do \main@addJob("MOTHERB1", \boss\mother@initB1, \boss\mother@actB1)
+	do \main@addJob("MOTHERB2", \boss\mother@initB2, \boss\mother@actB2)
+	do \main@addJob("MOTHERB3", \boss\mother@initB3, \boss\mother@actB3)
+	do \main@addJob("MOTHERB4", \boss\mother@initB4, \boss\mother@actB4)
+	do \main@addJob("MOTHERB5", \boss\mother@initB5, \boss\mother@actB5)
+	do \main@addJob("MOTHERPINK", \boss\mother@initPINK, \boss\mother@actPINK)
+	
+	do \main@addJob("BAKUL", \main@KIE2init, \main@KIE2act)
+	do \main@addJob("BAKUL2", \main@KIE2initL, \main@KIE2actL)
+	do \main@addJob("BAKUL23", \main@KIE2initLL, \main@KIE2actLL)
+	do \main@addJob("BAKULMY", \main@initBOMB, \main@actBOMB)
+	
+	do \main@addJob("END0", \enemy\e_end@init0, \enemy\e_end@act0)
+	do \main@addJob("END1", \enemy\e_end@init1, \enemy\e_end@act1)
+	do \main@addJob("END2", \enemy\e_end@init2, \enemy\e_end@act2)
+	do \main@addJob("END3", \enemy\e_end@init3, \enemy\e_end@act3)
+	do \main@addJob("END4", \enemy\e_end@init4, \enemy\e_end@act4)
+	do \main@addJob("END5", \enemy\e_end@init5, \enemy\e_end@act5)
+	do \main@addJob("END6", \enemy\e_end@init6, \enemy\e_end@act6)
+	do \main@addJob("END7", \enemy\e_end@init7, \enemy\e_end@act7)
+	do \main@addJob("END8", \enemy\e_end@init8, \enemy\e_end@act8)
+	do \main@addJob("END9", \enemy\e_end@init9, \enemy\e_end@act9)
+	do \main@addJob("ENDM", \enemy\e_end@initm, \enemy\e_end@actm)
+	do \main@addJob("ENDMM", \enemy\e_end@initmm, \enemy\e_end@actmm)
+	do \main@addJob("ENDMM2", \enemy\e_end@initddm, \enemy\e_end@actddm)
+	do \main@addJob("KURE", \enemy\e_akikan@initk, \enemy\e_akikan@actk)
+	
+	do \main@at :: ["at1.png", "at2.png", "at3.png", "at4.png", "at5.png", "at6.png"]
+	do \main@ata :: ["bat1.png", "bat2.png", "bat3.png", "bat4.png", "bat5.png", "bat6.png"]
+	
+	do \main@mnm :: ""
+	do \main@stageu :: [999, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 6, 6, 7, 7, 7, 8, 8, 9, 9, 10, 11, 12, 13, 13, 14, 15, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9]
+	do \main@bs :: [999, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+	do \main@kanstr :: #[40][]char
+	do \main@kanstr[0] :: ""
+	do \main@kanstr[1] :: ""
+	do \main@kanstr[2] :: ""
+	do \main@kanstr[3] :: "" {denen}
+	do \main@kanstr[4] :: "denen.ogg"
+	do \main@kanstr[5] :: "denenyoru.ogg" {hasi}
+	do \main@kanstr[6] :: ""
+	do \main@kanstr[7] :: "" {onsen}
+	do \main@kanstr[8] :: ""
+	do \main@kanstr[9] :: ""
+	do \main@kanstr[10] :: "" {kyoto}
+	do \main@kanstr[11] :: ""
+	do \main@kanstr[12] :: ""
+	do \main@kanstr[13] :: "" {tetu}
+	do \main@kanstr[14] :: ""
+	do \main@kanstr[15] :: "jukaii.ogg" {mori}
+	do \main@kanstr[16] :: "jukaii.ogg"
+	do \main@kanstr[17] :: "mizuzu.ogg"
+	do \main@kanstr[18] :: ""
+	do \main@kanstr[19] :: "" {mori}
+	do \main@kanstr[20] :: ""
+	do \main@kanstr[21] :: ""
+	do \main@kanstr[22] :: ""
+	do \main@kanstr[23] :: "" {mori}
+	do \main@kanstr[24] :: ""
+	do \main@kanstr[25] :: ""
+	do \main@kanstr[26] :: ""
+	do \main@kanstr[27] :: "" {mori}
+	do \main@kanstr[28] :: ""
+	do \main@kanstr[29] :: ""
+	do \main@kanstr[30] :: ""
+	
+	do \main@music :: #[40][]char
+	do \main@music[0] :: "main" {garudo}
+	do \main@music[1] :: "main"
+	do \main@music[2] :: "main"
+	do \main@music[3] :: "main" {denen}
+	do \main@music[4] :: "main"
+	do \main@music[5] :: "main" {hasi}
+	do \main@music[6] :: "main"
+	do \main@music[7] :: "main" {onsen}
+	do \main@music[8] :: "main"
+	do \main@music[9] :: "main"
+	do \main@music[10] :: "main" {kyoto}
+	do \main@music[11] :: "main"
+	do \main@music[12] :: "main"
+	do \main@music[13] :: "main" {tetu}
+	do \main@music[14] :: "main"
+	do \main@music[15] :: "main" {mori}
+	do \main@music[16] :: "main"
+	do \main@music[17] :: "main"
+	do \main@music[18] :: "main" {sanmyaku}
+	do \main@music[19] :: "main"
+	do \main@music[20] :: "main2" {toshi}
+	do \main@music[21] :: "main" {tower1}
+	do \main@music[22] :: "main" {tower2}
+	do \main@music[23] :: "tmain" {mori}
+	do \main@music[24] :: "tmain"
+	do \main@music[25] :: "main"
+	do \main@music[26] :: ""
+	do \main@music[27] :: "dra3" {mori}
+	do \main@music[28] :: "main" {mori}
+end func

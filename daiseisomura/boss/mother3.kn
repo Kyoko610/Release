@@ -1,0 +1,762 @@
++func init(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "taiki1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h
+	
+	do u.mhp :: 1200.0
+	
+	do u.hp :: u.mhp
+	do u.setAtari(270.0, 480.0, 185.0)
+	;do u.setAtari(500.0, 380.0, 300.0)
+	do u.gai :: true
+	do u.boss :: true
+	;do \main@bgmchg("last", 1)
+	;do \main@bgmchg("test", 1)
+	do \main@oBOSS :: u
+	do \main@cObj("HPBARE")
+	do \main@cObj("HPBARE2")
+	do \main@cObj("HPBARGE")
+end func
+
+enum un
+	first
+	first2
+	kou
+	wait1
+	ue1
+	wait2
+	sita1
+	wait3
+	ue2
+	wait4
+	first3
+	wait5
+	gattu
+	gattu2
+	modori
+	kouwait1
+	kou1
+	kouwait2
+	kouwait3
+	kou2
+	{
+	wait6
+	tame
+	god
+	god2
+	modori2
+}
+	wait7
+	wait8
+	gekkou1
+	gekkou2
+	wait9
+	first4
+	tukamis :: 999
+	draiba :: 1000
+	draibae :: 1001
+	draibae2 :: 1002
+end enum
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case %first $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "taiki1.png"
+				do u.g :: "taiki2.png"
+			default
+				do u.g :: "taiki1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(270.0, 480.0, 185.0)
+		do u.atari2 :: null
+	case %kou $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "genkidamas1.png"
+				do u.g :: "genkidamas2.png"
+			default
+				do u.g :: "genkidamas1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(270.0, 480.0, 165.0)
+		do u.setAtari2(270.0, 480.0, 190.0)
+		
+	case %ue1 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			switch(u.g)
+			case "koutame1.png"
+				do u.g :: "koutame2.png"
+			case "koutame2.png"
+				do u.g :: "koutame3.png"
+			case "koutame3.png"
+				do u.g :: "koutame4.png"
+			case "koutame4.png"
+				do u.g :: "taiki1.png"
+			case "taiki1.png"
+				do u.g :: "taiki2.png"
+			case "taiki2.png"
+				do u.g :: "taiki1.png"
+			default
+				do u.g :: "koutame1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+	case %kou1 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			switch(u.g)
+			case "koutame1.png"
+				do u.g :: "koutame2.png"
+			case "koutame2.png"
+				do u.g :: "koutame3.png"
+			case "koutame3.png"
+				do u.g :: "koutame4.png"
+			case "koutame4.png"
+				do u.g :: "koutame5.png"
+			case "koutame5.png"
+				do u.g :: "koutame6.png"
+			case "koutame6.png"
+				do u.g :: "koutame7.png"
+			case "koutame7.png"
+				do u.g :: "koutame7.png"
+			case "koutame8.png"
+			default
+				do u.g :: "koutame1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		
+	case %ue2 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "jousyou1.png"
+				do u.g :: "jousyou2.png"
+			default
+				do u.g :: "jousyou1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(215.0, 170.0, 150.0)
+		do u.setAtari2(215.0, 170.0, 190.0)
+	case %wait8 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "getame1.png"
+				do u.g :: "getame2.png"
+			case "getame2.png"
+				do u.g :: "getame3.png"
+			case "getame3.png"
+				do u.g :: "getame4.png"
+			case "getame4.png"
+				do u.g :: "getame1.png"
+			default
+				do u.g :: "getame1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+	case %gattu $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "tukami1.png"
+				do u.g :: "tukami2.png"
+			case "tukami2.png"
+				do u.g :: "tukami1.png"
+			default
+				do u.g :: "tukami1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+	case %sita1 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "kakou1.png"
+				do u.g :: "kakou2.png"
+			default
+				do u.g :: "kakou1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(240.0, 530.0, 150.0)
+		do u.setAtari2(240.0, 530.0, 190.0)
+	case %kouwait2 $ @un $ int, %kouwait3 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 6)
+			switch(u.g)
+			case "hassya1.png"
+				do u.g :: "hassya2.png"
+			case "hassya2.png"
+				do u.g :: "hassya3.png"
+			case "hassya3.png"
+				do u.g :: "hassya4.png"
+			case "hassya4.png"
+				do u.g :: "hassya5.png"
+			case "hassya5.png"
+			default
+				do u.g :: "hassya1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(240.0, 530.0, 150.0)
+		do u.setAtari2(240.0, 530.0, 190.0)
+	case %gekkou1 $ @un $ int, %gekkou2 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 2)
+			switch(u.g)
+			case "gekkou1.png"
+				do u.g :: "gekkou2.png"
+			case "gekkou2.png"
+				do u.g :: "gekkou3.png"
+			case "gekkou3.png"
+				do u.g :: "gekkou4.png"
+			case "gekkou4.png"
+				do u.g :: "gekkou5.png"
+			case "gekkou5.png"
+				do u.g :: "gekkou2.png"
+			default
+				do u.g :: "gekkou1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(756.0, 554.0, 300.0)
+		do u.setAtari2(1050.0, 530.0, 190.0)
+	case %gattu2 $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "karaburion1.png"
+				do u.g :: "karaburion2.png"
+			default
+				do u.g :: "karaburion1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(320.0, 480.0, 165.0)
+		do u.setAtari2(320.0, 480.0, 190.0)
+	case %tukamis $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "tukamichu1.png"
+				do u.g :: "tukamichu2.png"
+			default
+				do u.g :: "tukamichu1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.atari :: null
+		do u.atari2 :: null
+		;case %draiba $ @un $ int, %draibae $ @un $ int
+		;		do u.g :: "draiba-.png"
+		;		do u.setWH()
+	case %draibae $ @un $ int
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "doraiba-2.png"
+				do u.g :: "doraiba-3.png"
+			case "doraiba-3.png"
+				do u.g :: "doraiba-4.png"
+			case "doraiba-4.png"
+			default
+				do u.g :: "doraiba-2.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.atari :: null
+		do u.atari2 :: null
+	case %draiba $ @un $ int
+		do u.g :: "doraiba-1.png"
+	default
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 3)
+			switch(u.g)
+			case "taiki1.png"
+				do u.g :: "taiki2.png"
+			default
+				do u.g :: "taiki1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+		do u.setWH()
+		do u.setAtari(270.0, 480.0, 165.0)
+		do u.setAtari2(270.0, 480.0, 190.0)
+	end switch
+	
+	switch(u.mode)
+	case %first $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 2.0
+			do u.kinit :: 1
+		end if
+		do u.moveDown(0.0)
+	case %first2 $ @un $ int
+		if(u.kinit = 0)
+			do u.setAtari(270.0, 480.0, 185.0)
+			do u.setAtari2(270.0, 480.0, 200.0)
+		end if
+		do u.loop1(50)
+	case %kou $ @un $ int
+		if(u.kinit = 0)
+			do u.child :: \main@cObj("MOTHER3G")
+			do u.child.x :: u.x + 210.0
+			do u.child.y :: u.y + 130.0
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case %wait1 $ @un $ int
+		do u.loop1(50)
+	case %ue1 $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -6.0
+			do u.g :: "koutame1.png"
+			do u.kinit :: 1
+		end if
+		do u.moveUp(-u.h - 200.0)
+	case %wait2 $ @un $ int
+		do u.loop1(30)
+	case %sita1 $ @un $ int
+		if(u.kinit = 0)
+			if(\main@oMy <>& null)
+				do u.x :: \main@oMy.x + \main@oMy.w / 2.0 - 250.0
+			else
+				do u.x :: 640.0 - u.w / 2.0
+			end if
+			do u.y :: -u.h
+			do u.vx :: 0.0
+			do u.vy :: 18.0
+			do u.kinit :: 1
+			do \main@sndd(44)
+		end if
+		do u.moveDown(720.0)
+	case %wait3 $ @un $ int
+		do u.loop1(30)
+	case %ue2 $ @un $ int
+		if(u.kinit = 0)
+			if(\main@oMy <>& null)
+				do u.x :: \main@oMy.x + \main@oMy.w / 2.0 - 200.0
+			else
+				do u.x :: 640.0 - u.w / 2.0
+			end if
+			do u.y :: 900.0
+			do u.vx :: 0.0
+			do u.vy :: -18.0
+			do u.kinit :: 1
+			do \main@sndd(44)
+			
+		end if
+		do u.moveUp(-u.h - 200.0)
+	case %wait4 $ @un $ int
+		do u.loop1(50)
+	case %first3 $ @un $ int
+		if(u.kinit = 0)
+			do u.x :: 0.0
+			do u.y :: -u.h
+			do u.vx :: 0.0
+			do u.vy :: 12.0
+			do u.kinit :: 1
+		end if
+		do u.moveDown(0.0)
+	case %wait5 $ @un $ int
+		do u.loop1(50)
+	case %gattu $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do \main@sndd(44)
+		end if
+		do u.moveRight(750.0)
+	case %gattu2 $ @un $ int
+		if(u.kinit = 0)
+			do u.child :: \main@cObj("MOTHER3B")
+			do u.child.x :: u.x
+			do u.child.y :: u.y
+			do \main@sndd(20)
+			do u.kinit :: 1
+		end if
+		do u.loop1(30)
+	case %modori $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: -8.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(0.0)
+		;::::::光弾:::::::::::::::::::::::::::
+	case %kouwait1 $ @un $ int
+		do u.loop1(50)
+	case %kou1 $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+			;do \main@sndd(44)
+		end if
+		do u.moveUp(-300.0)
+	case %kouwait2 $ @un $ int
+		if(u.kinit = 0)
+			do \main@sndd(64)
+			do u.kinit :: 1
+		end if
+		do u.loop1(140)
+		do u.cnt4 :: 0
+	case %kouwait3 $ @un $ int
+		if(u.kinit = 0)
+			do u.cnt2 :+ 1
+			if(u.cnt2 > 5)
+				if(u.cnt4 > 30)
+					do u.child :: \main@cObj("MOTHER3T")
+					do u.child.x :: u.x + lib@rndFloat(170.0, 385.0)
+					do u.child.y :: u.y + lib@rndFloat(140.0, 340.0)
+					do u.kinit :: 1
+				else
+					do u.child :: \main@cObj("MOTHER3T")
+					do u.child.x :: u.x + lib@rndFloat(170.0, 385.0)
+					do u.child.y :: u.y + lib@rndFloat(140.0, 340.0)
+					do u.cnt4 :+ 1
+				end if
+				do u.cnt2 :: 0
+			end if
+		else
+			if(u.child =& null | u.child.d = true)
+				do u.incMode()
+			end if
+		end if
+	case %kou2 $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 12.0
+			do u.kinit :: 1
+			;do \main@sndd(44)
+		end if
+		do u.moveDown(0.0)
+		;::::::光弾:::::::::::::::::::::::::::
+		{
+	case %wait6 $ @un $ int
+		do u.loop1(50)
+	case %tame $ @un $ int
+		if(u.kinit = 0)
+			do \main@sndd(52)
+			do u.kinit :: 1
+		end if
+		do u.loop1(120)
+	case %god $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 24.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do \main@sndd(11)
+		end if
+		do u.moveRight(800.0)
+	case %god2 $ @un $ int
+		do u.loop1(20)
+	case %modori2 $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: -8.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(0.0)
+		}
+	case %wait7 $ @un $ int
+		do u.loop1(50)
+		;::::::::::::::::::::::::::::::::::
+	case %wait8 $ @un $ int
+		if(u.kinit = 0)
+			do \main@sndd(52)
+			do u.kinit :: 1
+		end if
+		do u.loop1(200)
+	case %gekkou1 $ @un $ int
+		if(u.kinit = 0)
+			do u.x :: -840.0
+			do u.y :: -75.0
+			do u.vx :: 8.0
+			do u.vy :: -1.5
+			do \main@sndd(53)
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-250.0)
+	case %gekkou2 $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 8.0
+			do u.vy :: -4.6
+			do u.kinit :: 1
+		end if
+		do u.moveRight(1280.0)
+		;::::::::::::::::::::::::::::::::::
+	case %wait9 $ @un $ int
+		do u.x :: 0.0
+		do u.y :: -u.h
+		do u.loop1(50)
+	case %tukamis $ @un $ int
+		if(u.kinit = 0)
+			if(\main@oMy <>& null & \main@oMy.d = false)
+				do \main@oMy.mode :: 40000
+				do \main@oMy.u :: 8002.0
+			end if
+			do u.child :: \main@cObj("MOTHER3B2")
+			do u.child.x :: u.x
+			do u.child.y :: u.y
+			do \main@sndd(44)
+			do u.vx :: 0.0
+			do u.vy :: -12.0
+			do u.kinit :: 1
+		end if
+		if(\main@oMy <>& null)
+			do \main@oMy.x :: u.x
+			do \main@oMy.y :: u.y
+		end if
+		do u.moveUp(-u.h - 200.0)
+	case %draiba $ @un $ int
+		if(u.kinit = 0)
+			if(\main@oMy <>& null & \main@oMy.d = false)
+				do \main@oMy.mode :: 40001
+			end if
+			do u.g :: "doraiba-1.png"
+			do \main@sndd(44)
+			do u.x :: 0.0
+			do u.vx :: 0.0
+			do u.vy :: 24.0
+			do u.kinit :: 1
+		end if
+		do \main@oMy.x :: u.x
+		do \main@oMy.y :: u.y
+		do u.moveDown(0.0)
+		do u.cnt5 :: 0
+	case %draibae $ @un $ int
+		if(u.kinit = 0)
+			do \main@oMy.mode :: 40002
+			do \main@oMy.u :: -8002.0
+			do u.setAtari(640.0, 360.0, 1280.0)
+			do u.a :: 9999
+			do \main@sndd(25)
+			do \main@sndd(6)
+			do u.kinit :: 1
+		end if
+		if(u.g = "doraiba-4.png" & u.cnt5 = 0)
+			do \main@cObj("GCLEAR3")
+			do \main@cObj("MOTHER3Z")
+			do u.cnt5 :: 1
+		end if
+		if(\main@oMy <>& null)
+			do \main@oMy.x :: u.x
+			do \main@oMy.y :: u.y
+		end if
+		do u.loop1(120)
+	case %draibae2 $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: -4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(0.0)
+	case %first4 $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 10.0
+			do u.kinit :: 1
+		end if
+		do u.moveDown(0.0)
+	default
+		do u.incMode()
+		do u.mode :: %first2 $ @un $ int
+	end switch
+end func
+
+
+
++func initGE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 40
+	do u.g :: "wgenkidama1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do \main@sndd(52)
+end func
++func actGE(u: \main@UNIT)
+	switch(u.g)
+	case "wgenkidama1.png"
+		do u.g :: "wgenkidama2.png"
+	case "wgenkidama2.png"
+		do u.g :: "wgenkidama3.png"
+	case "wgenkidama3.png"
+		do u.g :: "wgenkidama4.png"
+	default
+		do u.g :: "wgenkidama1.png"
+	end switch
+	
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+		if(u.cnt > 100)
+			do u.mode :: 1
+			do \main@sndd(53)
+		end if
+	case 1
+		do u.vx :: 16.0
+		do u.vy :: 0.0
+		do u.mode :+ 1
+	default
+	end switch
+end func
+
+
+
++func initKOU(u: \main@UNIT)
+	do u.u :: -9000.0
+	do u.a :: 40
+	do u.g :: "koudan.png"
+	do u.setWH()
+	;do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	;do \main@sndd(52)
+	do \main@sndd(63)
+end func
++func actKOU(u: \main@UNIT)
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.loop1(1)
+		do u.setAtari(1020.0, 920.0, 650.0)
+	case 1
+		if(u.kinit = 0)
+			do u.atari :: null
+			do u.kinit :: 1
+		end if
+		do u.loop1(130)
+	case 2
+		do u.kie :: true
+		do u.f :: \main@KIE
+	default
+	end switch
+end func
+
++func initKARA(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9000.0
+	do u.g :: "karaburion.png"
+	do u.setWH()
+	do u.boss :: true
+end func
++func actKARA(u: \main@UNIT)
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.loop1(10)
+	case 1
+		do u.kie :: true
+		do u.f :: \main@KIE
+	end switch
+end func
++func initKARA2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9000.0
+	do u.g :: "efe.png"
+	do u.setWH()
+	do u.boss :: true
+end func
++func actKARA2(u: \main@UNIT)
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.loop1(10)
+	case 1
+		do u.kie :: true
+		do u.f :: \main@KIE
+	end switch
+end func
+
++func initTAMA(u: \main@UNIT)
+	do u.u :: -9000.0
+	do u.g :: "stama1.png"
+	do u.a :: 35
+	do u.setWH()
+	do u.boss :: true
+	do u.vx :: 16.0
+	do u.vy :: lib@rndFloat(4.0, 15.0)
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+	do \main@sndd(85)
+end func
++func actTAMA(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 2)
+		switch(u.g)
+		case "stama1.png"
+			do u.g :: "stama2.png"
+		case "stama2.png"
+			do u.g :: "stama3.png"
+		case "stama3.png"
+			do u.g :: "stama1.png"
+		default
+			do u.g :: "stama1.png"
+		end switch
+		do u.cnt :: 0
+	end if
+end func
+
+
++func initZUGA(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9504.0
+	do u.g :: "zuga1.png"
+	do u.setWH()
+	do u.boss :: true
+end func
++func actZUGA(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 2)
+		switch(u.g)
+		case "zuga1.png"
+			do u.g :: "zuga2.png"
+		case "zuga2.png"
+			do u.g :: "zuga3.png"
+		case "zuga3.png"
+			do u.g :: "zuga1.png"
+		default
+			do u.g :: "zuga1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		do u.loop1(80)
+	case 1
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end switch
+end func

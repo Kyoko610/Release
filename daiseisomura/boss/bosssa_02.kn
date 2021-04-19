@@ -1,0 +1,194 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.g :: "irannba-aruki1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -110.0
+	do u.vx :: 0.2
+	do u.mhp :: 350.0
+	do u.hp :: u.mhp
+	do u.setAtari(740.0, 540.0, 200.0)
+	
+	;do u.df1 :: 990.0
+	;do u.df2 :: 990.0
+	;do u.df3 :: 20.0
+	;do u.df4 :: 990.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	;do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	do u.oto :: true
+	;do u.cObj("BOSS2_D")
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0, 10
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 7)
+			do u.cnt3 :: 0
+			switch(u.g)
+			case "irannba-aruki1.png"
+				do u.g :: "irannba-aruki2.png"
+			case "irannba-aruki2.png"
+				do u.g :: "irannba-aruki3.png"
+			case "irannba-aruki3.png"
+				do u.g :: "irannba-aruki4.png"
+			case "irannba-aruki4.png"
+				do \main@snd[55].freq(1.2)
+				do \main@sndd(55)
+				do u.g :: "irannba-aruki5.png"
+			case "irannba-aruki5.png"
+				do u.g :: "irannba-aruki6.png"
+			case "irannba-aruki6.png"
+				do u.g :: "irannba-aruki7.png"
+			case "irannba-aruki7.png"
+				do u.g :: "irannba-aruki8.png"
+			default
+				do \main@snd[55].freq(1.2)
+				do \main@sndd(55)
+				do u.g :: "irannba-aruki1.png"
+			end switch
+		end if
+	case 1
+		do u.g :: "irannba-aruki1.png"
+	case 2, 3, 4, 5, 6, 7
+		do u.g :: "irannba-nage2-asi4.png"
+	case 9
+		switch(u.p)
+		case 0
+			do \main@sndd(20)
+			do u.g :: "irannba-huri1-asi1.png"
+		case 1 to 4
+			do u.g :: "irannba-huri1-asi1.png"
+		case 5
+			do u.g :: "irannba-huri2-asi1.png"
+			do \main@sndd(44)
+		case 6 to 10
+			do u.g :: "irannba-huri2-asi1.png"
+		case 11 to 35
+			do u.g :: "irannba-huri3-asi1.png"
+		default
+			do u.g :: "irannba-huri4-asi1.png"
+		end switch
+		do u.p :+ 1
+	default
+		do u.g :: "irannba-aruki1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-500.0)
+	case 1
+		do u.setAtari2(740.0, 540.0, 280.0)
+		do u.loop1(100)
+	case 2
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("GIRONN")
+			do o.x :: u.x + 1030.0
+			do o.y :: u.y + 450.0
+			;do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 3
+		do u.loop1(80)
+	case 4
+		do u.incMode()
+		do u.mode :: 8
+		ret
+		{
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("GFIREE")
+			do o.x :: u.x + 1030.0
+			do o.y :: u.y + 350.0
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+}
+	case 5
+		do u.loop1(80)
+	case 6
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("GFIREE")
+			do o.x :: u.x + 1030.0
+			do o.y :: u.y + 350.0
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 7
+		do u.loop1(80)
+	case 8
+		do u.cnt3 :: 0
+		do u.vx :: 1.0
+		do u.p :: 0
+		do u.incMode()
+	case 9
+		do u.setAtari(740.0, 540.0, 300.0)
+		do u.vx :+ 1.0
+		if(u.vx > 30.0)
+			do u.vx :: 30.0
+		end if
+		if(u.p = 50)
+			do u.setAtari(740.0, 540.0, 200.0)
+			do u.incMode()
+		end if
+	case 10
+		if(u.kinit = 0)
+			do u.p :: 0
+			do u.vx :: -6.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-500.0)
+	default
+		do u.incMode()
+		do u.mode :: 0
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "idensyat1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 150.0)
+	do u.boss :: true
+end func
++func actE(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 2)
+		switch(u.g)
+		case "idensyat1.png"
+			do u.g :: "idensyat2.png"
+		default
+			do u.g :: "idensyat1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		do u.loop1(30)
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(65)
+			do u.vx :: 20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+	end switch
+end func

@@ -1,0 +1,95 @@
++func init(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 2900.0
+	do u.g :: "camera1.png"
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: \main@ty
+	do u.hp :: 10.0
+	do u.setAtari(280.0, 400.0, 40.0)
+	do u.setAtari2(280.0, 400.0, 80.0)
+	;do u.setAtari2(304.0, 350.0, 80.0) {かり}
+	do u.df3 :: 100.0
+	do u.color :: 4
+	do u.vx :: 0.0
+end func
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 6.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-130.0)
+	case 1
+		do u.g :: "camera1.png"
+		do u.loop1(lib@rnd(20, 100))
+	case 2
+		if(u.kinit = 0)
+			do u.g :: "camera2.png"
+			
+			if(\main@oMy <>& null & \main@oMy.d = false)
+				do \main@oMy.mp :- 40.0
+				if(\main@oMy.mp < 0.0)
+					do \main@oMy.mp :: 0.0
+				end if
+				do \main@sndd(92)
+				do u.kinit :: 1
+			end if
+		end if
+		do u.loop1(20)
+	default
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func
+
++func init2(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 2900.0
+	do u.g :: "camerar1.png"
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: 1280.0
+	do u.y :: \main@ty
+	do u.hp :: 10.0
+	do u.setAtari(280.0, 400.0, 40.0)
+	do u.setAtari2(280.0, 400.0, 80.0)
+	;do u.setAtari2(304.0, 350.0, 80.0) {かり}
+	do u.df3 :: 100.0
+	do u.color :: 4
+	do u.vx :: 0.0
+end func
++func act2(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: -6.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(1280.0 - u.w + 130.0)
+	case 1
+		do u.g :: "camerar1.png"
+		do u.loop1(lib@rnd(20, 100))
+	case 2
+		if(u.kinit = 0)
+			do u.g :: "camerar2.png"
+			
+			if(\main@oMy <>& null & \main@oMy.d = false)
+				do \main@oMy.mp :- 40.0
+				if(\main@oMy.mp < 0.0)
+					do \main@oMy.mp :: 0.0
+				end if
+				do \main@sndd(92)
+				do u.kinit :: 1
+			end if
+		end if
+		do u.loop1(20)
+	default
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func

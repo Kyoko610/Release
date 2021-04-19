@@ -1,0 +1,200 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 50
+	do u.g :: "magicianR1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 160.0
+	do u.mhp :: 360.0
+	do u.hp :: u.mhp
+	do u.setAtari(180.0, 300.0, 100.0)
+	do u.df1 :: 4.0
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.cntf :: -2.0
+	do u.cnt3 :: 10
+	do u.sp :: -1
+	do u.gai :: true
+	do u.boss :: true
+	;do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	do u.oto :: true
+end func
+
++func act(u: \main@UNIT)
+	if(u.hp < 50.0 & u.mode < 999)
+		do u.incMode()
+		do u.mode :: 999
+	end if
+	if(u.mode < 3)
+		do u.cnt3 :- 1
+		do u.y :+ u.cntf
+		if(u.cnt3 < 0)
+			do u.cntf :: -u.cntf
+			do u.cnt3 :: 10
+		end if
+	end if
+	
+	if(u.kinit = 0)
+		do u.p :: 0
+	end if
+	
+	switch(u.mode)
+	case 0, 1, 2
+		switch(u.g)
+		case "magicianR1.png"
+			do u.g :: "magicianR1_2.png"
+		default
+			do u.g :: "magicianR1.png"
+		end switch
+	case 3, 4, 7, 8, 9, 10, 11
+		if(\main@snd[19].playing() = false)
+			do \main@sndd(19)
+		end if
+		do u.p :+ 1
+		if(u.p > 2)
+			switch(u.g)
+			case "magicianRR01.png"
+				do u.g :: "magicianRR02.png"
+			case "magicianRR02.png"
+				do u.g :: "magicianRR03.png"
+			case "magicianRR03.png"
+				do u.g :: "magicianRR04.png"
+			default
+				do u.g :: "magicianRR01.png"
+			end switch
+			do u.p :: 0
+		end if
+	case 5, 6
+		if(\main@snd[19].playing() = false)
+			do \main@sndd(19)
+		end if
+		do u.p :+ 1
+		if(u.p > 2)
+			switch(u.g)
+			case "magicianRR04.png"
+				do u.g :: "magicianRR03.png"
+			case "magicianRR03.png"
+				do u.g :: "magicianRR02.png"
+			case "magicianRR02.png"
+				do u.g :: "magicianRR01.png"
+			default
+				do u.g :: "magicianRR04.png"
+			end switch
+			do u.p :: 0
+		end if
+		
+	default
+		do u.g :: "magicianR1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.vx :: 6.0
+		do u.incMode()
+	case 1
+		do u.moveRight(100.0)
+	case 2
+		do u.setAtari2(180.0, 300.0, 180.0)
+		do u.loop1(80)
+	case 3
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1280.0, 1.0, 60.0)
+	case 4
+		do u.loop1(30)
+	case 5
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeftK(-u.w, -1.0, -60.0)
+	case 6
+		do u.loop1(30)
+	case 7
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(0.0, 1.0, 60.0)
+	case 8
+		if(u.kinit = 0)
+			do u.g :: "magicianRR01.png"
+			do u.kinit :: 1
+		end if
+		do u.loop1(50)
+	case 9
+		if(u.kinit = 0)
+			do u.cnt2 :: 0
+			do u.vx :: 10.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+		end if
+		if(u.cnt2 > 3)
+			do u.incMode()
+			do u.g :: "magicianRR02.png"
+			ret
+		end if
+		if(u.x < -300.0 | u.x + u.w - 300.0 > 1280.0)
+			do u.x :- u.vx
+			do u.vx :: -u.vx
+			do u.cnt2 :+ 1
+			do \main@sndd(60)
+		end if
+		if(u.y < -300.0 | u.y + u.h - 300.0 > 720.0)
+			do u.y :- u.vy
+			do u.vy :: -u.vy
+			do \main@sndd(60)
+		end if
+	case 10
+		if(u.kinit = 0)
+			do u.kinit :: 1
+		end if
+		do u.loop1(30)
+	case 999
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 10.0
+			do u.kinit :: 1
+		end if
+		if(u.y > 160.0)
+			do u.incMode()
+		end if
+	case 1000
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: 0.0
+			do u.vy :: -16.0
+			do \main@sndd(1)
+		end if
+		if(u.y < -u.h)
+			do u.d :: true
+			do \main@oBOSS :: null
+			do u.cObj("PO1")
+			do u.cObj("PO2")
+			do u.cObj("PO3")
+		end if
+	default
+		if(u.kinit = 0)
+			do u.kinit :: 1
+		end if
+		do u.x :: -u.w
+		do u.y :: 160.0
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+		
+		do u.incMode()
+		do u.mode :: 0
+		do u.g :: "magicianR1.png"
+	end switch
+end func

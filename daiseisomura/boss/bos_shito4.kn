@@ -1,0 +1,340 @@
++func initG(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "3shito-tame1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 210.0
+	do u.mhp :: 1050.0
+	do u.hp :: u.mhp
+	;do u.setAtari2(1060.0, 380.0, 200.0)
+	do u.setAtari(220.0, 220.0, 150.0)
+	
+	do u.gai :: true
+	do u.boss :: true
+	do \main@oBOSS :: u
+	do \main@bgmchg("boss4", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	;do u.cObj("SHITO4NM")
+end func
+
+
++func actG(u: \main@UNIT)
+	if(u.kinit = 0)
+		do u.p :: 0
+		do u.sp :: 0
+	else
+		;do u.sp :+ 1
+	end if
+	
+	
+	switch(u.mode)
+	case 1, 2, 3, 4, 5
+		do u.g :: "3shito1.png"
+		
+	case 6, 8, 10
+		switch(u.g)
+		case "3shito3-1.png"
+			do u.g :: "3shito3-2.png"
+		case "3shito3-2.png"
+			do u.g :: "3shito3-3.png"
+		default
+			do u.g :: "3shito3-1.png"
+		end switch
+	case 7, 9, 11
+		if(u.x > 600.0)
+			switch(u.g)
+			case "3shito3-1.png"
+				do u.g :: "3shito3-2.png"
+			case "3shito3-2.png"
+				do u.g :: "3shito3-3.png"
+			default
+				do u.g :: "3shito3-1.png"
+			end switch
+		else
+			switch(u.g)
+			case "3shito2-1.png"
+				do u.g :: "3shito2-2.png"
+			case "3shito2-2.png"
+				do u.g :: "3shito2-3.png"
+			default
+				do u.g :: "3shito2-1.png"
+			end switch
+		end if
+	case 12, 13, 14, 15
+		var a: int :: 1
+	default
+		do u.g :: "3shito-tame1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 1
+		if(u.kinit = 0)
+			do u.setAtari2(220.0, 220.0, 180.0)
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+		end if
+		do u.loop1(50)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-100.0)
+		
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 200)
+			do u.cnt4 :+ 1
+			var o: \main@UNIT :: u.cObj("SHITO4S")
+			do o.x :: u.x + 270.0
+			do o.y :: 243.0
+			do u.cnt3 :: 0
+		end if
+	case 3
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 200)
+			do u.cnt4 :+ 1
+			var o: \main@UNIT :: u.cObj("SHITO4S")
+			do o.x :: u.x + 270.0
+			do o.y :: 243.0
+			do u.cnt3 :: 0
+		end if
+		do u.moveRight(100.0)
+	case 4
+		if(u.cnt4 > 2)
+			do u.incMode()
+		else
+			do u.incMode()
+			do u.mode :: 2
+		end if
+	case 5
+		do u.loop1(50)
+	case 6
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do \main@sndd(44)
+		end if
+		do u.moveRightK(915.0, 1.0, 60.0)
+	case 7
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do \main@sndd(8)
+		end if
+		do u.moveLeft(1280.0 - 484.0 - 600.0)
+	case 8
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do \main@sndd(44)
+		end if
+		do u.moveRightK(915.0, 1.0, 60.0)
+	case 9
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do \main@sndd(8)
+		end if
+		do u.moveLeft(1280.0 - 484.0 - 600.0)
+	case 10
+		if(u.kinit = 0)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do \main@sndd(44)
+		end if
+		do u.moveRightK(915.0, 1.0, 60.0)
+	case 11
+		if(u.kinit = 0)
+			do u.vx :: -20.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.cnt3 :: 0
+			do u.cnt4 :: 0
+			do \main@sndd(8)
+		end if
+		do u.moveLeft(0.0)
+	case 12
+		if(u.kinit = 0)
+			do u.g :: "3shito-tame1.png"
+			do u.kinit :: 1
+		end if
+		
+		;発生
+		var o: \main@UNIT :: u.cObj("SHITO4G")
+		do u.child :: o
+		do u.incMode()
+	case 13
+		;きえるまでまつ
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 14
+		do u.loop1(50)
+	default
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func
++func initE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "hadou1.png"
+	;"hadou-kage.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.boss :: true
+end func
++func actTE(u: \main@UNIT)
+	do u.cnt :+ 1
+	;if(u.cnt > 20)
+	do u.setAtari(230.0, 175.0, 150.0)
+	;do u.y :: 260.0
+	switch(u.g)
+	case "hadou1.png"
+		do u.g :: "hadou2.png"
+	case "hadou2.png"
+		do u.g :: "hadou3.png"
+	default
+		do u.g :: "hadou1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.vx :: 4.0
+		if(u.cnt > 50)
+			do u.mode :: 1
+		end if
+	case 1
+		do \main@sndd(44)
+		do u.vx :: 40.0
+		do u.vy :: 0.0
+		do u.mode :+ 1
+	default
+	end switch
+	;end if
+	
+end func
+
++func initGE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 80
+	do u.kai :: 0.0
+	do u.g :: "genkidama1.png"
+	do u.setWH()
+	do u.x :: -230.0
+	do u.y :: -320.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do \main@sndd(52)
+	var o: \main@UNIT :: u.cObj("SHITO4GM")
+	do u.child :: o
+end func
++func actGE(u: \main@UNIT)
+	switch(u.g)
+	case "genkidama1.png"
+		do u.g :: "genkidama2.png"
+	case "genkidama2.png"
+		do u.g :: "genkidama3.png"
+	case "genkidama3.png"
+		do u.g :: "genkidama4.png"
+	default
+		do u.g :: "genkidama1.png"
+	end switch
+	
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+		if(u.cnt > 100)
+			if(\main@oBOSS <>& null & \main@oBOSS.d = false)
+				do \main@oBOSS.g :: "3shito-tame2.png"
+			end if
+			do u.mode :: 1
+			do \main@sndd(53)
+			do u.child.d :: true
+		end if
+	case 1
+		do u.vx :: 32.0
+		do u.vy :: 16.0
+		do u.mode :+ 1
+	default
+	end switch
+end func
+
++func initNM(u: \main@UNIT)
+	do u.u :: -6000.0
+	do u.g :: "semi05.png"
+	do u.setWH()
+end func
+
++func actNM(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt > 50)
+		do u.al :- 0x02000000
+		if(u.al < 0x08000000)
+			do u.d :: true
+		end if
+	end if
+end func
+
+
++func initGM(u: \main@UNIT)
+	do u.u :: -901.0
+	do u.g :: "tamee1.png"
+	do u.setWH()
+	do u.x :: -224.0
+	do u.y :: 10.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.boss :: true
+end func
++func actGM(u: \main@UNIT)
+	switch(u.g)
+	case "tamee1.png"
+		do u.g :: "tamee2.png"
+	case "tamee2.png"
+		do u.g :: "tamee3.png"
+	default
+		do u.g :: "tamee1.png"
+	end switch
+end func

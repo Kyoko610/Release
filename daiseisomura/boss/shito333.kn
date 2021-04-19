@@ -1,0 +1,187 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.g :: "onm01.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 100.0
+	do u.vx :: 10.0
+	do u.mhp :: 550.0
+	do u.hp :: u.mhp
+	;do u.setAtari(740.0, 540.0, 200.0)
+	do u.setAtari2(150.0, 300.0, 150.0)
+	
+	do u.gai :: true
+	do u.boss :: true
+	;do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	do u.oto :: true
+	;do u.cObj("HPBARE")
+	;do u.cObj("HPBARE2")
+	;do u.cObj("HPBARGE")
+	;do u.cObj("BOSS2_D")
+end func
+
++func act(u: \main@UNIT)
+	if(u.hp < 150.0 & u.mode < 999)
+		do u.cnt4 :: 1
+		do u.incMode()
+		do u.mode :: 999
+		do u.cnt3 :: 0
+		do u.g :: "onm03.png"
+	end if
+	switch(u.cnt4)
+	case 0
+		;do u.cnt3 :+ 1
+		;if(u.cnt3 > 5)
+		;do u.cnt3 :: 0
+		;switch(u.g)
+		;case "onm01.png"
+		;				do u.g :: "onm02.png"
+		;			default
+		do u.g :: "onm01.png"
+		;			end switch
+		;				do u.cnt3 :: 0
+		;			end if
+	case 1
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 10)
+			do u.cnt3 :: 0
+			switch(u.g)
+			case "onm03.png"
+				do u.g :: "onm04.png"
+			case "onm04.png"
+				do u.g :: "onm05.png"
+			case "onm05.png"
+				do u.g :: "onm06.png"
+			case "onm06.png"
+				do u.g :: "onm07.png"
+			case "onm07.png"
+				do u.g :: "onm08.png"
+			case "onm08.png"
+				do u.g :: "onm08.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+	case 2
+		do u.g :: "onm08.png"
+	end switch
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 1
+		do u.loop1(130)
+	case 2
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("BOSSSEMIE")
+			do o.x :: u.x - 100.0
+			do o.y :: u.y - 20.0
+			do u.kinit :: 1
+			do u.child :: o
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 3
+		do u.loop1(130)
+	case 4
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("BOSSSEMIE")
+			do o.x :: u.x - 100.0
+			do o.y :: u.y - 20.0
+			do u.child :: o
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 5
+		do u.loop1(130)
+	case 6
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("BOSSSEMIE")
+			do o.x :: u.x - 100.0
+			do o.y :: u.y - 20.0
+			do u.child :: o
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 7
+		do u.loop1(80)
+	case 999
+		if(u.kinit = 0)
+			do u.kinit :: 1
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+		end if
+		do u.loop1(80)
+	case 1000
+		if(u.kinit = 0)
+			do u.cnt4 :: 2
+			do u.kinit :: 1
+			do u.vx :: 0.0
+			do u.vy :: -16.0
+			do \main@sndd(1)
+		end if
+		if(u.y < -u.h)
+			do u.d :: true
+			do \main@oBOSS :: null
+		end if
+	default
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "hadou1a.png"
+	;"hadou-kage.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.boss :: true
+end func
++func actTE(u: \main@UNIT)
+	do u.cnt :+ 1
+	;if(u.cnt > 20)
+	do u.setAtari(230.0, 175.0, 150.0)
+	;do u.y :: 260.0
+	switch(u.g)
+	case "hadou1a.png"
+		do u.g :: "hadou2a.png"
+	case "hadou2a.png"
+		do u.g :: "hadou3a.png"
+	default
+		do u.g :: "hadou1a.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.vx :: 4.0
+		do u.vy :: 4.0 / 5.0
+		if(u.cnt > 50)
+			do u.mode :: 1
+		end if
+	case 1
+		do \main@sndd(44)
+		do u.vx :: 40.0
+		do u.vy :: 8.0
+		do u.mode :+ 1
+	default
+	end switch
+	;end if
+	
+end func

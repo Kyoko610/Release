@@ -1,0 +1,221 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.g :: "crannba-aruki1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -110.0
+	do u.vx :: 0.2
+	do u.mhp :: 350.0
+	do u.hp :: u.mhp
+	do u.setAtari(740.0, 540.0, 200.0)
+	;do u.df1 :: 990.0
+	;do u.df2 :: 990.0
+	;do u.df3 :: 20.0
+	;do u.df4 :: 990.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	;do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	do u.oto :: true
+end func
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0, 10
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 7)
+			do u.cnt3 :: 0
+			switch(u.g)
+			case "crannba-aruki1.png"
+				do u.g :: "crannba-aruki2.png"
+			case "crannba-aruki2.png"
+				do u.g :: "crannba-aruki3.png"
+			case "crannba-aruki3.png"
+				do u.g :: "crannba-aruki4.png"
+			case "crannba-aruki4.png"
+				do \main@snd[55].freq(1.2)
+				do \main@sndd(55)
+				do u.g :: "crannba-aruki5.png"
+			case "crannba-aruki5.png"
+				do u.g :: "crannba-aruki6.png"
+			case "crannba-aruki6.png"
+				do u.g :: "crannba-aruki7.png"
+			case "crannba-aruki7.png"
+				do u.g :: "crannba-aruki8.png"
+			default
+				do \main@snd[55].freq(1.2)
+				do \main@sndd(55)
+				do u.g :: "crannba-aruki1.png"
+			end switch
+		end if
+	case 1
+		do u.g :: "crannba-aruki1.png"
+	case 2, 3, 4, 5, 6, 7
+		do u.g :: "crannba-nage2-asi4.png"
+	case 9
+		switch(u.p)
+		case 0
+			do \main@sndd(20)
+			do u.g :: "crannba-huri1-asi1.png"
+		case 1 to 4
+			do u.g :: "crannba-huri1-asi1.png"
+		case 5
+			do u.g :: "crannba-huri2-asi1.png"
+			do \main@sndd(44)
+		case 6 to 10
+			do u.g :: "crannba-huri2-asi1.png"
+		case 11 to 35
+			do u.g :: "crannba-huri3-asi1.png"
+		default
+			do u.g :: "crannba-huri4-asi1.png"
+		end switch
+		do u.p :+ 1
+	default
+		do u.g :: "crannba-aruki1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-500.0)
+	case 1
+		do u.setAtari2(740.0, 540.0, 280.0)
+		do u.loop1(100)
+	case 2
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("GICEN")
+			do o.x :: u.x + 1030.0
+			do o.y :: u.y + 450.0
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 3
+		do u.loop1(80)
+	case 4
+		do u.incMode()
+		do u.mode :: 8
+		ret
+		{
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("GFIREE")
+			do o.x :: u.x + 1030.0
+			do o.y :: u.y + 350.0
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+}
+	case 5
+		do u.loop1(80)
+	case 6
+		if(u.kinit = 0)
+			var o: \main@UNIT :: u.cObj("GFIREE")
+			do o.x :: u.x + 1030.0
+			do o.y :: u.y + 350.0
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 7
+		do u.loop1(80)
+	case 8
+		do u.cnt3 :: 0
+		do u.vx :: 1.0
+		do u.p :: 0
+		do u.incMode()
+	case 9
+		do u.setAtari(740.0, 540.0, 300.0)
+		do u.vx :+ 1.0
+		if(u.vx > 30.0)
+			do u.vx :: 30.0
+		end if
+		if(u.p = 50)
+			do u.setAtari(740.0, 540.0, 200.0)
+			do u.incMode()
+		end if
+	case 10
+		if(u.kinit = 0)
+			do u.p :: 0
+			do u.vx :: -6.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-500.0)
+	default
+		do u.incMode()
+		do u.mode :: 0
+	end switch
+end func
+
+
+
++func initICE(u: \main@UNIT)
+	do u.u :: 9001.0
+	do u.kai :: 0.0
+	do u.g :: "cdenshareiki1.png"
+	do u.setWH()
+	do u.vx :: 3.0
+	do u.vy :: 1.5
+	;	do u.setAtari(u.w / 2.0, 264.0, 85.0)
+	do u.boss :: true
+	do \main@sndd(81)
+end func
++func actICE(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		switch(u.g)
+		case "cdenshareiki1.png"
+			do u.g :: "cdenshareiki2.png"
+		case "cdenshareiki2.png"
+			do u.g :: "cdenshareiki3.png"
+		case "cdenshareiki3.png"
+			do u.g :: "cdenshareiki4.png"
+		case "cdenshareiki4.png"
+			do u.g :: "cdenshareiki5.png"
+		default
+			do u.g :: "cdenshareiki1.png"
+		end switch
+	default
+		switch(u.g)
+		case "cice1.png"
+			do u.g :: "cice2.png"
+		case "cice2.png"
+			do u.g :: "cice3.png"
+		case "cice3.png"
+			do u.g :: "cice4.png"
+		case "cice4.png"
+			do u.g :: "cice5.png"
+		default
+			do u.g :: "cice6.png"
+		end switch
+	end switch
+	switch(u.mode)
+	case 0
+		if(u.y > 720.0 - u.h)
+			do u.incMode()
+			do u.a :: 40
+			do u.g :: "cice1.png"
+			do u.setWH()
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.x :: 0.0
+			do u.y :: -20.0
+			do u.setAtari(640.0, 360.0, 2000.0)
+		end if
+	case 1
+		do u.loop1(30)
+	case 2
+		do u.d :: true
+	end switch
+end func

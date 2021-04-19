@@ -1,0 +1,343 @@
++func init0(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 999992.0
+	do u.g :: "eblack.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do \main@cObj("ENDM")
+end func
++func act0(u: \main@UNIT)
+end func
+
++func init1(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei1.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h
+	do u.vy :: 1.11
+	do u.gai :: true
+end func
++func act1(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :+ 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > u.h * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END2")
+		do u.cnt5 :: 1
+	end if
+	if(u.y > u.h)
+		do u.d :: true
+	end if
+end func
+
++func init2(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei2.png"
+	do u.setWH()
+	do u.x :: -u.w - 50.0
+	do u.y :: 0.0
+	do u.vx :: 1.11
+	do u.gai :: true
+end func
++func act2(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.x :+ 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > 1280.0 * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END3")
+		do u.cnt5 :: 1
+	end if
+	if(u.x > 1280.0)
+		do u.d :: true
+	end if
+end func
+
++func init3(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei3.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h - 50.0
+	do u.vy :: 1.11
+	do u.gai :: true
+end func
++func act3(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :+ 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > u.h * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END4")
+		do u.cnt5 :: 1
+	end if
+	if(u.y > 720.0)
+		do u.d :: true
+	end if
+end func
+
++func init4(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei4.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: -u.h - 50.0
+	do u.vy :: 1.11
+	do u.gai :: true
+end func
++func act4(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :+ 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > u.h * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END5")
+		do u.cnt5 :: 1
+	end if
+	if(u.y > u.h)
+		do u.d :: true
+	end if
+end func
+
+
++func init5(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei5.png"
+	do u.setWH()
+	do u.x :: 1280.0 + 50.0
+	do u.y :: 0.0
+	do u.vx :: -1.11
+	do u.gai :: true
+end func
++func act5(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.x :- 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > u.w * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END6")
+		do u.cnt5 :: 1
+	end if
+	if(u.x < -u.w)
+		do u.d :: true
+	end if
+end func
+
+
++func init6(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei6clip.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: u.h + 50.0
+	do u.vy :: -1.11
+	do u.gai :: true
+end func
++func act6(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :- 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > u.h * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END7")
+		do u.cnt5 :: 1
+	end if
+	if(u.y < -u.h)
+		do u.d :: true
+	end if
+end func
+
++func init7(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei7.png"
+	do u.setWH()
+	do u.x :: -u.w - 50.0
+	do u.y :: 0.0
+	do u.vx :: 1.11
+	do u.gai :: true
+end func
++func act7(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.x :+ 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > u.w * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END8")
+		do u.cnt5 :: 1
+	end if
+	if(u.x > 1280.0)
+		do u.d :: true
+	end if
+end func
+
++func init8(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei8.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: u.h + 50.0
+	do u.vy :: -1.11
+	do u.gai :: true
+end func
++func act8(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :- 6.0
+		do u.cntf :+ 6.0
+	end if
+	do u.cntf :+ 1.11
+	if(u.cntf $ float > u.h * 1.00 & u.cnt5 = 0)
+		do \main@cObj("END9")
+		do u.cnt5 :: 1
+	end if
+	if(u.y < -u.h)
+		do u.d :: true
+	end if
+end func
+
++func init9(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -9992.0
+	do u.g :: "haikei9.png"
+	do u.setWH()
+	do u.x :: 1280.0 + 50.0
+	do u.y :: 0.0
+	do u.vx :: -1.11
+	do u.gai :: true
+end func
++func act9(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.x :- 6.0
+		do u.cntf :+ 6.0
+	end if
+	if(u.x < -u.w - 150.0)
+		do u.d :: true
+		do \main@cObj("ENDMM")
+	end if
+end func
+
++func initm(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -90992.0
+	do u.g :: "rrrrrr.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	do u.vy :: -0.80
+	do u.gai :: true
+end func
++func actm(u: \main@UNIT)
+	if(\main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :- 4.324
+	end if
+	if(u.y < -u.h)
+		do u.d :: true
+	end if
+end func
+
++func initddm(u: \main@UNIT)
+	do u.kind :: %haikei
+	do u.u :: -190992.0
+	do u.g :: "DMMM.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.a :: 0x44FFFFFF
+	do u.gai :: true
+	do \main@bgmchg("endd", 1)
+end func
++func actddm(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.al :+ 0x01000000
+		if(u.al >= 0xFFFFFFFF)
+			do u.al :: 0xFFFFFFFF
+			do u.incMode()
+		end if
+	case 1
+		if(\main@drawMain.focused() = true & input@pad(0, %a) = 1)
+			block
+				var handle: file@Writer :: file@makeWriter(wnd@exeDir() ~ "/save.dat", false)
+				do handle.write([15 $ bit8])
+				do handle.fin()
+			end block
+			
+			do \main@gamemode :: %title
+			do u.d :: true
+		end if
+	end switch
+end func
+
++func initmm(u: \main@UNIT)
+	var handle: file@Reader :: file@makeReader("res/14/setx.txt")
+	do handle.delimiter(['\n'])
+	while(handle.term() = false)
+		var ss: []char :: handle.readStr()
+		var tt: [][]char :: ss.split("\t")
+		var fn: list<[]char> :: #list<[]char>
+		var pot: []char :: "HKA"
+		var pot2: []char :: "HKA"
+		for n(4, ^tt - 1)
+			do fn.add(tt[n])
+		end for
+		var unit1: \main@UNIT :: \main@cObj(pot)
+		do unit1.cnt3 :: tt[3].toInt(&)
+		do unit1.sp :: tt[2].toFloat(&) $ int
+		do unit1.cntf :: tt[1].toFloat(&)
+		do unit1.u :: tt[0].toFloat(&)
+		do unit1.gg :: fn
+		do unit1.gg.head()
+		do unit1.x :: 0.0
+		var unit2: \main@UNIT :: \main@cObj(pot2)
+		do unit2.cnt3 :: unit1.cnt3
+		do unit2.sp :: unit1.sp
+		do unit2.cntf :: unit1.cntf
+		do unit2.u :: unit1.u
+		do unit2.gg :: ##fn
+		do unit2.gg.head()
+		do unit2.x :: -\main@porg.get(unit2.gg.get(), &).tex.imgWidth() $ float
+	end while
+	do handle.fin()
+	do u.kind :: %haikei
+	do u.u :: -90992.0
+	do u.g :: "stafff.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	do u.vy :: -0.80
+	;-0.805
+	do u.gai :: true
+	if(\main@sndnari.getPos() < 167.0)
+		do \main@sndnari.setPos(167.0)
+	end if
+end func
++func actmm(u: \main@UNIT)
+	if(u.cnt4 = 0 & \main@drawMain.focused() = true & input@pad(0, %a) > 0)
+		do u.y :- 4.324
+	end if
+	if(u.cnt4 = 1 & \main@drawMain.focused() = true & input@pad(0, %a) = 1)
+		do \main@cObj("ENDMM2")
+		do u.d :: true
+	end if
+	if(u.y < -u.h + 720.0)
+		do u.cnt4 :: 1
+		do u.vy :: 0.0
+	end if
+end func

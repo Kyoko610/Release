@@ -1,0 +1,826 @@
++func init(u: \main@UNIT)
+	do u.u :: 89001.0
+	do u.g :: "nomiso.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: 640.0 - u.w / 2.0
+	do u.y :: u.h
+	
+	do u.mhp :: 1500.0
+	
+	do u.hp :: u.mhp
+	;do u.setAtari(500.0, 380.0, 300.0)
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss7", 1)
+	;do \main@bgmchg("test", 1)
+	do \main@oBOSS :: u
+	do \main@cObj("HPBARE")
+	do \main@cObj("HPBARE2")
+	do \main@cObj("HPBARGE")
+	
+	do u.child :: \main@cObj("MOTHER2R")
+	do u.child2 :: \main@cObj("MOTHER2L")
+	do u.child.child :: u.child2
+	do u.child2.child :: u.child
+end func
+
+enum un
+	first
+	last :: 199
+end enum
++func act(u: \main@UNIT)
+	
+	if(u.hp < 100.0 & u.cnt5 = 0)
+		do \main@bgmchg("boss8", 1)
+		do \main@snd[47].stop()
+		do u.g :: "nomiso2.png"
+		do u.p :: 0
+		do u.cnt :: 0
+		do u.mode :: %last $ @un $ int
+		do u.child.mode :: 999
+		do u.child2.mode :: 999
+		block
+			var oooo: \main@UNIT :: \main@cObj("KIEG")
+			do oooo.x :: 640.0 - 290.0
+			do oooo.y :: 0.0
+			do oooo.u :: u.u - 0.5
+			do oooo.color :: 7
+		end block
+		do u.cnt5 :: 1
+		do u.df1 :: 999.0
+		do u.df2 :: 999.0
+		do u.df3 :: 999.0
+		do u.df4 :: -8000.0
+		do u.atari2 :: null
+	else
+		if(\main@sndnari.playing() = false)
+			do \main@sndnari.setPos(8.46)
+			do \main@sndnari.play()
+		end if
+	end if
+	
+	switch(u.mode)
+	case %first $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -2.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(0.0)
+	case 1
+		if(u.kinit = 0)
+			do u.setAtari2(640.0, 320.0, 120.0)
+		end if
+	case %last $ @un $ int
+		if(u.child2 =& null | u.child2.d = true)
+			do u.incMode()
+		end if
+		do u.p :+ 2
+		if(u.p >= 720)
+			do u.p :: 719
+		end if
+		do u.cnt :+ 1
+		if(u.cnt > 20)
+			do u.cnt :: 0
+			do \main@sndd(11)
+			block
+				var oooo: \main@UNIT :: \main@cObj("BAKULMY2")
+				do oooo.x :: lib@rndFloat(0.0, 1280.0) - 320.0
+				do oooo.y :: lib@rndFloat(u.p $ float, 720.0) - 400.0
+			end block
+			do u.cnt :: 0
+		end if
+		;脳みそ爆発後
+		
+	case %last $ @un $ int + 1
+		if(u.kinit = 0)
+			do u.setAtari2(640.0, 320.0, 120.0)
+			var oooo: \main@UNIT :: \main@cObj("MOTHER2TAA")
+			do u.kinit :: 1
+		end if
+		do u.cnt :+ 1
+		if(u.cnt > 14)
+			do u.cnt :: 0
+			;do \main@sndd(11)
+			block
+				var oooo: \main@UNIT :: \main@cObj("BAKULMY2S")
+				do oooo.x :: lib@rndFloat(0.0, 1280.0) - 320.0
+				do oooo.y :: lib@rndFloat(0.0, 720.0) - 400.0
+			end block
+			do u.cnt :: 0
+		end if
+	default
+	end switch
+end func
+
+
++func initL(u: \main@UNIT)
+	do u.u :: 89001.0
+	do u.g :: "kikai1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.gai :: true
+	do u.boss :: true
+end func
++func actL(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.kie :: true
+		do u.f :: \main@KIE
+		ret
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			do u.vx :: 1.2
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-u.w / 2.0)
+	case 1
+		if(u.kinit = 0)
+			do u.g :: "kikaisemisira.png"
+			do u.child.g :: "kikaisemisiraA.png"
+			
+			do u.child2 :: \main@cObj("MOTHER2G")
+			do u.child3 :: \main@cObj("MOTHER2G2")
+			do u.kinit :: 1
+		end if
+		if((u.child2 =& null | u.child2.d = true) & (u.child3 =& null | u.child3.d = true))
+			do u.incMode()
+		end if
+	case 2
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 55.0)
+			do u.roll :: 55.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 3
+		do u.roll :- 1.0
+		if(u.roll < 45.0)
+			do u.roll :: 45.0
+			
+			do u.incMode()
+		end if
+		;::::::::::::::::::::::::::::::::::
+		
+	case 4
+		if(u.kinit = 0)
+			do u.g :: "kikaimother.png"
+			do u.child.g :: "kikaimotherA.png"
+			
+			do u.child2 :: \main@cObj("MOTHER2TA")
+			do u.child3 :: \main@cObj("MOTHER2TA2")
+			do u.child2.cntr :: 0.0
+			for n(1, 11)
+				var ooo: \main@UNIT :: \main@cObj("MOTHER2TA")
+				do ooo.cntr :: 30.0 * n $ float
+				do ooo :: \main@cObj("MOTHER2TA2")
+				do ooo.cntr :: 30.0 * n $ float
+			end for
+			do u.kinit :: 1
+		end if
+		if((u.child2 =& null | u.child2.d = true) & (u.child3 =& null | u.child3.d = true))
+			
+			do u.incMode()
+		end if
+	case 5
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 100.0)
+			do u.roll :: 100.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 6
+		do u.roll :- 1.0
+		if(u.roll < 90.0)
+			do u.roll :: 90.0
+			do u.incMode()
+		end if
+		;::::::::::::::::::::::::::::::::::
+		
+	case 7
+		if(u.kinit = 0)
+			do u.g :: "kikaikureha.png"
+			do u.child.g :: "kikaikurehaA.png"
+			
+			do u.child2 :: \main@cObj("MOTHER2FAN")
+			do u.child2.x :: 500 $ float
+			
+			do \main@cObj("MOTHER2FAN").x :: 250 $ float
+			do \main@cObj("MOTHER2FAN").x :: 750 $ float
+			do u.kinit :: 1
+		end if
+		if((u.child2 =& null | u.child2.d = true))
+			do u.incMode()
+		end if
+	case 8
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 145.0)
+			do u.roll :: 145.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 9
+		do u.roll :- 1.0
+		if(u.roll < 135.0)
+			do u.roll :: 135.0
+			do u.incMode()
+		end if
+		;::::::::::::::::::::::::::::::::::
+		
+	case 10
+		if(u.kinit = 0)
+			
+			do u.g :: "kikaimother.png"
+			do u.child.g :: "kikaimotherA.png"
+			
+			
+			do u.child2 :: \main@cObj("MOTHER2B")
+			do u.kinit :: 1
+		end if
+		if((u.child2 =& null | u.child2.d = true))
+			do u.incMode()
+		end if
+	case 11
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 190.0)
+			do u.roll :: 190.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 12
+		do u.roll :- 1.0
+		if(u.roll < 180.0)
+			do u.roll :: 180.0
+			do u.incMode()
+		end if
+		;::::::::::::::::::::::::::::::::::
+		
+	case 13
+		do u.loop1(100)
+	case 14
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 235.0)
+			do u.roll :: 235.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 15
+		do u.roll :- 1.0
+		if(u.roll < 225.0)
+			do u.roll :: 225.0
+			do u.incMode()
+		end if
+		;::::::::::::::::::::::::::::::::::
+		
+	case 16
+		if(u.kinit = 0)
+			
+			do u.g :: "kikaimother.png"
+			do u.child.g :: "kikaimotherA.png"
+			do u.child2 :: \main@cObj("MOTHER2TA")
+			do u.child3 :: \main@cObj("MOTHER2TA2")
+			do u.child2.cntr :: 0.0
+			for n(1, 11)
+				var ooo: \main@UNIT :: \main@cObj("MOTHER2TA")
+				do ooo.cntr :: 30.0 * n $ float
+				do ooo :: \main@cObj("MOTHER2TA2")
+				do ooo.cntr :: 30.0 * n $ float
+			end for
+			do u.kinit :: 1
+		end if
+		if((u.child2 =& null | u.child2.d = true) & (u.child3 =& null | u.child3.d = true))
+			
+			do u.incMode()
+		end if
+		
+	case 17
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 280.0)
+			do u.roll :: 280.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 18
+		do u.roll :- 1.0
+		if(u.roll < 270.0)
+			do u.roll :: 270.0
+			do u.incMode()
+		end if
+		;::::::::::::::::::::::::::::::::::
+		
+	case 19
+		if(u.kinit = 0)
+			do u.g :: "kikaisesonia.png"
+			do u.child.g :: "kikaisesoniaA.png"
+			
+			for n(0, 1280 - 172, 172)
+				do u.child2 :: \main@cObj("MOTHER2SS")
+				do u.child2.x :: n $ float
+			end for
+			do \main@sndd(86)
+			do u.kinit :: 1
+		end if
+		if(u.child2 =& null | u.child2.d = true)
+			do u.incMode()
+			do \main@snd[86].stop()
+		end if
+	case 20
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 325.0)
+			do u.roll :: 325.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 21
+		do u.roll :- 1.0
+		if(u.roll < 315.0)
+			do u.roll :: 315.0
+			do u.incMode()
+		end if
+		;::::::::::::::::::::::::::::::::::
+		
+	case 22
+		if(u.kinit = 0)
+			do u.g :: "kikaimother.png"
+			do u.child.g :: "kikaimotherA.png"
+			do u.child2 :: \main@cObj("MOTHER2B")
+			do u.kinit :: 1
+		end if
+		if((u.child2 =& null | u.child2.d = true))
+			do u.incMode()
+		end if
+	case 23
+		if(u.kinit = 0)
+			do u.g :: "kikai1.png"
+			do u.child.g :: "kikai1A.png"
+			
+			do \main@sndd(47)
+			do u.kinit :: 1
+		end if
+		do u.roll :+ 1.0
+		if(u.roll > 370.0)
+			do u.roll :: 370.0
+			do \main@snd[47].stop()
+			do u.incMode()
+		end if
+	case 24
+		do u.roll :- 1.0
+		if(u.roll < 360.0)
+			do u.roll :: 360.0
+			do u.incMode()
+		end if
+		
+		;::::::::::::::::::::::::::::::::::
+	case 999
+		do u.gai :: false
+		do u.vy :: 2.0
+	default
+		do u.mode :: 1
+		do u.roll :: 0.0
+	end switch
+end func
+
+
++func initR(u: \main@UNIT)
+	do u.u :: 89001.0
+	do u.g :: "kikai1A.png"
+	do u.setWH()
+	do u.x :: 1280.0
+	do u.y :: 0.0
+	do u.gai :: true
+	do u.boss :: true
+end func
++func actR(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.kie :: true
+		do u.f :: \main@KIE
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: -1.2
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(1280.0 - u.w / 2.0)
+	case 1
+		do u.roll :: -u.child.roll
+	case 999
+		do u.gai :: false
+		do u.vy :: 2.0
+	end switch
+	
+end func
+
+
+
++func initGE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 80
+	do u.g :: "genkidama1.png"
+	do u.setWH()
+	do u.x :: -u.w / 2.0
+	do u.y :: 170.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do \main@sndd(52)
+end func
++func actGE(u: \main@UNIT)
+	switch(u.g)
+	case "genkidama1.png"
+		do u.g :: "genkidama2.png"
+	case "genkidama2.png"
+		do u.g :: "genkidama3.png"
+	case "genkidama3.png"
+		do u.g :: "genkidama4.png"
+	default
+		do u.g :: "genkidama1.png"
+	end switch
+	
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+		if(u.cnt > 100)
+			do u.mode :: 1
+			do \main@sndd(53)
+		end if
+	case 1
+		do u.vx :: 16.0
+		do u.vy :: -1.0
+		do u.mode :+ 1
+	default
+	end switch
+end func
+
++func initGE2(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 80
+	do u.g :: "genkidama1.png"
+	do u.setWH()
+	do u.x :: 1280.0 - u.w / 2.0
+	do u.y :: 170.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do \main@sndd(52)
+end func
++func actGE2(u: \main@UNIT)
+	switch(u.g)
+	case "genkidama1.png"
+		do u.g :: "genkidama2.png"
+	case "genkidama2.png"
+		do u.g :: "genkidama3.png"
+	case "genkidama3.png"
+		do u.g :: "genkidama4.png"
+	default
+		do u.g :: "genkidama1.png"
+	end switch
+	
+	do u.cnt :+ 1
+	switch(u.mode)
+	case 0
+		do u.vx :: 0.0
+		do u.vy :: 0.0
+		if(u.cnt > 100)
+			do u.mode :: 1
+			do \main@sndd(53)
+		end if
+	case 1
+		do u.vx :: -16.0
+		do u.vy :: -1.0
+		do u.mode :+ 1
+	default
+	end switch
+end func
+
+
++func initTA1(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "nou005.png"
+	do u.hp :: 99999.0
+	do u.setWH()
+	;	do u.cntr :: 0.0
+	do u.cntd :: 0.0
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x + 380.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: \main@oBOSS.y + 555.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w * 0.3)
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, u.w * 0.4)
+	do u.boss :: true
+end func
++func actTA1(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x + 380.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: \main@oBOSS.y + 550.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	switch(u.mode)
+	case 0
+		do u.cntd :+ 2.0
+		do u.loop1(20)
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(39)
+			do u.kinit :: 1
+		end if
+		do u.cntd :+ 8.0
+	end switch
+end func
+
+
++func initTA2(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "nou005.png"
+	do u.hp :: 99999.0
+	do u.setWH()
+	;	do u.cntr :: 0.0
+	do u.cntd :: 0.0
+	do u.cntd :: 0.0
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x + 1280.0 - 380.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: \main@oBOSS.y + 550.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w * 0.3)
+	do u.setAtari2(u.w / 2.0, u.h / 2.0, u.w * 0.4)
+	do u.boss :: true
+end func
++func actTA2(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x + 1280.0 - 380.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: \main@oBOSS.y + 550.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	switch(u.mode)
+	case 0
+		do u.cntd :+ 2.0
+		do u.loop1(20)
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(39)
+			do u.kinit :: 1
+		end if
+		do u.cntd :+ 8.0
+	end switch
+end func
+
+
+
++func initFAN(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "FAN1.png"
+	do u.setWH()
+	do u.y :: -u.h
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w * 0.3)
+	do u.boss :: true
+end func
++func actFAN(u: \main@UNIT)
+	switch(u.g)
+	case "FAN1.png"
+		do u.g :: "FAN2.png"
+	case "FAN2.png"
+		do u.g :: "FAN3.png"
+	case "FAN3.png"
+		do u.g :: "FAN4.png"
+	default
+		do u.g :: "FAN1.png"
+	end switch
+	switch(u.mode)
+	case 0
+		do u.vy :: 2.0
+		do u.loop1(50)
+	case 1
+		if(u.kinit = 0)
+			do u.vy :: 16.0
+			do u.vx :: 0.0
+			do \main@sndd(59)
+			do u.kinit :: 1
+		end if
+	end switch
+end func
+
+
+
++func initB(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "nou006b.png"
+	do u.setWH()
+	do u.y :: -200.0
+	;do u.setAtari(u.w / 2.0, u.h / 2.0, u.w * 0.4)
+	do u.boss :: true
+end func
++func actB(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.vy :: 6.0
+		do u.moveDown(0.0)
+	case 1
+		do u.loop1(50)
+	case 2
+		do u.p :+ 1
+		if(u.p > 4)
+			switch(u.g)
+			case "nou006b.png"
+				do u.g :: "nou006b2.png"
+			case "nou006b2.png"
+				do u.g :: "nou006b3.png"
+			case "nou006b3.png"
+				do u.g :: "nou006b4.png"
+				do u.setAtari(640.0, 1000.0, 640.0)
+			case "nou006b4.png"
+				do u.g :: "nou006b5.png"
+			case "nou006b5.png"
+				do u.g :: "nou006b5.png"
+				
+			default
+				do u.g :: "nou006b2.png"
+			end switch
+			do u.p :: 0
+		end if
+		if(u.kinit = 0)
+			do \main@sndd(6)
+			do u.kinit :: 1
+		end if
+		do u.loop1(30)
+	case 3
+		if(u.kinit = 0)
+			do u.g :: "nou006b.png"
+			do u.kinit :: 1
+		end if
+		do u.atari :: null
+		do u.loop1(30)
+	case 4
+		do u.vy :: -6.0
+		do u.moveUp(-200.0)
+	case 5
+		do u.d :: true
+	end switch
+end func
+
+
+
++func initTE(u: \main@UNIT)
+	do u.u :: -900.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "syokusyu2\{lib@rnd(1, 4)}.png"
+	do u.y :: 0.0
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.boss :: true
+	do u.setAtari(80.0, 250.0, 50.0)
+end func
++func actTE(u: \main@UNIT)
+	;if(u.cnt > 20)
+	;do u.setAtari(230.0, 175.0, 150.0)
+	;do u.y :: 260.0
+	do u.p :+ 1
+	if(u.p > 5)
+		do u.p :: 0
+		switch(u.g)
+		case "syokusyu21.png"
+			do u.g :: "syokusyu22.png"
+			
+		case "syokusyu22.png"
+			do u.g :: "syokusyu23.png"
+		case "syokusyu23.png"
+			do u.g :: "syokusyu24.png"
+		default
+			do u.g :: "syokusyu21.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.y :: 720.0
+			do u.vx :: 0.0
+			do u.vy :: -5.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(u.h - 50.0)
+	case 1
+		do u.loop1(50)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(720.0 - u.h)
+	case 3
+		do u.loop1(30)
+	case 4
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 10.0
+			do u.kinit :: 1
+		end if
+	default
+	end switch
+end func
+
+
++func initE(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.kind :: %haikei
+	do u.g :: "redddd.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.boss :: true
+	do u.al :: 0x44FFFFFF
+end func
++func actE(u: \main@UNIT)
+	;if(\main@oBOSS =& null | \main@oBOSS.d = true)
+	;	do u.d :: true
+	;	ret
+	;end if
+	do u.p :+ 1
+	if(u.p > 1)
+		switch(u.mode)
+		case 0
+			do u.al :+ 0x01000000
+			if(u.al >= 0xBBFFFFFF)
+				do u.al :: 0xBBFFFFFF
+				do u.incMode()
+			end if
+		case 1
+			do u.al :- 0x01000000
+			if(u.al <= 0x44FFFFFF)
+				do u.al :: 0x44FFFFFF
+				do u.incMode()
+				do u.mode :: 0
+			end if
+		end switch
+		do u.p :: 0
+	end if
+end func

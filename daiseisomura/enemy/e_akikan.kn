@@ -1,0 +1,73 @@
++func init(u: \main@UNIT)
+	do u.u :: 1000.0
+	do u.g :: "e51.png"
+	do u.hp :: 5.0
+	do u.kai :: 4.0
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -400.0
+	do u.y :: \main@ty
+	do u.setAtari(304.0, 350.0, 50.0)
+	do u.setAtari2(304.0, 350.0, 80.0)
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.str :: ["e51.png", "e52.png"]
+	do u.cnt :: 20
+	do u.color :: 1
+end func
+
++func act(u: \main@UNIT)
+	if(u.mode = 0)
+		do u.g :: u.str[1]
+		do u.cnt :- 1
+		if(u.cnt = 0)
+			do u.mode :: 1
+			do u.vy :: -13.0
+			do \main@sndd(13)
+		end if
+	else
+		do u.g :: u.str[0]
+		do u.vy :+ 0.3
+		if(u.y > \main@ty)
+			do u.y :: \main@ty
+			do u.vy :: 0.0
+			do u.mode :: 0
+			do u.cnt :: 20
+		end if
+	end if
+end func
+
+
+
++func initk(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "e51.png"
+	do u.hp :: 5000000.0
+	do u.kai :: 4.0
+	do u.a :: 40
+	do u.setWH()
+	do u.setAtari2(310.0 + 130.0, 310.0 + 110.0, 70.0)
+	do u.x :: 1280.0
+	do u.y :: \main@ty - 110.0
+	do u.spMax :: 9
+	do u.sp :: u.spMax
+	do u.w :: 840.0
+	do u.h :: 798.0
+	do u.cnt :: 20
+	do u.color :: 1
+	do u.vx :: -8.5
+	do u.al :: 0xEEFF2277
+end func
+
++func actk(u: \main@UNIT)
+	do u.sp :- 1
+	if(u.sp = 0)
+		do u.p :+ 1
+		if(u.p >= ^\main@at)
+			do u.p :: 0
+		end if
+		do u.sp :: u.spMax
+	end if
+	do u.g :: \main@at[u.p]
+end func

@@ -1,0 +1,991 @@
++func init(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "MOTHERtaiki.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: -30.0
+	
+	do u.mhp :: 1500.0
+	
+	do u.hp :: u.mhp
+	do u.setAtari(500.0, 380.0, 300.0)
+	do u.gai :: true
+	do u.boss :: true
+	do \main@bgmchg("boss6", 1)
+	do \main@oBOSS :: u
+	do \main@cObj("HPBARE")
+	do \main@cObj("HPBARE2")
+	do \main@cObj("HPBARGE")
+end func
+
+enum un
+	first
+	stop1
+	leftright
+	stop11
+	stop2
+	stop3
+	fn
+	fnk
+	fn2
+	fnk2
+	fn3
+	fn4
+	fnkk
+	fn5
+	kesyomae
+	kesyomae2
+	kesyo
+	wwww
+	wwww2
+	wwww3
+	app
+	machi
+end enum
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case %leftright $ @un $ int
+		do u.p :+ 1
+		if(u.p > 1)
+			switch(u.g)
+			case "MOTHERtaiki.png"
+				do u.g :: "MOTHERryuuzokusei.png"
+			default
+				do u.g :: "MOTHERtaiki.png"
+			end switch
+			do u.p :: 0
+		end if
+	case %stop3 $ @un $ int
+		do u.p :+ 1
+		if(u.p > 9)
+			switch(u.g)
+			case "MOTHERfannel1.png"
+				do u.g :: "MOTHERfannel2.png"
+				do u.child.g :: "fannelkidou1.png"
+			case "MOTHERfannel2.png"
+				do u.g :: "MOTHERfannel3.png"
+				do u.child.g :: "fannelkidou2.png"
+			case "MOTHERfannel3.png"
+				do u.g :: "MOTHERfannel4.png"
+				do u.child.g :: "fannelkidou3.png"
+			case "MOTHERfannel4.png"
+				do u.child.f :: \main@KIE
+				do u.child.kie :: true
+			default
+				do u.g :: "MOTHERfannel1.png"
+				do u.child.g :: "fannelkidou0.png"
+			end switch
+			do u.p :: 0
+		end if
+	case %fn $ @un $ int, %fnk2 $ @un $ int,
+		|%fnk $ @un $ int,
+		|%fn2 $ @un $ int,
+		|%fnk2 $ @un $ int,
+		|%fn3 $ @un $ int,
+		|%fn4 $ @un $ int
+		do u.g :: "MOTHERfannel4.png"
+	case %fnkk $ @un $ int, %fnk2 $ @un $ int
+		switch(u.g)
+		case "MOTHERudehukki.png"
+			do u.g :: "MOTHERfannel4.png"
+		default
+			do u.g :: "MOTHERudehukki.png"
+		end switch
+	case %fn5 $ @un $ int, %fnk2 $ @un $ int
+		do u.p :+ 1
+		if(u.p > 9)
+			switch(u.g)
+			case "MOTHERfannel4.png"
+				do u.g :: "MOTHERfannel3.png"
+			case "MOTHERfannel3.png"
+				do u.g :: "MOTHERfannel2.png"
+			case "MOTHERfannel2.png"
+				do u.g :: "MOTHERfannel1.png"
+			case "MOTHERfannel1.png"
+				do u.g :: "MOTHERtaiki.png"
+			case "MOTHERtaiki.png"
+			default
+				do u.g :: "MOTHERfannel4.png"
+			end switch
+			do u.p :: 0
+		end if
+	case %kesyomae $ @un $ int
+		do u.p :+ 1
+		if(u.p > 4)
+			switch(u.g)
+			case "MOTHERtaiki.png"
+				do u.g :: "MOTHERicebeam1.png"
+			case "MOTHERicebeam1.png"
+				do u.g :: "MOTHERicebeam2.png"
+			case "MOTHERicebeam2.png"
+				do u.g :: "MOTHERicebeam3.png"
+			case "MOTHERicebeam3.png"
+				do u.g :: "MOTHERicebeam4.png"
+			case "MOTHERicebeam4.png"
+				do u.g :: "MOTHERicebeam5.png"
+			case "MOTHERicebeam5.png"
+				do u.g :: "MOTHERicebeam6.png"
+			case "MOTHERicebeam6.png"
+				do u.g :: "MOTHERicebeam7.png"
+			case "MOTHERicebeam7.png"
+				do u.g :: "MOTHERtaiki1.png"
+			case "MOTHERtaiki1.png"
+				do u.g :: "MOTHERtaiki1.png"
+			default
+				do u.g :: "MOTHERtaiki.png"
+			end switch
+			do u.p :: 0
+		end if
+	case %kesyo $ @un $ int
+	case %wwww2 $ @un $ int
+		do u.p :+ 1
+		if(u.p > 2)
+			switch(u.g)
+			case "MOTHERtaiki.png"
+				do u.g :: "MOTHERopen3.png"
+			default
+				do u.g :: "MOTHERtaiki.png"
+			end switch
+			do u.p :: 0
+		end if
+	case %wwww3 $ @un $ int
+		do u.p :+ 1
+		if(u.p > 9)
+			switch(u.g)
+			case "MOTHERopen3.png"
+				do u.g :: "MOTHERopen1.png"
+			case "MOTHERopen1.png"
+				do u.g :: "MOTHERopen2.png"
+			case "MOTHERopen2.png"
+			default
+				do u.g :: "MOTHERopen3.png"
+			end switch
+			do u.p :: 0
+		end if
+	case %app $ @un $ int
+		do u.p :+ 1
+		if(u.p > 9)
+			switch(u.g)
+			case "MOTHERopen2.png"
+				do u.g :: "MOTHERtaiki.png"
+			case "MOTHERtaiki.png"
+			default
+				do u.g :: "MOTHERopen2.png"
+			end switch
+			do u.p :: 0
+		end if
+	default
+		do u.g :: "MOTHERtaiki.png"
+	end switch
+	switch(u.mode)
+	case %first $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0 - 100.0)
+	case %stop1 $ @un $ int
+		do u.setAtari2(500.0, 380.0, 320.0)
+		do u.loop1(100)
+	case %leftright $ @un $ int
+		if(u.kinit = 0)
+			do u.cnt4 :: 0
+			do u.cnt2 :: 0
+			do u.kinit :: 1
+		end if
+		do u.cnt4 :+ 1
+		if(u.cnt4 > 16)
+			do u.cnt2 :+ 1
+			var o: \main@UNIT :: \main@cObj("MOTHERT")
+			if(u.cnt2 > 6)
+				do u.incMode()
+			end if
+			do u.cnt4 :: 0
+		end if
+	case %stop11 $ @un $ int
+		do u.loop1(80 + lib@rnd(0, 40))
+	case %stop2 $ @un $ int
+		do u.loop1(200)
+	case %stop3 $ @un $ int
+		if(u.kinit = 0)
+			do \main@sndd(44)
+			do u.child :: \main@cObj("MOTHERHASH")
+			do u.child.x :: u.x
+			do u.child.y :: u.y
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case %fn $ @un $ int
+		if(u.kinit = 0)
+			for n(0, 6 - 1)
+				var o: \main@UNIT :: \main@cObj("MOTHERTF")
+				do o.cnt4 :: n
+				if(n = 5)
+					do u.child :: o
+				end if
+			end for
+			do u.kinit :: 1
+		end if
+		do u.incMode()
+	case %fnk $ @un $ int, %fnk2 $ @un $ int
+		do u.loop1(50)
+	case %fn2 $ @un $ int
+		if(u.kinit = 0)
+			do u.p :: 0
+			do u.sp :: 0
+			do u.kinit :: 1
+		end if
+		do u.sp :+ 1
+		if(u.sp > 5)
+			var o: \main@UNIT :: \main@cObj("MOTHERTL")
+			do o.cnt4 :: u.p
+			do u.p :+ 1
+			if(u.p = 6)
+				do u.incMode()
+			end if
+			do u.sp :: 0
+		end if
+	case %fn3 $ @un $ int
+		if(u.kinit = 0)
+			do u.p :: 0
+			do u.sp :: 0
+			do u.kinit :: 1
+		end if
+		do u.sp :+ 1
+		if(u.sp > 3)
+			do u.p :+ 1
+			if(u.p = 6)
+				do u.incMode()
+			end if
+			do u.sp :: 0
+		end if
+	case %fn4 $ @un $ int
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case %fnkk $ @un $ int
+		do u.loop1(50)
+	case %fn5 $ @un $ int
+		if(u.kinit = 0)
+			do \main@sndd(44)
+			do u.kinit :: 1
+		end if
+		do u.loop1(100)
+	case %kesyomae $ @un $ int
+		do u.loop1(60)
+	case %kesyomae2 $ @un $ int
+		do u.loop1(2)
+	case %kesyo $ @un $ int
+		if(u.kinit = 0)
+			do u.child :: \main@cObj("MOTHERKES")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case %wwww $ @un $ int
+		if(u.kinit = 0)
+			do u.vx :- 4.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-200.0)
+	case %wwww2 $ @un $ int
+		do u.loop1(50)
+	case %wwww3 $ @un $ int
+		do u.loop1(50)
+	case %app $ @un $ int
+		if(u.kinit = 0)
+			do u.child :: \main@cObj("MOTHERAPP")
+			do u.kinit :: 1
+		else
+			if(u.child =& null | u.child.d = true)
+				do u.incMode()
+			end if
+		end if
+	case %machi $ @un $ int
+		do u.vx :: 4.0
+		do u.moveRight(-100.0)
+	default
+		do u.incMode()
+		do u.mode :: 0
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 40
+	do u.g :: "ztama1.png"
+	do u.setWH()
+	do u.cntr :: 0.0
+	do u.cntd :: 300.0
+	if(\main@oBOSS =& null)
+		do u.d :: true
+		ret
+	end if
+	do u.x :: \main@oBOSS.x + 540.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: \main@oBOSS.y + 390.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w * 0.4)
+	do u.gai :: true
+	do u.boss :: true
+	do u.p :: 0
+	do u.sp :: 0
+end func
++func actE(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	
+	do u.sp :+ 1
+	if(u.sp > 2)
+		do u.p :+ 1
+		switch(u.g)
+		case "ztama1.png"
+			do u.g :: "ztama2.png"
+		case "ztama2.png"
+			do u.g :: "ztama3.png"
+		case "ztama3.png"
+			do u.g :: "ztama4.png"
+		case "ztama4.png"
+			do u.g :: "ztama5.png"
+		case "ztama5.png"
+			do u.g :: "ztama6.png"
+		case "ztama6.png"
+			do u.g :: "ztama4.png"
+		end switch
+		do u.sp :: 0
+	end if
+	
+	do u.x :: \main@oBOSS.x + 540.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: \main@oBOSS.y + 390.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do \main@sndd(11)
+			do u.kinit :: 1
+		end if
+		do u.cntr :+ 3.0
+		if(u.cntr > 360.0)
+			do u.cntr :- 360.0
+		end if
+		if(\main@oBOSS.mode = %stop2 $ @un $ int)
+			do u.incMode()
+		end if
+	case 1
+		do u.cntd :- 2.0
+		do u.loop1(30)
+	case 2
+		if(u.kinit = 0)
+			do \main@sndd(11)
+			do u.kinit :: 1
+			do u.gai :: false
+		end if
+		do u.cntd :+ 8.0
+	end switch
+end func
+
+
++func initHASH(u: \main@UNIT)
+	do u.u :: 7000.0
+	do u.g :: "fannelkidou0.png"
+	do u.setWH()
+end func
++func actHASH(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+end func
+
+
+
++func initKEN(u: \main@UNIT)
+	var gn: [][]char :: ["hand01.png", "hand02.png", "hand03.png", "hand04.png", "hand05.png", "hand06.png"]
+	var rrr: []float :: [-45.0, -135.0, 135.0, 45.0, 180.0, 0.0]
+	do u.u :: -9001.0
+	do u.a :: 40
+	do u.g :: gn[u.cnt4]
+	do u.setWH()
+	do u.cntr :: rrr[u.cnt4]
+	do u.cntd :: 700.0
+	do u.x :: 900.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+	do u.y :: 340.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+	;do u.setAtari2(165.0, 140.0, 120.0)
+	;do u.setAtari(u.x + u.w / 2.0, u.y + u.h / 2.0, u.w * 0.6)
+	;do u.setAtari2(u.x + u.w / 2.0, u.y + u.h / 2.0, u.w * 0.8)
+	do u.gai :: true
+	do u.boss :: true
+end func
+
++func actKEN(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		do u.x :: 900.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+		do u.y :: 340.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+		
+		do u.cntd :- 8.0
+		if(u.cntd < 500.0)
+			do u.cntd :: 500.0
+			do u.incMode()
+		end if
+	case 1
+		if(\main@oBOSS.mode = %fn3 $ @un $ int & \main@oBOSS.p = u.p)
+			do u.incMode()
+		end if
+	case 2
+		if(u.kinit = 0)
+			var x1: float :: 900.0 + u.cntd * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+			var y1: float :: 340.0 + u.cntd * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+			var x2: float :: 900.0 + (u.cntd - 8.0) * lib@cos(lib@toRad(u.cntr)) - u.w / 2.0
+			var y2: float :: 340.0 + (u.cntd - 8.0) * lib@sin(lib@toRad(u.cntr)) - u.h / 2.0
+			do u.vx :: -2.0 * (x2 - x1)
+			do u.vy :: -2.0 * (y2 - y1)
+			do u.gai :: false
+			do u.kinit :: 1
+		end if
+	end switch
+end func
+
+
+
+
++func initLEN(u: \main@UNIT)
+	var gn: [][]char :: ["laser05.png", "laser01.png", "laser06.png", "laser03.png", "laser02.png", "laser04.png"]
+	var xx: []float :: [574.0, 970.0, 1100.0, 680.0, 690.0, 960.0]
+	var yy: []float :: [270.0, 150.0, 270.0, 390.0, 150.0, 390.0]
+	do u.u :: -9001.0
+	do u.a :: 60
+	do u.g :: gn[u.cnt4]
+	do u.setWH()
+	do u.cntd :: 700.0
+	do u.x :: xx[u.cnt4]
+	do u.y :: yy[u.cnt4]
+	;do u.setAtari(165.0, 140.0, 85.0)
+	;do u.setAtari2(165.0, 140.0, 120.0)
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 10.0)
+	;do u.setAtari2(u.x + u.w / 2.0, u.y + u.h / 2.0, u.w * 0.8)
+	do u.boss :: true
+end func
+
++func actLEN(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		do u.loop1(10)
+	case 1
+		if(u.kinit = 0)
+			do \main@sndd(3)
+			var dx: []float :: [1.0, -1.0, -1.0, 1.0, 1.0, -1.0]
+			var dy: []float :: [0.0, 1.0, 0.0, -1.0, 1.0, -1.0]
+			do u.vx :: dx[u.cnt4] * 24.0
+			do u.vy :: dy[u.cnt4] * 24.0
+			do u.kinit :: 1
+		end if
+	end switch
+end func
+
++func initAPPLE(u: \main@UNIT)
+	do u.u :: -90001.0
+	;do u.a :: 40
+	do u.g :: "seisonakajitsu.png"
+	do u.setWH()
+	do u.x :: -400.0
+	do u.y :: 0.0
+	;do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+end func
++func actAPPLE(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		do u.p :+ 1
+		if(u.p > 5)
+			switch(u.g)
+			case "seisonakajitsu.png"
+				do u.g :: "seisonakajitsu2.png"
+			case "seisonakajitsu2.png"
+				do u.g :: "seisonakajitsu3.png"
+			default
+				do u.g :: "seisonakajitsu.png"
+			end switch
+			do u.p :: 0
+		end if
+	case 1, 2
+		do u.p :+ 1
+		if(u.p > 5)
+			switch(u.g)
+			case "kaku1.png"
+				do u.g :: "kaku2.png"
+			default
+				do u.g :: "kaku1.png"
+			end switch
+			do u.p :: 0
+		end if
+	default
+		switch(u.g)
+		case "kakucyuushin.png"
+			do u.g :: "kakucyuushin2.png"
+		default
+			do u.g :: "kakucyuushin.png"
+		end switch
+	end switch
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+		do u.sp2 :: 40
+	case 1
+		do u.incMode()
+	case 2
+		if(u.kinit = 0)
+			do \main@sndd(52)
+			do u.child :: \main@cObj("MOTHERBLL")
+			do u.kinit :: 1
+		end if
+		do u.loop1(100)
+	case 3
+		if(u.kinit = 0)
+			do \main@sndd(53)
+			do \main@cObj("MOTHERB1")
+			do \main@cObj("MOTHERB2")
+			do \main@cObj("MOTHERB3")
+			do \main@cObj("MOTHERB4")
+			do u.child2 :: \main@cObj("MOTHERB5")
+			do u.child3 :: \main@cObj("MOTHERPINK")
+			do u.kinit :: 1
+		end if
+		if(u.child2 =& null | u.child2.d = true)
+			do u.child.mode :: 1
+			do u.child3.mode :: 1
+			do u.incMode()
+		end if
+	default
+		do u.kie :: true
+		do u.f :: \main@KIE
+	end switch
+end func
+
++func initBOMB(u: \main@UNIT)
+	do u.u :: -9009.0
+	;do u.a :: 40
+	do u.g :: "flush.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	;do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.6)
+	do u.boss :: true
+	do u.al :: 0x44FFFFFF
+end func
++func actBOMB(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.kinit :: 1
+		end if
+		do u.al :+ 0x11000000
+		if(u.al >= 0xFFFFFFFF)
+			do u.al :: 0xFFFFFFFF
+			do u.incMode()
+		end if
+	case 1
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end switch
+end func
+
++func initKES(u: \main@UNIT)
+	do u.u :: -9009.0
+	do u.a :: 20
+	do u.g :: "kessyo.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 720.0
+	do u.boss :: true
+	do u.al :: 0xFFFFFFFF
+	do u.gai :: true
+end func
++func actKES(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -3.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(318.0)
+	case 1
+		do u.loop1(20)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -24.0
+			do u.kinit :: 1
+		end if
+		do u.moveUp(0.0)
+	case 3
+		if(u.kinit = 0)
+			do \main@sndd(81)
+			do u.kinit :: 1
+		end if
+		do u.setAtari(1007.0, 484.0, 200.0)
+		do u.loop1(30)
+	case 4
+		block
+			var oooo: \main@UNIT :: \main@cObj("KIEG")
+			do oooo.x :: 632.0
+			do oooo.y :: 0.0
+			do oooo.u :: u.u - 0.5
+			do oooo.color :: 7
+		end block
+		do u.kie :: true
+		do u.f :: \main@KIE
+	end switch
+end func
+
++func initICE(u: \main@UNIT)
+	do u.u :: -9450.0
+	do u.a :: 20
+	do u.setAtari(640.0, 360.0, 2000.0)
+	do u.g :: "kessyou1.png"
+	do u.setWH()
+	do u.x :: -100.0
+	do u.y :: 0.0
+	do u.boss :: true
+	do u.gai :: true
+	do \main@sndd(81)
+end func
++func actICE(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	
+	switch(u.g)
+	case "kessyou1.png"
+		;do \main@oBOSS.g :: "MOTHERicebeam4.png"
+		do u.g :: "kessyou2.png"
+	case "kessyou2.png"
+		;do \main@oBOSS.g :: "MOTHERicebeam5.png"
+		do u.g :: "kessyou3.png"
+	case "kessyou3.png"
+		;do \main@oBOSS.g :: "MOTHERicebeam6.png"
+		do u.g :: "kessyou4.png"
+	case "kessyou4.png"
+		;do \main@oBOSS.g :: "MOTHERicebeam7.png"
+		do u.g :: "kessyou5.png"
+	case "kessyou5.png"
+		;do \main@oBOSS.g :: "MOTHERtaiki.png"
+		do u.g :: "kessyou5.png"
+	default
+		;do \main@oBOSS.g :: "MOTHERicebeam3.png"
+		do u.g :: "kessyou1.png"
+	end switch
+	
+	switch(u.mode)
+	case 0
+		do u.loop1(10)
+	case 1
+		if(u.kinit = 0)
+			do u.child :: \main@cObj("MOTHERKES2")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			for n(0, 24)
+				block
+					var oooo: \main@UNIT :: \main@cObj("KIEG")
+					do oooo.x :: -200.0 + 1280.0 / 20.0 * n $ float
+					do oooo.y :: 300.0 + lib@rndFloat(-100.0, 150.0)
+					do oooo.u :: u.u - 0.5
+					do oooo.color :: 7
+				end block
+			end for
+			do \main@sndd(81)
+			do u.kie :: true
+			do u.f :: \main@KIE
+		end if
+	end switch
+end func
+
++func initPINK(u: \main@UNIT)
+	do u.u :: 88999.0
+	do u.g :: "kakuhanteihani.png"
+	do u.a :: 20
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.boss :: true
+	do u.gai :: true
+end func
++func actPINK(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	if(u.mode = 1)
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end if
+end func
+
+
++func initBLLL(u: \main@UNIT)
+	do u.u :: 89000.0
+	do u.g :: "bl.png"
+	do u.setWH()
+	do u.x :: 0.0
+	do u.y :: 0.0
+	do u.boss :: true
+	do u.gai :: true
+end func
++func actBLLL(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.d :: true
+		ret
+	end if
+	if(u.mode = 1)
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end if
+end func
+
+
++func initB1(u: \main@UNIT)
+	do u.u :: -90000.0
+	do u.g :: "kaku11.png"
+	do u.setWH()
+	do u.x :: 750.0 - u.w / 2.0
+	do u.y :: 410.0 - u.h / 2.0
+	do u.boss :: true
+	do u.gai :: true
+	do u.p :: 10
+	;	+lib@rnd(5, 30)
+end func
++func actB1(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.p :- 1
+		if(u.p = 0)
+			do u.mode :: 1
+		end if
+	case 1
+		do u.p :+ 1
+		if(u.p > 1)
+			switch(u.g)
+			case "kaku11.png"
+				do u.g :: "kaku12.png"
+			case "kaku12.png"
+				do u.g :: "kaku13.png"
+			case "kaku13.png"
+				do u.g :: "kaku14.png"
+			case "kaku14.png"
+				do u.g :: "kaku15.png"
+			case "kaku11.png"
+			default
+				do u.g :: "kaku11.png"
+			end switch
+			do u.p :: 0
+		end if
+		do u.loop1(30)
+	case 2
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end switch
+end func
+
++func initB2(u: \main@UNIT)
+	do u.u :: -90000.0
+	do u.g :: "kaku21.png"
+	do u.setWH()
+	do u.x :: 750.0 - u.w / 2.0
+	do u.y :: 410.0 - u.h / 2.0
+	do u.boss :: true
+	do u.gai :: true
+	do u.p :: 10
+end func
++func actB2(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.p :- 1
+		if(u.p = 0)
+			do u.mode :: 1
+		end if
+	case 1
+		do u.p :+ 1
+		if(u.p > 1)
+			switch(u.g)
+			case "kaku21.png"
+				do u.g :: "kaku22.png"
+			case "kaku22.png"
+				do u.g :: "kaku23.png"
+			case "kaku23.png"
+				do u.g :: "kaku24.png"
+			case "kaku24.png"
+				do u.g :: "kaku25.png"
+			case "kaku21.png"
+			default
+				do u.g :: "kaku21.png"
+			end switch
+			do u.p :: 0
+		end if
+		do u.loop1(30)
+	case 2
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end switch
+end func
+
++func initB3(u: \main@UNIT)
+	do u.u :: -90000.0
+	do u.g :: "kaku31.png"
+	do u.setWH()
+	do u.x :: 750.0 - u.w / 2.0
+	do u.y :: 410.0 - u.h / 2.0
+	do u.boss :: true
+	do u.gai :: true
+	do u.p :: 10
+end func
++func actB3(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.p :- 1
+		if(u.p = 0)
+			do u.mode :: 1
+		end if
+	case 1
+		do u.p :+ 1
+		if(u.p > 1)
+			switch(u.g)
+			case "kaku31.png"
+				do u.g :: "kaku32.png"
+			case "kaku32.png"
+				do u.g :: "kaku33.png"
+			case "kaku33.png"
+				do u.g :: "kaku34.png"
+			case "kaku34.png"
+				do u.g :: "kaku35.png"
+			case "kaku31.png"
+			default
+				do u.g :: "kaku31.png"
+			end switch
+			do u.p :: 0
+		end if
+		do u.loop1(30)
+	case 2
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end switch
+end func
+
++func initB4(u: \main@UNIT)
+	do u.u :: -90000.0
+	do u.g :: "kaku41.png"
+	do u.setWH()
+	do u.x :: 750.0 - u.w / 2.0
+	do u.y :: 410.0 - u.h / 2.0
+	do u.boss :: true
+	do u.gai :: true
+	do u.p :: 10
+end func
++func actB4(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.p :- 1
+		if(u.p = 0)
+			do u.mode :: 1
+		end if
+	case 1
+		do u.p :+ 1
+		if(u.p > 1)
+			switch(u.g)
+			case "kaku41.png"
+				do u.g :: "kaku42.png"
+			case "kaku42.png"
+				do u.g :: "kaku43.png"
+			case "kaku43.png"
+				do u.g :: "kaku44.png"
+			case "kaku44.png"
+				do u.g :: "kaku45.png"
+			case "kaku41.png"
+			default
+				do u.g :: "kaku41.png"
+			end switch
+			do u.p :: 0
+		end if
+		do u.loop1(30)
+	case 2
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end switch
+end func
+
++func initB5(u: \main@UNIT)
+	do u.u :: -90000.0
+	do u.g :: "kaku51.png"
+	do u.setWH()
+	do u.x :: 750.0 - u.w / 2.0
+	do u.y :: 410.0 - u.h / 2.0
+	do u.boss :: true
+	do u.gai :: true
+	do u.p :: 4
+	do u.a :: 60
+	do u.p :: 10
+end func
++func actB5(u: \main@UNIT)
+	switch(u.mode)
+	case 0
+		do u.p :- 1
+		if(u.p = 0)
+			do u.mode :: 1
+			do u.setAtari(640.0, 360.0, 2000.0)
+		end if
+	case 1
+		do u.p :+ 1
+		if(u.p > 1)
+			switch(u.g)
+			case "kaku51.png"
+				do u.g :: "kaku52.png"
+			case "kaku52.png"
+				do u.g :: "kaku53.png"
+			case "kaku53.png"
+				do u.g :: "kaku54.png"
+			case "kaku54.png"
+				do u.g :: "kaku55.png"
+			case "kaku51.png"
+			default
+				do u.g :: "kaku51.png"
+			end switch
+			do u.p :: 0
+		end if
+		do u.loop1(30)
+	case 2
+		do u.f :: \main@KIE
+		do u.kie :: true
+	end switch
+end func

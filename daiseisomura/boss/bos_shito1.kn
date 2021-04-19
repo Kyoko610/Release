@@ -1,0 +1,316 @@
++func initG(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "sesoeru1.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 720.0 - u.h - 30.0
+	do u.mhp :: 600.0
+	;600.0
+	do u.hp :: u.mhp
+	;do u.setAtari2(1060.0, 380.0, 200.0)
+	do u.setAtari2(440.0, 520.0, 200.0)
+	do u.df1 :: 5.0
+	do u.df2 :: 1.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	do u.gai :: true
+	do u.boss :: true
+	;do \main@oBOSS :: u
+	do \main@bgmchg("boss4", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	;do u.cObj("SHITO4NM")
+end func
+
+
++func actG(u: \main@UNIT)
+	if(u.hp < 50.0 & u.mode < 999)
+		do u.incMode()
+		do u.mode :: 999
+	end if
+	;do u.sp :+ 1
+	
+	switch(u.mode)
+	case 0, 10, 16, 17, 21, 13
+		do u.g :: "sesoeru1.png"
+	case 1, 2, 3, 4, 5, 6, 7, 8, 9
+		do u.g :: "sesoeru2.png"
+	case 11, 12
+		do u.g :: "sesoeru5.png"
+	case 14
+		do u.g :: "sesoeru41.png"
+	case 15
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 4)
+			switch(u.g)
+			case "sesoeru41.png"
+				do u.g :: "sesoeru42.png"
+				do u.setAtari(440.0, 520.0, 300.0)
+			case "sesoeru42.png"
+				do u.g :: "sesoeru43.png"
+			case "sesoeru43.png"
+				do \main@sndd(88)
+				do u.setAtari(440.0, 520.0, 180.0)
+				do u.g :: "sesoeru44.png"
+			case "sesoeru44.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+	case 18, 19, 20
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 2)
+			switch(u.g)
+			case "sesoeru31.png"
+				do u.g :: "sesoeru32.png"
+			case "sesoeru32.png"
+				do u.g :: "sesoeru33.png"
+			case "sesoeru33.png"
+				do u.g :: "sesoeru34.png"
+			default
+				do u.g :: "sesoeru31.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+	case 999, 1000, 1001
+		do u.g :: "sesotaiha.png"
+	default
+	end switch
+	
+	switch(u.mode)
+	case 0
+		
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-300.0)
+	case 1
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+			do u.setAtari(440.0, 520.0, 180.0)
+		end if
+		do u.moveRight(-100.0)
+	case 2
+		var o: \main@UNIT :: u.cObj("SHITO1E")
+		do o.x :: u.x + 570.0
+		do o.y :: u.y + 300.0
+		do \main@sndd(22)
+		do u.incMode()
+	case 3
+		if(u.kinit = 0)
+			do u.vx :: -4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-300.0)
+	case 4
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-100.0)
+	case 5
+		var o: \main@UNIT :: u.cObj("SHITO1E")
+		do o.x :: u.x + 570.0
+		do o.y :: u.y + 300.0
+		do \main@sndd(22)
+		do u.incMode()
+	case 6
+		if(u.kinit = 0)
+			do u.vx :: -4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-300.0)
+	case 7
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(-100.0)
+	case 8
+		var o: \main@UNIT :: u.cObj("SHITO1E")
+		do o.x :: u.x + 570.0
+		do o.y :: u.y + 300.0
+		do \main@sndd(22)
+		do u.incMode()
+	case 9
+		if(u.kinit = 0)
+			do u.vx :: -4.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-300.0)
+		;::::::::::::::::::::::::::::::::::::::::
+	case 10
+		do u.loop1(50)
+	case 11
+		var o: \main@UNIT :: u.cObj("SHITO1AX")
+		do o.x :: u.x + 370.0
+		do o.y :: u.y
+		do u.incMode()
+	case 12
+		do u.loop1(100)
+	case 13
+		do u.loop1(35)
+		;:::::::::::::::::::::::::::::::::::::::::::
+	case 14
+		if(u.kinit = 0)
+			do \main@sndd(44)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1280.0 - u.w, 1.0, 40.0)
+	case 15
+		do u.loop1(100)
+	case 16
+		if(u.kinit = 0)
+			do u.vx :: -10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeft(-300.0)
+	case 17
+		do u.loop1(50)
+	case 18
+		if(u.kinit = 0)
+			do u.setAtari(440.0, 420.0, 300.0)
+			do \main@sndd(65)
+			do u.vx :: 1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRightK(1500.0, 1.0, 40.0)
+	case 19
+		if(u.kinit = 0)
+			do \main@sndd(65)
+			do u.vx :: 0.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.loop1(30)
+	case 20
+		if(u.kinit = 0)
+			;do \main@sndd(65)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeftK(-u.w, -1.0, -40.0)
+	case 999
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: -5.0
+			do u.kinit :: 1
+		end if
+		if(u.y < 0.0)
+			do u.incMode()
+		end if
+	case 1000
+		do u.loop1(40)
+	case 1001
+		if(u.kinit = 0)
+			do u.vx :: 0.0
+			do u.vy :: 10.0
+			do u.gai :: false
+			do u.u :: 85000.0
+			do \main@sndd(59)
+			do u.kinit :: 1
+		end if
+		if(u.y > 720.0)
+			do u.d :: true
+		end if
+	default
+		do u.setAtari(440.0, 520.0, 180.0)
+		do u.setWH()
+		do u.incMode()
+		do u.mode :: 0
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "eler11.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+	do u.boss :: true
+end func
++func actE(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt % 2 = 0)
+		switch(u.g)
+		case "eler11.png"
+			do u.g :: "eler21.png"
+		case "eler21.png"
+			do u.g :: "eler31.png"
+		default
+			do u.g :: "eler11.png"
+		end switch
+	end if
+	do u.vx :: 20.0
+	do u.vy :: 0.0
+	do u.mode :+ 1
+end func
+
+
++func initAX(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 40
+	do u.g :: "sesoerukama1.png"
+	do u.setWH()
+	do u.setAtari(u.w / 2.0, u.h / 2.0 + 100.0, 100.0)
+	do u.boss :: true
+	do u.vx :: 50.0
+	do u.gai :: true
+	do \main@sndd(65)
+	
+end func
++func actAX(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 2)
+		switch(u.g)
+		case "sesoerukama1.png"
+			do u.g :: "sesoerukama2.png"
+		case "sesoerukama2.png"
+			do u.g :: "sesoerukama3.png"
+		default
+			do u.g :: "sesoerukama1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 40.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.vx :- 1.0
+		if(u.vx < 0.0)
+			do u.vx :: 0.0
+		end if
+		do u.loop1(50)
+	case 1
+		do u.loop1(10)
+	case 2
+		if(u.kinit = 0)
+			do u.vx :: -1.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveLeftK(0.0, -1.0, -40.0)
+	default
+		do u.d :: true
+	end switch
+end func

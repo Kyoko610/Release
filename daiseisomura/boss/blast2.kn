@@ -1,0 +1,162 @@
++func init(u: \main@UNIT)
+	do u.u :: 8000.0
+	do u.g :: "burastmk2zenkei.png"
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.mhp :: 400.0
+	do u.hp :: u.mhp
+	do u.setAtari(380.0, 380.0, 340.0 - 75.0)
+	
+	do u.gai :: true
+	do u.oto :: true
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+end func
+
+
++func act(u: \main@UNIT)
+	switch(u.mode)
+	case 0, 11
+		;do \main@snd[41].stop()
+		do u.g :: "burastmk2zenkei.png"
+	case 1, 5
+		do u.g :: "burastmk2taiki.png"
+	case 2, 4
+		do u.g :: "burastmk2dengeki.png"
+	case 3
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			switch(u.g)
+			case "burastmk2dengeki2.png"
+				do u.g :: "burastmk2dengeki3.png"
+			default
+				do u.g :: "burastmk2dengeki2.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+	case 6, 7, 8, 9, 10
+		if(\main@snd[90].playing() = false)
+			do \main@sndd(90)
+		end if
+		do u.cnt3 :+ 1
+		if(u.cnt3 > 5)
+			switch(u.g)
+			case "burastmk2totsu1.png"
+				do u.g :: "burastmk2totsu2.png"
+			case "burastmk2totsu1.png"
+				do u.g :: "burastmk2totsu3.png"
+			default
+				do u.g :: "burastmk2totsu1.png"
+			end switch
+			do u.cnt3 :: 0
+		end if
+	end switch
+	
+	switch(u.mode)
+	case 0
+		if(\main@snd[41].playing() = false)
+			do \main@sndd(41)
+		end if
+		if(u.kinit = 0)
+			do u.vx :: 12.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 1
+		do \main@snd[41].stop()
+		do u.loop1(50)
+		do u.setAtari2(380.0, 380.0, 340.0)
+	case 2
+		do u.loop1(20)
+	case 3
+		if(u.kinit = 0)
+			do \main@sndd(52)
+			do u.kinit :: 1
+		end if
+		do u.loop1(60)
+	case 4
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BLAST2E")
+			do \main@sndd(67)
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 5
+		do u.loop1(20)
+	case 6
+		do u.loop1(40)
+	case 7
+		if(u.kinit = 0)
+			if(\main@snd[41].playing() = false)
+				do \main@sndd(41)
+			end if
+			do u.vx :: 1.0
+			do u.kinit :: 1
+			do \main@sndd(44)
+		end if
+		do u.moveRightK(1500.0, 1.0, 50.0)
+	case 8
+		if(u.kinit = 0)
+			do u.x :: -u.w + 700.0
+			do u.vx :: 1.0
+			do u.kinit :: 1
+		end if
+		do u.incMode()
+	case 9
+		if(u.kinit = 0)
+			if(\main@snd[41].playing() = false)
+				do \main@sndd(41)
+			end if
+			do u.vx :: 1.0
+			do u.kinit :: 1
+			do \main@sndd(44)
+		end if
+		do u.moveRightK(1500.0, 1.0, 50.0)
+	case 10
+		if(u.kinit = 0)
+			do u.x :: -u.w + 700.0
+			do u.vx :: 1.0
+			do u.kinit :: 1
+		end if
+		do u.incMode()
+	default
+		do \main@snd[90].stop()
+		do \main@snd[41].stop()
+		do u.incMode()
+		do u.mode :: 0
+		do u.p :+ 1
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: -200.0
+	do u.g :: "houden1.png"
+	do u.setWH()
+	do u.a :: 40
+	do u.setAtari(850.0, 470.0, 250.0)
+end func
+
++func actE(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 4)
+		switch(u.g)
+		case "houden1.png"
+			do u.g :: "houden2.png"
+		default
+			do u.g :: "houden1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	switch(u.mode)
+	case 0
+		do u.loop1(70)
+	default
+		do u.d :: true
+	end switch
+end func

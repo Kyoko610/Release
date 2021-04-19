@@ -1,0 +1,25 @@
++func init(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 9000.0
+	do u.g :: "ahi.png"
+	do u.a :: 20
+	do u.hp :: 999999999.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.vy :: 0.0
+	do u.y :: 0.0
+	do u.setAtari2(280.0, 540.0, 140.0)
+end func
+
++func act(u: \main@UNIT)
+	if(\main@oBOSS =& null | \main@oBOSS.d = true)
+		do u.vx :: 2.0
+		ret
+	end if
+	
+	if(u.x < 800.0)
+		do u.vx :: 2.0
+	else
+		do u.vx :: 0.0
+	end if
+end func

@@ -1,0 +1,106 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.g :: "miku4.png"
+	do u.hp :: 6.0
+	do u.kai :: 15.0
+	do u.a :: 40
+	do u.setWH()
+	do u.x :: -400.0
+	do u.vx :: 4.0
+	do u.y :: 100.0
+	do u.df1 :: 0.0
+	do u.df2 :: 0.0
+	do u.df3 :: 0.0
+	do u.cnt2 :: 0
+	do u.setAtari(304.0, 350.0, 50.0)
+	do u.setAtari2(304.0, 330.0, 120.0)
+	do \main@sndd(41)
+	do u.color :: 1
+end func
+
++func act(u: \main@UNIT)
+	if(u.cnt2 = 0)
+		do u.g :: "miku4.png"
+		do u.cnt2 :: 1
+	else
+		do u.g :: "miku4_2.png"
+		do u.cnt2 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.x > -150.0)
+			do u.mode :+ 1
+			do u.vx :: 0.0
+			do u.cnt :: 0
+			do u.vx :: 0.0
+		end if
+	case 1
+		do u.cnt :+ 1
+		if(u.cnt > 2)
+			do u.mode :+ 1
+			do u.cnt :: 0
+		end if
+	case 2
+		var o: \main@UNIT :: u.cObj("PLUS_MK4T")
+		do o.x :: u.x + 212.0
+		do o.y :: u.y + 175.0
+		do u.mode :+ 1
+		do u.cnt :: 0
+	case 3
+		do u.cnt :+ 1
+		if(u.cnt > 30)
+			do u.mode :+ 1
+			do u.cnt :: 0
+		end if
+	case 4
+		if(u.kinit = 0)
+			do u.vx :: 4.0
+			do u.kinit :: 1
+		end if
+		do u.cnt :+ 1
+		if(u.cnt > 150)
+			do u.vx :: 0.0
+			do u.incMode()
+			do u.mode :: 1
+		end if
+	end switch
+end func
++func initE(u: \main@UNIT)
+	do u.u :: -101.0
+	do u.a :: 30
+	do u.kai :: 0.0
+	do u.g :: "4ele1.png"
+	do u.setWH()
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+	do u.mode :: 0
+	do u.cnt :: 0
+end func
++func actTE(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt % 2 = 0)
+		switch(u.g)
+		case "4ele1.png"
+			do u.g :: "4ele2.png"
+		case "4ele2.png"
+			do u.g :: "4ele3.png"
+		case "4ele3.png"
+			do u.g :: "4ele1.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.cnt > 20)
+			do u.mode :: 1
+		end if
+	case 1
+		do \main@sndd(22)
+		;var rr: float :: lib@atan(((\main@oMy.y + \main@oMy.h / 2.0) - (u.y + u.h / 2.0)) / ((\main@oMy.x + \main@oMy.w / 2.0) - (u.x + u.w / 2.0)))
+		do u.vx :: 16.0
+		do u.vy :: 2.0
+		do u.mode :+ 1
+	default
+	end switch
+end func

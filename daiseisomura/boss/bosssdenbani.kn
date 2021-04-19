@@ -1,0 +1,351 @@
++func init(u: \main@UNIT)
+	do u.u :: 9000.0
+	do u.a :: 40
+	do u.kai :: 0.0
+	do u.g :: "banira0-1.png"
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: 0.0
+	do u.vx :: 0.0
+	do u.vy :: 0.0
+	do u.mhp :: 650.0
+	do u.hp :: u.mhp
+	do u.setAtari(330.0, 270.0, 270.0)
+	do u.df1 :: 5.0
+	do u.df2 :: 1.0
+	do u.df3 :: 0.0
+	do u.df4 :: 0.0
+	
+	do u.gai :: true
+	do u.boss :: true
+	;	do \main@bgmchg("boss2", 1)
+	do \main@oBOSS :: u
+	do u.cObj("HPBARE")
+	do u.cObj("HPBARE2")
+	do u.cObj("HPBARGE")
+	
+	;do \main@snd[55].freq(1.0)
+	;do \main@sndd(55)
+end func
+
++func act(u: \main@UNIT)
+	
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 5)
+		do u.cnt3 :: 0
+		switch(u.mode)
+		case 0
+			switch(u.g)
+			case "banira0-1.png"
+				do u.g :: "banira0-2.png"
+			default
+				do u.g :: "banira0-1.png"
+			end switch
+		case 1
+			switch(u.g)
+			case "banira0-1.png"
+				do u.g :: "banira0-2.png"
+			default
+				do u.g :: "banira0-1.png"
+			end switch
+		case 2
+			switch(u.g)
+			case "banirabomb1-1.png"
+				do u.g :: "banirabomb1-2.png"
+			default
+				do u.g :: "banirabomb1-1.png"
+			end switch
+		case 3
+			switch(u.g)
+			case "banirabomb3-1.png"
+				do u.g :: "banirabomb3-2.png"
+			default
+				do u.g :: "banirabomb3-1.png"
+			end switch
+		case 4
+			switch(u.g)
+			case "banirabomb2-1.png"
+				do u.g :: "banirabomb2-2.png"
+			default
+				do u.g :: "banirabomb2-1.png"
+			end switch
+		case 5
+			switch(u.g)
+			case "banirabomb4-1.png"
+				do u.g :: "banirabomb4-2.png"
+			default
+				do u.g :: "banirabomb4-1.png"
+			end switch
+		case 6, 1000, 1001, 1002
+			switch(u.g)
+			case "banirabomb5-1.png"
+				do u.g :: "banirabomb5-2.png"
+			default
+				do u.g :: "banirabomb5-1.png"
+			end switch
+		case 7
+			switch(u.g)
+			case "banirabomb4-1.png"
+				do u.g :: "banirabomb4-2.png"
+			default
+				do u.g :: "banirabomb4-1.png"
+			end switch
+		case 8
+			switch(u.g)
+			case "banirabomb2-1.png"
+				do u.g :: "banirabomb2-2.png"
+			default
+				do u.g :: "banirabomb2-1.png"
+			end switch
+		case 9
+			switch(u.g)
+			case "banirabomb3-1.png"
+				do u.g :: "banirabomb3-2.png"
+			default
+				do u.g :: "banirabomb3-1.png"
+			end switch
+		case 10
+			switch(u.g)
+			case "banirabomb1-1.png"
+				do u.g :: "banirabomb1-2.png"
+			default
+				do u.g :: "banirabomb1-1.png"
+			end switch
+		case 11
+			switch(u.g)
+			case "banira0-1.png"
+				do u.g :: "banira0-2.png"
+			default
+				do u.g :: "banira0-1.png"
+			end switch
+		case 1 + 11
+			switch(u.g)
+			case "banira0-1.png"
+				do u.g :: "banira0-2.png"
+			default
+				do u.g :: "banira0-1.png"
+			end switch
+		case 2 + 11
+			switch(u.g)
+			case "banirarobo1-1.png"
+				do u.g :: "banirarobo1-2.png"
+			default
+				do u.g :: "banirarobo1-1.png"
+			end switch
+		case 3 + 11
+			switch(u.g)
+			case "banirarobo2-1.png"
+				do u.g :: "banirarobo2-2.png"
+			default
+				do u.g :: "banirarobo2-1.png"
+			end switch
+		case 4 + 11
+			switch(u.g)
+			case "banirarobo3-1.png"
+				do u.g :: "banirarobo3-2.png"
+			default
+				do u.g :: "banirarobo3-1.png"
+			end switch
+		case 5 + 11
+			switch(u.g)
+			case "banirarobo4-1.png"
+				do u.g :: "banirarobo4-2.png"
+			default
+				do u.g :: "banirarobo4-1.png"
+			end switch
+		case 6 + 11, 2000, 2001, 2002
+			switch(u.g)
+			case "banirarobo5-1.png"
+				do u.g :: "banirarobo5-2.png"
+			default
+				do u.g :: "banirarobo5-1.png"
+			end switch
+		case 7 + 11
+			switch(u.g)
+			case "banirarobo4-1.png"
+				do u.g :: "banirarobo4-2.png"
+			default
+				do u.g :: "banirarobo4-1.png"
+			end switch
+		case 8 + 11
+			switch(u.g)
+			case "banirarobo3-1.png"
+				do u.g :: "banirarobo3-2.png"
+			default
+				do u.g :: "banirarobo3-1.png"
+			end switch
+		case 9 + 11
+			switch(u.g)
+			case "banirarobo2-1.png"
+				do u.g :: "banirarobo2-2.png"
+			default
+				do u.g :: "banirarobo2-1.png"
+			end switch
+		case 10 + 11
+			switch(u.g)
+			case "banirarobo1-1.png"
+				do u.g :: "banirarobo1-2.png"
+			default
+				do u.g :: "banirarobo1-1.png"
+			end switch
+		case 11 + 11
+			switch(u.g)
+			case "banira0-1.png"
+				do u.g :: "banira0-2.png"
+			default
+				do u.g :: "banira0-1.png"
+			end switch
+		default
+			switch(u.g)
+			case "banira0-1.png"
+				do u.g :: "banira0-2.png"
+			default
+				do u.g :: "banira0-1.png"
+			end switch
+		end switch
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 10.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(0.0)
+	case 2, 3, 4, 5, 7, 8, 9, 10, 12, 13, 14, 15, 16, 18, 19, 20, 21
+		do u.setAtari2(330.0, 270.0, 300.0)
+		do u.loop1(10)
+	case 6
+		;ボム
+		do u.loop1(30)
+		if(u.cnt >= 30)
+			do u.mode :: 1000
+			do u.cnt4 :: 0
+		end if
+	case 1, 11, 22
+		do u.loop1(100)
+	case 17
+		;エレキ弾
+		do u.loop1(30)
+		if(u.cnt >= 30)
+			do u.mode :: 2000
+		end if
+	case 1000
+		;ボム
+		do u.cObj("BOSSDENB")
+		do \main@sndd(14)
+		do u.incMode()
+	case 1001
+		do u.loop1(100)
+	case 1002
+		do u.cnt4 :+ 1
+		if(u.cnt4 < 3)
+			do u.incMode()
+			do u.mode :: 1000
+		else
+			do u.incMode()
+			do u.mode :: 7
+		end if
+	case 2000, 2001
+		;たま
+		if(u.kinit = 0)
+			do u.child :: u.cObj("BOSSDENE")
+			do u.kinit :: 1
+		end if
+		if(u.child =& null | u.child.d = true)
+			do u.incMode()
+		end if
+	case 2002
+		do u.incMode()
+		do u.mode :: 18
+	default
+		do u.incMode()
+		do u.mode :: 0
+	end switch
+end func
+
++func initSHARI(u: \main@UNIT)
+	do u.u :: -500.0
+	do u.a :: 50
+	do u.kai :: 0.0
+	do u.x :: lib@rndFloat(30.0, 300.0)
+	do u.y :: 170.0
+	do u.g :: "BOBr1.png"
+	do u.setAtari(u.w / 2.0, u.h / 2.0, u.w / 2.0 * 0.8)
+	do u.setWH()
+	do u.boss :: true
+	do u.gai :: true
+	do u.bomb2 :: true
+end func
++func actSHARI(u: \main@UNIT)
+	do u.cnt3 :+ 1
+	if(u.cnt3 > 2)
+		switch(u.g)
+		case "BOBr1.png"
+			do u.g :: "BOBr2.png"
+		default
+			do u.g :: "BOBr1.png"
+		end switch
+		do u.cnt3 :: 0
+	end if
+	
+	switch(u.mode)
+	case 0
+		if(u.kinit = 0)
+			do u.vx :: 8.0
+			do u.vy :: -10.0
+			do u.kinit :: 1
+		end if
+		do u.vy :+ 1.0
+		if(u.vy > 30.0)
+			do u.vy :: 30.0
+		end if
+		do u.moveDown(500.0)
+	case 1
+		if(u.kinit = 0)
+			do u.vx :: 19.0
+			do u.vy :: 0.0
+			do u.kinit :: 1
+		end if
+		do u.moveRight(1400.0)
+	default
+		do u.d :: true
+	end switch
+end func
+
++func initE(u: \main@UNIT)
+	do u.u :: -8000.0
+	do u.a :: 30
+	do u.g :: "deler11.png"
+	do u.setWH()
+	do u.x :: 220.0
+	do u.y :: 130.0
+	do u.setAtari(u.w / 2.0, u.h / 2.0, 100.0)
+	do u.boss :: true
+end func
++func actTE(u: \main@UNIT)
+	do u.cnt :+ 1
+	if(u.cnt % 2 = 0)
+		switch(u.g)
+		case "deler11.png"
+			do u.g :: "deler21.png"
+		case "deler21.png"
+			do u.g :: "deler31.png"
+		default
+			do u.g :: "deler11.png"
+		end switch
+	end if
+	switch(u.mode)
+	case 0
+		if(u.cnt > 80)
+			do u.mode :: 1
+		end if
+	case 1
+		do \main@sndd(22)
+		do u.vx :: 30.0
+		do u.vy :: 5.0
+		do u.mode :+ 1
+	default
+	end switch
+end func

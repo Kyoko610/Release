@@ -1,0 +1,54 @@
++func initDON(u: \main@UNIT)
+	do u.kind :: %enemy
+	do u.u :: 900.0
+	do u.g :: "ed11.png"
+	do u.a :: 40
+	do u.kai :: 10.0
+	do u.setWH()
+	do u.x :: -u.w
+	do u.y :: \main@ty
+	do u.hp :: 20.0
+	do u.setAtari(300.0, 310.0, 100.0)
+	do u.setAtari2(300.0, 310.0, 140.0)
+	do u.color :: 5
+	do u.vx :: 16.0
+	do \main@sndd(1)
+end func
++func actDON(u: \main@UNIT)
+	do u.cnt2 :+ 1
+	if(u.cnt2 > 1)
+		switch(u.g)
+		case "ed12.png"
+			do u.g :: "ed11.png"
+		default
+			do u.g :: "ed12.png"
+		end switch
+		do u.cnt2 :: 0
+	end if
+	switch(u.mode)
+	case 0
+		if(u.x > -200.0)
+			do u.x :: -200.0
+			do u.vx :: 0.0
+			do u.incMode()
+		end if
+	case 1
+		do u.loop1(10)
+	case 2
+		var oo: \main@UNIT :: u.cObj("BAZU")
+		do oo.x :: u.x + 450.0
+		do oo.y :: u.y + 180.0
+		do u.child :: oo
+		do u.incMode()
+	case 3
+		if(u.child.d = true)
+			do u.vx :: 1.0
+			do u.incMode()
+		end if
+	case 4
+		do u.loop1(100)
+	case 5
+		do u.incMode()
+		do u.mode :: 1
+	end switch
+end func
